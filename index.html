@@ -1,0 +1,2978 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="icon berlin.png" type="image/png" />
+    <title>Berlin Zalukhu</title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        line-height: 1.6;
+        color: #333;
+        padding: 80px 0 60px 0; /* Padding atas disesuaikan untuk navbar */
+      }
+
+      /* NAVBAR STYLE */
+      header {
+        background: #2c3e50;
+        color: white;
+        padding: 1.2rem 8%; /* Padding atas-bawah dipertebal agar header lebih tinggi */
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        box-sizing: border-box;
+        z-index: 1000;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); /* Shadow lebih tegas */
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 25px; /* Jarak foto ke teks sedikit ditambah agar seimbang dengan ukuran foto baru */
+      }
+
+      .profile-frame {
+        /* Diperbesar agar sebanding dengan foto yang lebih besar */
+        width: 90px;
+        height: 90px;
+        border-radius: 50%;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: visible;
+        /* PERUBAHAN: Cincin tipis emas dihapus agar tampilan lebih bersih */
+        border: none;
+      }
+
+      .brand img {
+        width: 120px;
+        height: auto;
+        position: absolute;
+        bottom: -10px;
+        z-index: 2;
+        filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.6));
+        transition: transform 0.3s ease;
+      }
+
+      /* Efek opsional: sedikit zoom saat di-hover */
+      .brand:hover img {
+        transform: scale(1.05) translateY(-5px);
+      }
+
+      /* Container teks nama */
+      .name-container {
+        display: flex;
+        flex-direction: column;
+        line-height: 1.1;
+      }
+
+      .first-name {
+        font-size: 1.8rem; /* Diperbesar dari 1.3rem */
+        font-weight: 900;
+        letter-spacing: 3px;
+        color: #ffffff;
+      }
+
+      .full-name {
+        font-size: 0.85rem; /* Diperbesar dari 0.65rem */
+        color: #bdc3c7;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+      }
+
+      .highlight {
+        color: #d4af37;
+        font-weight: 700;
+      }
+
+      /* NAV MENU - DIPERBESAR */
+      .nav-menu {
+        display: flex;
+        align-items: center;
+        gap: 20px; /* Jarak antar menu dirapatkan sedikit */
+      }
+
+      .nav-menu a {
+        color: white;
+        text-decoration: none;
+        font-weight: 500; /* Ketebalan dikurangi sedikit agar lebih clean */
+        font-size: 0.95rem; /* Ukuran font lebih kecil dan elegan */
+        transition: 0.3s;
+        position: relative;
+        padding-bottom: 4px; /* Ruang bawah dipersempit agar navbar ramping */
+      }
+
+      /* Penyesuaian garis bawah agar tetap proporsional dengan font kecil */
+      .nav-menu a::after {
+        content: "";
+        position: absolute;
+        width: 0;
+        height: 2px; /* Garis lebih tipis */
+        bottom: 0;
+        left: 0;
+        background-color: #3498db;
+        transition: width 0.3s;
+      }
+
+      .nav-menu a:hover::after {
+        width: 100%;
+      }
+
+      .brand-link {
+        display: inline-block;
+        transition: transform 0.3s ease;
+      }
+
+      .brand-link:hover {
+        transform: scale(1.02); /* Sedikit membesar saat disentuh */
+        opacity: 0.9;
+      }
+
+      .brand {
+        cursor: pointer;
+      }
+
+      /* HAMBURGER - DIPERBESAR */
+      .menu-toggle {
+        display: none;
+        flex-direction: column;
+        cursor: pointer;
+        gap: 6px;
+        z-index: 1100; /* Pastikan berada di atas lapisan menu */
+        transition: 0.3s;
+      }
+
+      .menu-toggle .bar {
+        width: 32px;
+        height: 4px;
+        background-color: white;
+        transition: all 0.4s cubic-bezier(0.68, -0.6, 0.32, 1.6); /* Animasi lebih kenyal/smooth */
+        border-radius: 5px;
+      }
+
+      /* LOGIKA TOMBOL X (Saat Active) */
+      .menu-toggle.active .bar:nth-child(1) {
+        transform: translateY(10px) rotate(45deg);
+        background-color: #ff5e4d; /* Opsional: Berubah warna saat jadi 'X' agar kontras */
+      }
+
+      /* Garis Kedua: Hilangkan (Fade out) */
+      .menu-toggle.active .bar:nth-child(2) {
+        opacity: 0;
+        transform: translateX(-20px);
+      }
+
+      /* Garis Ketiga: Putar -45 derajat ke atas */
+      .menu-toggle.active .bar:nth-child(3) {
+        transform: translateY(-10px) rotate(-45deg);
+        background-color: #ff5e4d;
+      }
+
+      /* HERO SECTION */
+      .hero {
+        width: 100%;
+        min-height: 513px;
+        background: #121f28;
+        display: flex;
+        align-items: center;
+        padding: 40px 10%;
+        box-sizing: border-box;
+        overflow: hidden;
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+      }
+
+      .hero-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        max-width: 1160px;
+        margin: 0 auto;
+      }
+
+      .hero-text {
+        flex: 1;
+        z-index: 2;
+      }
+      .hero-text h1 {
+        font-size: 3rem;
+        color: #fff;
+        line-height: 1.2;
+      }
+      .hero-text h1 span {
+        color: #3498db;
+      }
+      .hero-text p {
+        font-size: 1.1rem;
+        color: #bdc3c7;
+        margin-bottom: 30px;
+      }
+
+      .btn-primary {
+        padding: 12px 25px;
+        background: #ff5e4d;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        font-weight: bold;
+        margin-right: 15px;
+      }
+
+      .btn-secondary {
+        padding: 12px 25px;
+        border: 2px solid #ffffff;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        font-weight: bold;
+      }
+
+      .social-links {
+        display: flex;
+        gap: 20px;
+        margin-top: 25px;
+      }
+      .social-links a {
+        color: #bdc3c7;
+        font-size: 1.5rem;
+        transition: 0.3s;
+      }
+      .social-links a:hover {
+        color: #ff5e4d;
+        transform: translateY(-3px);
+      }
+
+      .hero-image {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        perspective: 1000px; /* Menambah dimensi kedalaman */
+      }
+
+      .hero-image img {
+        width: 450px;
+        height: 450px;
+        z-index: 2;
+
+        /* PENGATURAN BARU: Tanpa Border */
+        border: none;
+        border-radius: 30%;
+        object-fit: cover;
+        aspect-ratio: 1 / 1;
+
+        /* Bayangan lembut agar foto terlihat menyatu dengan background gelap */
+        filter: drop-shadow(0 20px 50px rgba(0, 0, 0, 0.8));
+
+        /* Jalankan animasi zoom & floating otomatis */
+        animation: ultra-smooth-zoom 6s infinite ease-in-out;
+      }
+
+      /* Animasi Zoom Otomatis & Floating yang Keren */
+      @keyframes ultra-smooth-zoom {
+        0%,
+        100% {
+          transform: scale(1) translateY(0);
+          filter: drop-shadow(0 20px 50px rgba(0, 0, 0, 0.8)) brightness(1);
+        }
+        50% {
+          /* Zoom perlahan dan sedikit naik ke atas */
+          transform: scale(1.08) translateY(-15px);
+          /* Memberikan efek pendaran cahaya halus saat foto membesar */
+          filter: drop-shadow(0 30px 60px rgba(255, 94, 77, 0.3))
+            brightness(1.1);
+        }
+      }
+
+      /* RESPONSIVE DESIGN - MAX 900PX */
+      @media (max-width: 900px) {
+        .hero {
+          width: 100%;
+          overflow-x: hidden;
+          padding: 70px 5% 10px 5%;
+          min-height: auto;
+          height: auto;
+          box-sizing: border-box;
+          background-attachment: scroll;
+          background-position: center 20%;
+          display: block;
+          position: relative;
+        }
+
+        .hero-container {
+          flex-direction: column;
+          text-align: center;
+          gap: 10px;
+        }
+
+        .hero-text h1 {
+          font-size: 1.6rem;
+          margin-bottom: 8px;
+          text-align: left; /* Memastikan judul rata kiri */
+        }
+
+        .hero-text p {
+          font-size: 0.9rem;
+          margin-bottom: 15px;
+          padding: 0; /* Menghapus padding samping agar benar-benar menempel di kiri */
+          text-align: left; /* Memastikan paragraf rata kiri */
+        }
+
+        .hero-image {
+          width: 100%;
+          margin-top: 10px; /* Jarak kecil sebelum foto */
+        }
+
+        .hero-image img {
+          width: 85%; /* Sedikit diperkecil agar background ikut memendek */
+          max-width: 250px;
+          height: auto;
+          object-fit: contain;
+          border-radius: 30px; /* Tetap 30px sesuai permintaan */
+
+          /* ANIMASI ZOOM OTOMATIS AKTIF KEMBALI */
+          animation: mobile-zoom 5s infinite ease-in-out;
+        }
+
+        .btn-primary {
+          margin-right: 12px;
+          margin-bottom: 10px;
+          display: inline-block;
+        }
+
+        .btn-secondary {
+          display: inline-block;
+          margin-bottom: 10px;
+        }
+
+        .btn-primary,
+        .btn-secondary {
+          padding: 10px 18px;
+          font-size: 0.85rem;
+          width: auto;
+          transition: 0.3s;
+        }
+        .social-links {
+          display: flex;
+          gap: 25px;
+          justify-content: flex-start;
+          margin-top: 25px;
+          margin-bottom: 25px;
+        }
+
+        .social-links a {
+          font-size: 1.8rem;
+          color: #bdc3c7;
+          position: relative;
+          display: inline-block;
+          transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Animasi membal yang halus */
+        }
+
+        .social-links a:hover {
+          color: #ff5e4d;
+          transform: translateY(-8px) scale(1.2);
+          filter: drop-shadow(0 0 10px rgba(255, 94, 77, 0.6));
+        }
+      }
+
+      @keyframes mobile-zoom {
+        0%,
+        100% {
+          transform: scale(1);
+          filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.6));
+        }
+        50% {
+          transform: scale(1.05);
+          filter: drop-shadow(0 15px 30px rgba(255, 94, 77, 0.2));
+        }
+      }
+
+      /* TYPING TEXT */
+      .typing-text {
+        display: block;
+        color: #3498db;
+        font-family: "Poppins", sans-serif;
+        font-size: 2rem;
+        border-left: 5px solid #ff5e4d;
+        padding-left: 15px;
+        overflow: hidden;
+        white-space: nowrap;
+        border-right: 3px solid #3498db;
+        width: fit-content;
+        margin-bottom: 30px;
+        animation:
+          typing 4s steps(20, end) infinite,
+          blink-caret 0.75s step-end infinite;
+      }
+
+      .about-content {
+        display: flex;
+        align-items: center;
+        gap: 50px; /* Jarak antara teks dan foto di desktop */
+      }
+
+      .about-text {
+        font-size: 1rem;
+        color: #bdc3c7;
+        line-height: 1.6;
+        margin-bottom: 20px;
+        text-align: left;
+      }
+
+      .about-text strong {
+        color: #3498db;
+      }
+
+      .about-image {
+        display: block; /* Foto muncul di desktop */
+      }
+
+      .about-image img {
+        width: 320px;
+        border-radius: 20px;
+        filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.5));
+        transition: transform 0.3s ease;
+      }
+
+      /* --- RESPONSIVE (MOBILE < 900px) --- */
+      @media (max-width: 900px) {
+        .about-content {
+          display: block; /* Teks memenuhi lebar layar */
+        }
+
+        .about-image {
+          display: none; /* Foto hilang sepenuhnya di mobile */
+        }
+
+        .about-text {
+          font-size: 0.95rem;
+          padding: 0 5%; /* Padding sedikit agar tidak menempel ke pinggir layar */
+        }
+
+        .typing-text {
+          font-size: 1.6rem; /* Ukuran teks typing sedikit mengecil agar pas */
+        }
+      }
+
+      /* Pastikan foto muncul secara default di Desktop */
+      .about-image-desktop {
+        display: block;
+      }
+
+      @media (max-width: 900px) {
+        /* MENGHILANGKAN FOTO DI MOBILE */
+        .about-image-desktop {
+          display: none !important;
+        }
+
+        /* Memastikan kontainer teks mengambil ruang penuh setelah foto hilang */
+        .about-container {
+          width: 100%;
+          padding: 0 5%;
+        }
+      }
+
+      @keyframes typing {
+        from {
+          width: 0;
+        }
+        to {
+          width: 100%;
+        }
+      }
+
+      @keyframes blink-caret {
+        from,
+        to {
+          border-color: transparent;
+        }
+        50% {
+          border-color: #3498db;
+        }
+      }
+
+      /* tombol explorer */
+      .btn-explore {
+        display: inline-block;
+        padding: 12px 28px;
+        background: linear-gradient(45deg, #3498db, #2980b9);
+        color: white;
+        text-decoration: none;
+        border-radius: 50px; /* Bentuk kapsul yang modern */
+        font-weight: 600;
+        font-size: 0.95rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+      }
+
+      .btn-explore:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(52, 152, 219, 0.5);
+        background: linear-gradient(45deg, #2980b9, #3498db);
+      }
+
+      @media (max-width: 900px) {
+        .about-action {
+          text-align: left; /* Tetap rata kiri sesuai permintaan Mner */
+          padding: 0 5%;
+        }
+      }
+
+      /* Latest on YouTube */
+      .youtube-blue-bg {
+        background: #eff8ff;
+        padding: 40px 0;
+        border-top: 1px solid rgba(52, 152, 219, 0.1);
+      }
+
+      /* Judul Statis Tanpa Typing */
+      .yt-title-static {
+        color: #3498db;
+        font-family: "Poppins", sans-serif;
+        font-size: 2.2rem;
+        font-weight: 700;
+        border-left: none;
+        padding-left: 0;
+        text-align: center;
+        margin-bottom: 15px;
+      }
+
+      .youtube-header .about-text {
+        text-align: center; /* Memastikan paragraf juga rata tengah */
+        color: #bdc3c7;
+      }
+
+      /* Container Video dengan Efek Glow */
+      .video-container {
+        position: relative;
+        padding-bottom: 56.25%; /* Rasio 16:9 */
+        height: 0;
+        overflow: hidden;
+        border-radius: 25px; /* Lebih bulat agar terlihat modern */
+        background: #000;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+        border: 2px solid rgba(52, 152, 219, 0.3); /* Bingkai biru tipis */
+        transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+
+      .video-container iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+      }
+
+      /* Efek Hover Video Thumbnail */
+      .video-card:hover .video-container {
+        transform: scale(1.02);
+        border-color: #3498db;
+        box-shadow: 0 25px 60px rgba(52, 152, 219, 0.3); /* Pendaran biru */
+      }
+
+      .thumbnail-wrapper {
+        position: relative;
+        display: block;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        cursor: pointer;
+      }
+
+      .yt-thumbnail {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+      }
+
+      .video-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          0deg,
+          rgba(10, 25, 47, 0.6) 0%,
+          transparent 100%
+        );
+        transition: 0.3s;
+      }
+
+      /* Tombol Play di Tengah */
+      .play-button {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 70px;
+        height: 70px;
+        background: #ff5e4d;
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        z-index: 10;
+        box-shadow: 0 0 20px rgba(255, 94, 77, 0.5);
+        transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+
+      /* EFEK HOVER */
+      .video-card:hover .yt-thumbnail {
+        transform: scale(1.1);
+      }
+
+      .video-card:hover .play-button {
+        transform: translate(-50%, -50%) scale(1.2);
+        background: #3498db;
+        box-shadow: 0 0 30px rgba(52, 152, 219, 0.6);
+      }
+
+      .video-card:hover .video-overlay {
+        background: rgba(10, 25, 47, 0.2);
+      }
+
+      @media (max-width: 900px) {
+        .yt-title-static {
+          font-size: 1.8rem;
+        }
+        .youtube-header {
+          padding: 0 5%;
+        }
+        .video-card {
+          padding: 0 5%;
+        }
+      }
+
+      /* Menumpuk thumbnail tepat di atas iframe */
+      .thumbnail-overlay-trigger {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 5;
+        pointer-events: none; /* Klik akan tembus ke iframe di bawahnya */
+        transition: opacity 0.5s ease;
+      }
+      .video-card:hover .thumbnail-overlay-trigger {
+        opacity: 0.8;
+      }
+      .youtube-blue-bg {
+        background: #eff8ff;
+        padding: 60px 0;
+        border-top: 1px solid rgba(52, 152, 219, 0.1);
+      }
+      .youtube-header .about-text {
+        text-align: center;
+        color: #5d6d7e;
+      }
+
+      /* projects */
+      /* Layout Utama */
+      #projects {
+        background: #eff8ff;
+        padding: 80px 0;
+        width: 100%;
+      }
+
+      .projects-wrapper {
+        max-width: 1100px;
+        margin: auto;
+        padding: 0 20px;
+      }
+
+      .projects-header {
+        text-align: center;
+        margin-bottom: 50px;
+      }
+
+      .about-text {
+        max-width: 700px;
+        margin: 10px auto 0 auto;
+        text-align: center;
+        color: #5d6d7e;
+      }
+
+      /* Grid System yang Mendukung Mobile */
+      .projects-grid {
+        display: grid;
+        /* Menggunakan minmax agar kartu tidak terlalu kecil di layar tanggung */
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 25px;
+      }
+
+      /* Kartu Project */
+      .project-card {
+        background: #ffffff;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 8px 25px rgba(52, 152, 219, 0.08);
+        transition: transform 0.3s ease;
+      }
+
+      .project-card:hover {
+        transform: translateY(-8px);
+      }
+
+      .project-thumb {
+        position: relative;
+        aspect-ratio: 16 / 9;
+        overflow: hidden;
+      }
+
+      .project-thumb img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .project-info {
+        padding: 20px;
+      }
+
+      .project-info h3 {
+        font-size: 1.1rem;
+        color: #2c3e50;
+        margin-bottom: 5px;
+      }
+
+      /* RESPONSIVE BREAKPOINTS */
+      @media (max-width: 768px) {
+        #projects {
+          padding: 60px 0; /* Padding lebih kecil di mobile */
+        }
+
+        .projects-grid {
+          grid-template-columns: 1fr; /* Paksa 1 kolom di HP */
+          gap: 20px;
+          padding: 0 10px;
+        }
+
+        .project-info h3 {
+          font-size: 1rem;
+        }
+      }
+
+      /* bagian skills */
+      .category-title {
+        text-align: center;
+        color: #2c3e50;
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 30px;
+      }
+
+      /* Pengaturan Grid Kartu */
+      .skills-grid {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 20px;
+      }
+
+      /* Desain Kartu Skill Putih Minimalis */
+      .skill-card {
+        background: #ffffff;
+        width: 160px;
+        height: 160px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05); /* Shadow halus sesuai gambar */
+        border: 1px solid rgba(0, 0, 0, 0.02);
+        transition: all 0.3s ease;
+        cursor: default;
+      }
+
+      /* Icon Styling */
+      .skill-card i {
+        font-size: 3rem;
+        color: #2c3e50; /* Warna gelap metalik */
+        margin-bottom: 15px;
+      }
+
+      .skill-card img {
+        width: 50px;
+        height: 50px;
+        margin-bottom: 15px;
+      }
+
+      /* Label Teks */
+      .skill-card span {
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: #2c3e50;
+        text-align: center;
+      }
+
+      /* Efek Hover Halus */
+      .skill-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 15px 35px rgba(52, 152, 219, 0.15);
+        border-color: #3498db;
+      }
+
+      .skill-card:hover i {
+        color: #3498db; /* Berubah ke biru khas Berlin saat hover */
+      }
+
+      /* Responsif Mobile */
+      @media (max-width: 768px) {
+        .skill-card {
+          width: 140px;
+          height: 140px;
+        }
+      }
+
+      /* contak saya */
+      .contact-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 25px;
+        margin-top: 40px;
+      }
+
+      .contact-card {
+        background: #ffffff;
+        display: flex;
+        align-items: center;
+        padding: 25px;
+        border-radius: 20px;
+        text-decoration: none;
+        border: 1px solid rgba(52, 152, 219, 0.1);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.03);
+        transition: all 0.3s ease;
+      }
+
+      .contact-card:not(.no-click):hover {
+        transform: translateY(-8px);
+        box-shadow: 0 15px 35px rgba(52, 152, 219, 0.1);
+        border-color: #3498db;
+      }
+
+      .contact-icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.8rem;
+        color: white;
+        margin-right: 20px;
+        flex-shrink: 0;
+      }
+
+      .contact-info h3 {
+        color: #2c3e50;
+        font-size: 1.2rem;
+        margin-bottom: 4px;
+      }
+
+      .contact-info p {
+        color: #7f8c8d;
+        font-size: 0.95rem;
+      }
+
+      /* Responsif Mobile */
+      @media (max-width: 768px) {
+        .contact-grid {
+          grid-template-columns: 1fr;
+          padding: 0 10px;
+        }
+      }
+
+      /* chat wigded */
+      .floating-chat-container {
+        position: fixed;
+        bottom: 25px;
+        right: 25px;
+        z-index: 9999;
+        font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      }
+
+      /* Tombol Pemicu Utama */
+      .chat-trigger-btn {
+        background: #3498db;
+        color: white;
+        border: none;
+        padding: 15px 25px;
+        border-radius: 50px;
+        font-weight: 600;
+        cursor: pointer;
+        box-shadow: 0 10px 25px rgba(52, 152, 219, 0.3);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+
+      .chat-trigger-btn:hover {
+        transform: scale(1.05) translateY(-3px);
+        background: #2980b9;
+        box-shadow: 0 15px 30px rgba(52, 152, 219, 0.4);
+      }
+
+      /* Pengaturan Popup Glassmorphism */
+      .chat-popup {
+        display: none; /* Dikontrol via JavaScript */
+        flex-direction: column;
+        position: absolute;
+        bottom: 80px;
+        right: 0;
+        width: 320px;
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(15px); /* Efek kaca lebih kuat */
+        -webkit-backdrop-filter: blur(15px);
+        border-radius: 20px;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        overflow: hidden;
+        animation: fadeIn 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(30px) scale(0.95);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+
+      /* Header Profil Berlin S. Z. */
+      .chat-header {
+        background: #3498db;
+        padding: 15px 20px;
+        color: white;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .chat-profile {
+        display: flex;
+        align-items: center;
+        gap: 15px; /* Jarak sedikit diperlebar agar seimbang dengan foto yang lebih besar */
+      }
+
+      .chat-profile img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        border: none;
+        object-fit: cover;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* Shadow sedikit diperkuat agar foto tetap menonjol tanpa border */
+      }
+
+      .chat-status {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .chat-status strong {
+        display: block;
+        font-size: 1rem; /* Ukuran font nama sedikit disesuaikan dengan ukuran foto baru */
+        font-weight: 700;
+        letter-spacing: 0.2px;
+        line-height: 1.2;
+        margin-bottom: 2px;
+        color: #ffffff;
+      }
+
+      .chat-status small {
+        font-size: 0.75rem;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        opacity: 0.95;
+        font-weight: 500;
+        color: rgba(255, 255, 255, 0.9);
+      }
+
+      /* Icon online agar tetap presisi */
+      .chat-status small i {
+        font-size: 0.65rem;
+      }
+
+      /* Form Input Mewah */
+      .chat-body-form {
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .chat-body-form input,
+      .chat-body-form textarea {
+        padding: 12px 15px;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        border-radius: 12px;
+        outline: none;
+        font-size: 0.9rem;
+        background: rgba(255, 255, 255, 0.8);
+        transition:
+          border-color 0.3s,
+          box-shadow 0.3s;
+      }
+
+      .chat-body-form input:focus,
+      .chat-body-form textarea:focus {
+        border-color: #3498db;
+        box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+      }
+
+      .chat-body-form textarea {
+        height: 100px;
+        resize: none;
+      }
+
+      /* Tombol Kirim */
+      #submitBtn {
+        background: #3498db;
+        color: white;
+        border: none;
+        padding: 12px;
+        border-radius: 12px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+
+      /* Efek saat input wajib belum diisi */
+      .chat-body-form input:invalid:focus,
+      .chat-body-form textarea:invalid:focus {
+        border-color: #e74c3c !important;
+        box-shadow: 0 0 5px rgba(231, 76, 60, 0.2);
+      }
+
+      /* Efek saat input sudah benar */
+      .chat-body-form input:valid:focus {
+        border-color: #2ecc71 !important;
+      }
+
+      #submitBtn:hover {
+        background: #2c3e50;
+        transform: translateY(-2px);
+      }
+
+      .close-chat {
+        background: rgba(255, 255, 255, 0.2);
+        border: none;
+        color: white;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        font-size: 1.2rem;
+        line-height: 1;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: 0.3s;
+      }
+
+      .close-chat:hover {
+        background: rgba(255, 255, 255, 0.4);
+      }
+
+      /* Responsivitas Mobile */
+      @media (max-width: 480px) {
+        .chat-popup {
+          width: 280px;
+          bottom: 75px;
+          right: -10px;
+        }
+      }
+
+      /*  */
+
+      @keyframes typing {
+        0%,
+        10% {
+          width: 0;
+        }
+        50%,
+        60% {
+          width: 275px;
+        }
+        90%,
+        100% {
+          width: 0;
+        }
+      }
+
+      @keyframes blink-caret {
+        from,
+        to {
+          border-color: transparent;
+        }
+        50% {
+          border-color: #3498db;
+        }
+      }
+
+      .about-text {
+        text-align: justify;
+        color: #555;
+        margin-bottom: 20px;
+      }
+
+      /* MOBILE RESPONSIVE */
+      @media (max-width: 768px) {
+        header {
+          padding: 0.8rem 5%;
+        }
+        .menu-toggle {
+          display: flex;
+        }
+
+        .nav-menu {
+          position: fixed;
+          right: -100%;
+          top: 0;
+          background: #2c3e50;
+          width: 70%;
+          height: 100vh;
+          flex-direction: column;
+          justify-content: center;
+          transition: 0.4s;
+          box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-menu.active {
+          right: 0;
+        }
+
+        .hero-container {
+          flex-direction: column;
+          text-align: center;
+        }
+        .hero-text {
+          order: 2;
+          margin-top: 30px;
+        }
+        .hero-text h1 {
+          font-size: 2.2rem;
+        }
+        .hero-image {
+          order: 1;
+        }
+        .hero-image img {
+          width: 220px;
+        }
+        .social-links {
+          justify-content: center;
+        }
+
+        .menu-toggle.active .bar:nth-child(1) {
+          transform: translateY(8px) rotate(45deg);
+        }
+        .menu-toggle.active .bar:nth-child(2) {
+          opacity: 0;
+        }
+        .menu-toggle.active .bar:nth-child(3) {
+          transform: translateY(-8px) rotate(-45deg);
+        }
+      }
+
+      /* --- STYLES FOR FOOTER --- */
+      .main-footer {
+        background-color: #000000; /* Hitam pekat sesuai gambar */
+        color: #ffffff;
+        padding: 80px 0 40px 0;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      .footer-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        padding: 0 20px;
+        gap: 40px;
+      }
+
+      .footer-column {
+        flex: 1;
+        min-width: 250px;
+        text-align: center; /* Rata tengah sesuai contoh gambar */
+      }
+
+      /* Kolom Branding */
+      .footer-name {
+        font-size: 1.8rem;
+        font-weight: 800;
+        letter-spacing: 1px;
+        margin-bottom: 15px;
+      }
+
+      .footer-slogan {
+        font-size: 1rem;
+        color: #bdc3c7;
+        line-height: 1.6;
+      }
+
+      /* Kolom Links */
+      .footer-column h3 {
+        font-size: 1.4rem;
+        margin-bottom: 25px;
+        font-weight: 700;
+      }
+
+      .footer-column ul {
+        list-style: none;
+        padding: 0;
+      }
+
+      .footer-column ul li {
+        margin-bottom: 12px;
+      }
+
+      .footer-column ul li a {
+        color: #bdc3c7;
+        text-decoration: none;
+        transition: color 0.3s ease;
+      }
+
+      .footer-column ul li a:hover {
+        color: #3498db;
+      }
+
+      /* Kolom Social Media */
+      .social-icons {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        font-size: 1.5rem;
+      }
+
+      .social-icons a {
+        color: #ffffff;
+        transition:
+          transform 0.3s ease,
+          color 0.3s ease;
+      }
+
+      .social-icons a:hover {
+        color: #3498db;
+        transform: translateY(-5px);
+      }
+
+      /* Bagian Bawah */
+      .footer-bottom {
+        margin-top: 60px;
+        padding-top: 30px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        text-align: center;
+      }
+
+      .footer-bottom p {
+        color: #7f8c8d;
+        font-size: 0.9rem;
+      }
+
+      /* Responsif Mobile */
+      @media (max-width: 768px) {
+        .footer-container {
+          flex-direction: column;
+          align-items: center;
+        }
+
+        .footer-column {
+          text-align: center;
+          margin-bottom: 30px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <a
+        href="#"
+        class="brand-link"
+        style="text-decoration: none; color: inherit"
+      >
+        <div class="brand">
+          <div class="profile-frame">
+            <img src="icon berlin.png" alt="Berlin Profile" />
+          </div>
+          <div class="name-container">
+            <span class="first-name">BERLIN</span>
+            <span class="full-name">
+              <span class="highlight">SEPTENUS</span> ZALUKHU
+            </span>
+          </div>
+        </div>
+      </a>
+
+      <div class="menu-toggle" id="mobile-menu">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </div>
+
+      <nav class="nav-menu">
+        <a href="#">Home</a>
+        <a href="#about me">About</a>
+        <a href="#projects">Project</a>
+        <a href="#skills">Skills</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <div class="hero-container">
+        <div class="hero-text">
+          <h1>Hello.<br />I'm <span>Berlin Septenus Zalukhu</span></h1>
+          <p>Developer Web | Content Creator | Desainer</p>
+          <div class="hero-buttons">
+            <a href="#projects" class="btn-primary">Got a project?</a>
+            <a href="#" class="btn-secondary">My resume</a>
+          </div>
+          <div class="social-links">
+            <a href="https://github.com/berlins-zal6"
+              ><i class="fa-brands fa-github"></i
+            ></a>
+            <a href="https://www.facebook.com/berlin.zalukhu.351939"
+              ><i class="fa-brands fa-facebook"></i
+            ></a>
+            <a href="https://www.youtube.com/@Berlin_witworks"
+              ><i class="fa-brands fa-youtube"></i
+            ></a>
+            <a href="https://www.instagram.com/berlin_zalukhu/"
+              ><i class="fa-brands fa-instagram"></i
+            ></a>
+          </div>
+        </div>
+        <div class="hero-image">
+          <div class="image-glow"></div>
+          <img src="icon berlin.png" alt="Berlin Profile" />
+        </div>
+      </div>
+    </section>
+
+    <article
+      id="about"
+      style="max-width: 1000px; margin: auto; padding: 60px 20px"
+    >
+      <h2 class="typing-text">Selamat Datang</h2>
+
+      <div
+        class="about-wrapper"
+        style="display: flex; align-items: center; gap: 40px"
+      >
+        <div
+          class="about-content"
+          style="display: flex; align-items: center; gap: 50px"
+        >
+          <div class="about-container" style="flex: 1">
+            <p class="about-text">
+              Website ini saya bangun sebagai tempat untuk mengumpulkan karya,
+              berbagi inspirasi, serta menyalurkan ide-ide yang saya tuangkan
+              lewat video, tulisan, maupun visual.
+            </p>
+            <p class="about-text">
+              Sebagai seorang <strong>konten kreator YouTube</strong> yang
+              berfokus pada tutorial, teknologi, dan kreativitas digital. Di
+              sini, Anda bisa menjelajahi perjalanan saya, melihat berbagai
+              proyek yang sudah saya kerjakan, dan mungkin menemukan sesuatu
+              yang bisa membuka peluang untuk kita berkolaborasi bersama.
+            </p>
+
+            <div class="about-action" style="margin-top: 25px">
+              <a href="#lates on YT" class="btn-explore"> Let's Explore </a>
+            </div>
+          </div>
+
+          <div class="about-image-desktop">
+            <img
+              src="photo berlin.png"
+              alt="Berlin Septenus Zalukhu"
+              style="
+                width: 300px;
+                border-radius: 20px;
+                filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.5));
+              "
+            />
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <section id="lates on YT" class="youtube-blue-bg">
+      <div
+        class="youtube-latest-content"
+        style="max-width: 1000px; margin: auto; padding: 60px 20px"
+      >
+        <div
+          class="youtube-header"
+          style="text-align: center; margin-bottom: 40px"
+        >
+          <h2 class="yt-title-static">Latest on YouTube</h2>
+          <p
+            class="about-text"
+            style="max-width: 600px; margin: 10px auto 0 auto"
+          >
+            Di sela-sela waktu luang, saya suka berbagi video seputar tutorial
+            coding sederhana yang mudah-mudahan bermanfaat.
+          </p>
+        </div>
+
+        <div class="video-card" style="max-width: 800px; margin: auto">
+          <div class="video-container">
+            <a
+              href="https://www.youtube.com/watch?v=M7F7nIHONog"
+              target="_blank"
+              class="thumbnail-overlay-trigger"
+              style="display: block; text-decoration: none"
+            >
+              <img
+                src="https://img.youtube.com/vi/M7F7nIHONog/maxresdefault.jpg"
+                alt="Tutorial Video Berlin"
+                class="yt-thumbnail"
+              />
+
+              <div class="video-overlay"></div>
+              <div class="play-button">
+                <i class="fa-solid fa-play"></i>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section
+      id="about me"
+      style="max-width: 900px; margin: 60px auto; padding: 0 20px"
+    >
+      <div class="bio-content">
+        <div class="bio-header" style="text-align: center; margin-bottom: 40px">
+          <h2
+            class="yt-title-static"
+            style="text-align: center; border-left: none; padding-left: 0"
+          >
+            Siapa Berlin Septenus Zalukhu?
+          </h2>
+
+          <div
+            class="landscape-photo-container"
+            style="
+              margin-top: 25px;
+              overflow: hidden;
+              border-radius: 20px;
+              box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+            "
+          >
+            <img
+              src="berlin x coding wallppaper.jpeg"
+              alt="Berlin Septenus Zalukhu"
+              style="
+                width: 100%;
+                max-width: 1280px;
+                height: auto;
+                aspect-ratio: 1280 / 368;
+                object-fit: cover;
+                display: block;
+                margin: auto;
+                filter: brightness(0.9);
+              "
+            />
+          </div>
+        </div>
+
+        <p class="about-text">
+          Halo, saya <strong>Berlin Septenus Zalukhu</strong>, seorang Mahasiswa
+          yang jatuh cinta pada dunia digital dan kreatif. dunia digital dan
+          kreatif yang percaya bahwa teknologi adalah kanvas untuk berkarya.
+          Sebagai lulusan dari program studi
+          <strong>Pendidikan Teknologi Informasi dan Komunikasi</strong>, saya
+          memiliki ketertarikan mendalam pada cara kita berkomunikasi—baik
+          melalui untaian kata, baris kode pemrograman, maupun estetika visual
+          dalam video.
+        </p>
+
+        <p class="about-text">
+          Bagi saya, perjalanan akademik di dunia pendidikan memberikan
+          perspektif unik dalam dunia IT. Saya sering bercanda dengan rekan tim,
+          <em
+            >"Menyusun struktur kode itu mirip seperti menyusun sintaksis
+            kalimat; harus presisi agar pesannya tersampaikan tanpa error,"</em
+          >
+          agar suasana kerja tetap santai namun tetap produktif. Sebagai seorang
+          <strong>Developer Website</strong>, saya bangga bisa menjembatani
+          aspek edukasi dengan implementasi teknologi nyata.
+        </p>
+
+        <p class="about-text">
+          Perjalanan kreatif saya di YouTube dimulai sejak tahun 2023. Berawal
+          dari keinginan sederhana untuk berbagi, kini telah menjadi dedikasi
+          konsisten dalam menyajikan tutorial coding dan tips teknologi. Tak
+          hanya di balik layar monitor, saya juga menekuni desain visual dan
+          ilustrasi yang dipublikasikan secara internasional, salah satunya
+          melalui platform <strong>Shutterstock</strong>. Bagi
+          <strong>Berlin Septenus Zalukhu</strong>, setiap konten adalah jejak
+          digital yang diharapkan mampu memberikan inspirasi bagi sesama
+          kreator.
+        </p>
+
+        <p class="about-text">
+          Di luar kesibukan mengelola proyek web dan memproduksi video, saya
+          adalah penikmat hiburan yang santai. Saya sering menghabiskan waktu
+          dengan bermain <strong>EA Sports FC (FIFA)</strong>, di mana
+          <strong>Real Madrid</strong> selalu menjadi tim andalan saya. Untuk
+          urusan tontonan, anime seperti <em>Hunter x Hunter</em> dan
+          <em>Naruto</em> selalu punya tempat di hati, ditemani alunan musik
+          dari <strong>Musik-Musik Timur</strong>, <strong>Lagu Nias</strong>,
+          hingga lirik-lirik reflektif yang sangat pas menemani proses kreatif
+          saya.
+        </p>
+
+        <p
+          class="about-text"
+          style="
+            font-style: italic;
+            border-top: 1px solid rgba(52, 152, 219, 0.2);
+            padding-top: 20px;
+            margin-top: 30px;
+          "
+        >
+          "Setiap karya yang saya buat adalah cara saya meninggalkan jejak. Saya
+          berharap apa yang saya bagikan melalui platform ini dapat bermanfaat,
+          membuka peluang kolaborasi, atau setidaknya memberikan energi positif
+          bagi Anda yang membacanya." —
+          <strong>Berlin Septenus Zalukhu</strong>.
+        </p>
+      </div>
+    </section>
+
+    <section id="projects">
+      <div class="projects-wrapper">
+        <div class="projects-header">
+          <h2 class="yt-title-static">Projects</h2>
+          <p class="about-text">
+            Beberapa project yang saya kerjakan isinya campuran antara tutorial
+            coding dan desain, sederhana tapi jadi cara saya terus berkembang.
+          </p>
+        </div>
+
+        <div class="projects-grid">
+          <div class="project-card">
+            <a
+              href="https://berlins-zal6.github.io/pmkn-tondano/"
+              target="_blank"
+            >
+              <div class="project-thumb">
+                <img src="logo PMKN.jpeg" alt="PMKN Tondano" />
+                <div class="project-overlay">
+                  <i class="fa-solid fa-link"></i>
+                </div>
+              </div>
+              <div class="project-info">
+                <h3>PMKN Tondano</h3>
+                <p>Portal Website</p>
+              </div>
+            </a>
+          </div>
+
+          <div class="project-card">
+            <a
+              href="https://berlins-zal6.github.io/kominfopmkn/"
+              target="_blank"
+            >
+              <div class="project-thumb">
+                <img src="kominfo.jpg" alt="Kominfo PMKN" />
+                <div class="project-overlay">
+                  <i class="fa-solid fa-link"></i>
+                </div>
+              </div>
+              <div class="project-info">
+                <h3>Kominfo PMKN</h3>
+                <p>Upload Portal Website</p>
+              </div>
+            </a>
+          </div>
+
+          <div class="project-card">
+            <a href="https://youtu.be/5R_HAakqHmY" target="_blank">
+              <div class="project-thumb">
+                <img
+                  src="https://img.youtube.com/vi/5R_HAakqHmY/maxresdefault.jpg"
+                  alt="Tutorial YouTube"
+                />
+                <div class="project-overlay">
+                  <i class="fa-brands fa-youtube"></i>
+                </div>
+              </div>
+              <div class="project-info">
+                <h3>Film Pendek</h3>
+                <p>YouTube Video</p>
+              </div>
+            </a>
+          </div>
+
+          <div class="project-card">
+            <a
+              href="https://youtu.be/mp67UZzi0_k?si=l1GLMBlY9sy2U7iP"
+              target="_blank"
+            >
+              <div class="project-thumb">
+                <img
+                  src="https://img.youtube.com/vi/PqYGZy5YCK8/maxresdefault.jpg"
+                  alt="Technology Tips"
+                />
+                <div class="project-overlay">
+                  <i class="fa-brands fa-youtube"></i>
+                </div>
+              </div>
+              <div class="project-info">
+                <h3>Bahasa C++</h3>
+                <p>YouTube Video</p>
+              </div>
+            </a>
+          </div>
+
+          <div class="project-card">
+            <a
+              href="https://youtu.be/PqYGZy5YCK8?si=DKn3Btj4lCDAjP5X"
+              target="_blank"
+            >
+              <div class="project-thumb">
+                <img
+                  src="https://img.youtube.com/vi/mp67UZzi0_k/maxresdefault.jpg"
+                  alt="Design Creative"
+                />
+                <div class="project-overlay">
+                  <i class="fa-brands fa-youtube"></i>
+                </div>
+              </div>
+              <div class="project-info">
+                <h3>Lagu POP Berlin</h3>
+                <p>YouTube Video</p>
+              </div>
+            </a>
+          </div>
+
+          <div class="project-card">
+            <a
+              href="https://youtu.be/M7F7nIHONog?si=ec8x7cEQPVCGVHjr"
+              target="_blank"
+            >
+              <div class="project-thumb">
+                <img
+                  src="https://img.youtube.com/vi/M7F7nIHONog/maxresdefault.jpg"
+                  alt="Berlin Project"
+                />
+                <div class="project-overlay">
+                  <i class="fa-solid fa-code"></i>
+                </div>
+              </div>
+              <div class="project-info">
+                <h3>Running Code C++</h3>
+                <p>Web Development</p>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="skills" style="padding: 80px 0; background: #ffffff">
+      <div
+        class="skills-wrapper"
+        style="max-width: 1100px; margin: auto; padding: 0 20px"
+      >
+        <div
+          class="skills-header"
+          style="text-align: center; margin-bottom: 50px"
+        >
+          <h2
+            class="yt-title-static"
+            style="text-align: center; border-left: none; padding-left: 0"
+          >
+            Skills
+          </h2>
+          <p
+            class="about-text"
+            style="
+              max-width: 750px;
+              margin: 10px auto 0 auto;
+              text-align: center;
+              color: #5d6d7e;
+            "
+          >
+            Beberapa tools yang sering saya gunakan untuk berkarya, mulai dari
+            coding, desain, hingga editing video, serta pengembangan project
+            lainnya.
+          </p>
+        </div>
+
+        <div class="skill-category">
+          <h3 class="category-title">Coding</h3>
+          <div class="skills-grid">
+            <div class="skill-card">
+              <i class="fa-brands fa-html5"></i><span>HTML</span>
+            </div>
+            <div class="skill-card">
+              <i class="fa-brands fa-css3-alt"></i><span>CSS</span>
+            </div>
+            <div class="skill-card">
+              <i class="fa-brands fa-js"></i><span>JavaScript</span>
+            </div>
+            <div class="skill-card">
+              <i class="fa-brands fa-react"></i><span>React</span>
+            </div>
+            <div class="skill-card">
+              <i class="fa-brands fa-github"></i><span>GitHub</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="skill-category" style="margin-top: 50px">
+          <h3 class="category-title">Design & Editing</h3>
+          <div class="skills-grid">
+            <div class="skill-card">
+              <img
+                src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/photoshop/photoshop-plain.svg"
+                alt="PS"
+              /><span>Adobe Photoshop</span>
+            </div>
+            <div class="skill-card">
+              <img
+                src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/illustrator/illustrator-plain.svg"
+                alt="AI"
+              /><span>Adobe Illustrator</span>
+            </div>
+            <div class="skill-card">
+              <img
+                src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/premierepro/premierepro-plain.svg"
+                alt="PR"
+              /><span>Adobe Premiere</span>
+            </div>
+            <div class="skill-card">
+              <img
+                src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/aftereffects/aftereffects-plain.svg"
+                alt="AE"
+              /><span>After Effects</span>
+            </div>
+            <div class="skill-card">
+              <i class="fa-brands fa-figma"></i><span>Figma</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" style="padding: 80px 0; background: #eff8ff">
+      <div
+        class="contact-wrapper"
+        style="max-width: 1100px; margin: auto; padding: 0 20px"
+      >
+        <div
+          class="contact-header"
+          style="text-align: center; margin-bottom: 50px"
+        >
+          <h2
+            class="yt-title-static"
+            style="text-align: center; border-left: none; padding-left: 0"
+          >
+            Contact Me
+          </h2>
+          <p
+            class="about-text"
+            style="
+              max-width: 600px;
+              margin: 10px auto 0 auto;
+              text-align: center;
+              color: #5d6d7e;
+            "
+          >
+            Punya ide proyek atau sekadar ingin menyapa? Jangan ragu untuk
+            menghubungi saya melalui saluran di bawah ini.
+          </p>
+        </div>
+
+        <div class="contact-grid">
+          <a
+            href="https://wa.me/nomor-wa-anda"
+            target="_blank"
+            class="contact-card"
+          >
+            <div class="contact-icon" style="background: #25d366">
+              <i class="fa-brands fa-whatsapp"></i>
+            </div>
+            <div class="contact-info">
+              <h3>WhatsApp</h3>
+              <p>Chat Sekarang</p>
+            </div>
+          </a>
+
+          <a href="mailto:email-anda@gmail.com" class="contact-card">
+            <div class="contact-icon" style="background: #e74c3c">
+              <i class="fa-solid fa-envelope"></i>
+            </div>
+            <div class="contact-info">
+              <h3>Email</h3>
+              <p>Kirim Pesan</p>
+            </div>
+          </a>
+
+          <div class="contact-card no-click">
+            <div class="contact-icon" style="background: #3498db">
+              <i class="fa-solid fa-location-dot"></i>
+            </div>
+            <div class="contact-info">
+              <h3>Lokasi</h3>
+              <p>Tondano, Sulawesi Utara</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="floating-chat-container">
+      <button class="chat-trigger-btn" onclick="toggleChat()">
+        <div style="position: relative">
+          <i class="fa-solid fa-comment-dots"></i>
+          <span
+            id="draftBadge"
+            style="
+              display: none;
+              position: absolute;
+              top: -5px;
+              right: -5px;
+              width: 10px;
+              height: 10px;
+              background-color: #e74c3c;
+              border-radius: 50%;
+              border: 2px solid white;
+            "
+          ></span>
+        </div>
+        <span>Chat Me</span>
+      </button>
+
+      <div class="chat-popup" id="chatPopup">
+        <div class="chat-header">
+          <div class="chat-profile">
+            <img src="icon berlin.png" alt="Berlin Septenus Zalukhu" />
+
+            <div class="chat-status">
+              <strong
+                style="
+                  display: block;
+                  font-size: 0.95rem;
+                  letter-spacing: 0.3px;
+                "
+              >
+                Berlin S. Z.
+              </strong>
+
+              <small
+                style="
+                  font-size: 0.75rem;
+                  display: flex;
+                  align-items: center;
+                  gap: 5px;
+                  opacity: 0.9;
+                "
+              >
+                <i
+                  class="fa-solid fa-circle"
+                  style="color: #2ecc71; font-size: 0.6rem"
+                ></i>
+                Online | Developer
+              </small>
+            </div>
+          </div>
+          <button class="close-chat" onclick="toggleChat()">&times;</button>
+        </div>
+
+        <form
+          id="chatForm"
+          class="chat-body-form"
+          style="
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            background: #f9f9f9;
+          "
+        >
+          <input
+            type="text"
+            name="Nama"
+            placeholder="Nama Anda"
+            required
+            oninvalid="this.setCustomValidity('Mohon isi nama Anda, Mner.')"
+            oninput="this.setCustomValidity('')"
+            style="
+              padding: 12px 15px;
+              border: 1px solid rgba(0, 0, 0, 0.1);
+              border-radius: 12px;
+              outline: none;
+              font-size: 0.9rem;
+              transition: border-color 0.3s;
+            "
+          />
+
+          <input
+            type="tel"
+            name="Telepon"
+            placeholder="Nomor tlp Aktif"
+            required
+            pattern="[0-9]{9,15}"
+            oninvalid="
+              this.setCustomValidity(
+                'Nomor telepon harus berupa angka (9-15 digit)',
+              )
+            "
+            oninput="this.setCustomValidity('')"
+            style="
+              padding: 12px 15px;
+              border: 1px solid rgba(0, 0, 0, 0.1);
+              border-radius: 12px;
+              outline: none;
+              font-size: 0.9rem;
+              transition: border-color 0.3s;
+            "
+          />
+
+          <input
+            type="email"
+            name="Email"
+            placeholder="Email Anda"
+            required
+            oninvalid="this.setCustomValidity('Alamat email tidak valid')"
+            oninput="this.setCustomValidity('')"
+            style="
+              padding: 12px 15px;
+              border: 1px solid rgba(0, 0, 0, 0.1);
+              border-radius: 12px;
+              outline: none;
+              font-size: 0.9rem;
+              transition: border-color 0.3s;
+            "
+          />
+
+          <textarea
+            name="Pesan"
+            placeholder="Tulis pesan..."
+            required
+            oninvalid="this.setCustomValidity('Pesan tidak boleh kosong')"
+            oninput="this.setCustomValidity('')"
+            style="
+              padding: 12px 15px;
+              border: 1px solid rgba(0, 0, 0, 0.1);
+              border-radius: 12px;
+              outline: none;
+              font-size: 0.9rem;
+              height: 100px;
+              resize: none;
+              transition: border-color 0.3s;
+            "
+          ></textarea>
+
+          <button
+            type="submit"
+            id="submitBtn"
+            style="
+              background: #3498db;
+              color: white;
+              border: none;
+              padding: 12px;
+              border-radius: 12px;
+              font-weight: 700;
+              cursor: pointer;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              gap: 10px;
+              transition: 0.3s;
+            "
+          >
+            Kirim Pesan <i class="fa-regular fa-paper-plane"></i>
+          </button>
+        </form>
+
+        <div
+          id="successMsg"
+          style="
+            display: none;
+            padding: 20px;
+            text-align: center;
+            color: #27ae60;
+            font-weight: 600;
+          "
+        >
+          <i class="fa-solid fa-check-circle"></i> Pesan terkirim ke kami! Dan
+          segera kami proses
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // chat me
+      function toggleChat() {
+        const chatPopup = document.getElementById("chatPopup");
+        if (chatPopup.style.display === "flex") {
+          chatPopup.style.display = "none";
+        } else {
+          chatPopup.style.display = "flex";
+          // Pastikan form muncul kembali jika sebelumnya sudah kirim pesan
+          document.getElementById("chatForm").style.display = "flex";
+          document.getElementById("successMsg").style.display = "none";
+        }
+      }
+
+      // Pengiriman Data ke Google Sheets
+      const scriptURL =
+        "https://script.google.com/macros/s/AKfycbyKndT1ZqWdUXHQQjwUIacp947KRxzmdZUw_ikQ7pUs7E-vS6h6I9vR2GeaXRH_8PkeSA/exec";
+      const form = document.getElementById("chatForm");
+      const draftBadge = document.getElementById("draftBadge");
+      const submitBtn = document.getElementById("submitBtn");
+      const successMsg = document.getElementById("successMsg");
+      const chatPopup = document.getElementById("chatPopup");
+
+      // 1. FUNGSI TOGGLE (Buka/Tutup Chat)
+      function toggleChat() {
+        if (chatPopup.style.display === "flex") {
+          chatPopup.style.display = "none";
+        } else {
+          chatPopup.style.display = "flex";
+        }
+      }
+
+      // 2. FUNGSI BADGE (Titik Notifikasi)
+      function updateDraftBadge() {
+        const formData = new FormData(form);
+        let hasContent = false;
+
+        for (let [key, value] of formData.entries()) {
+          if (value.trim() !== "") {
+            hasContent = true;
+            break;
+          }
+        }
+        // Tampilkan titik jika ada isi, sembunyikan jika kosong
+        draftBadge.style.display = hasContent ? "block" : "none";
+      }
+
+      // 3. AUTO-SAVE (Simpan ke LocalStorage saat mengetik)
+      form.addEventListener("input", () => {
+        const data = {
+          Nama: form.Nama.value,
+          Telepon: form.Telepon.value,
+          Email: form.Email.value,
+          Pesan: form.Pesan.value,
+        };
+        localStorage.setItem("chat_draft", JSON.stringify(data));
+        updateDraftBadge();
+      });
+
+      // 4. LOAD DATA (Muat draf saat halaman dibuka)
+      window.addEventListener("load", () => {
+        const savedDraft = localStorage.getItem("chat_draft");
+        if (savedDraft) {
+          const data = JSON.parse(savedDraft);
+          if (form.Nama) form.Nama.value = data.Nama || "";
+          if (form.Telepon) form.Telepon.value = data.Telepon || "";
+          if (form.Email) form.Email.value = data.Email || "";
+          if (form.Pesan) form.Pesan.value = data.Pesan || "";
+          updateDraftBadge();
+        }
+      });
+
+      // 5. KIRIM DATA KE GOOGLE SHEETS
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        // Validasi tambahan sebelum kirim
+        if (!form.checkValidity()) return;
+
+        // Animasi Loading pada tombol
+        submitBtn.disabled = true;
+        submitBtn.innerHTML =
+          'Mengirim... <i class="fa-solid fa-spinner fa-spin"></i>';
+
+        fetch(scriptURL, { method: "POST", body: new FormData(form) })
+          .then((response) => {
+            // BERHASIL TERKIRIM
+            localStorage.removeItem("chat_draft"); // Hapus draf
+            updateDraftBadge(); // Hilangkan titik merah
+
+            form.reset(); // Kosongkan form
+            form.style.display = "none"; // Sembunyikan form
+            successMsg.style.display = "block"; // Tampilkan pesan sukses
+
+            // Otomatis tutup popup setelah 3 detik
+            setTimeout(() => {
+              toggleChat();
+              // Kembalikan tampilan form untuk pengirim selanjutnya
+              setTimeout(() => {
+                successMsg.style.display = "none";
+                form.style.display = "flex";
+                submitBtn.disabled = false;
+                submitBtn.innerHTML =
+                  'Kirim Pesan <i class="fa-regular fa-paper-plane"></i>';
+              }, 500);
+            }, 3000);
+          })
+          .catch((error) => {
+            // GAGAL TERKIRIM
+            console.error("Error!", error.message);
+            alert("Maaf Mner, sepertinya ada gangguan koneksi. Coba lagi ya!");
+            submitBtn.disabled = false;
+            submitBtn.innerHTML =
+              'Kirim Pesan <i class="fa-regular fa-paper-plane"></i>';
+          });
+      });
+    </script>
+
+    <footer class="main-footer">
+      <div class="footer-container">
+        <div class="footer-column branding">
+          <h2 class="footer-name">BERLIN SEPTENUS ZALUKHU</h2>
+          <p class="footer-slogan">
+            Tetap berkarya, berbagi, dan menginspirasi.
+          </p>
+        </div>
+
+        <div class="footer-column links">
+          <h3>Quick Links</h3>
+          <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#about me">About</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-column social">
+          <h3>Social Media</h3>
+          <div class="social-icons">
+            <a href="https://www.youtube.com/@Berlin_witworks"
+              ><i class="fa-brands fa-youtube"></i
+            ></a>
+            <a href="https://www.instagram.com/berlin_zalukhu/"
+              ><i class="fa-brands fa-instagram"></i
+            ></a>
+            <a href="http://tiktok.com/@berlin_szalukhu697"
+              ><i class="fa-brands fa-tiktok"></i
+            ></a>
+            <a href="https://github.com/berlins-zal6"
+              ><i class="fa-brands fa-github"></i
+            ></a>
+            <a href="mailto:berlinsepzal6@gmail.com"
+              ><i class="fa-solid fa-envelope"></i
+            ></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2026 Berlin Septenus Zalukhu, All Rights Reserved.</p>
+      </div>
+    </footer>
+
+    <script>
+      const menuToggle = document.querySelector("#mobile-menu");
+      const navMenu = document.querySelector(".nav-menu");
+
+      // Event saat tombol hamburger diklik
+      menuToggle.addEventListener("click", () => {
+        // Menambah/menghapus class active untuk animasi hamburger jadi X
+        menuToggle.classList.toggle("active");
+        // Menambah/menghapus class active untuk memunculkan menu
+        navMenu.classList.toggle("active");
+      });
+
+      // Event saat link menu di dalam navigasi diklik
+      document.querySelectorAll(".nav-menu a").forEach((n) =>
+        n.addEventListener("click", () => {
+          // Menghapus class active pada hamburger agar kembali ke bentuk awal
+          menuToggle.classList.remove("active");
+          // Menghapus class active pada menu agar tertutup
+          navMenu.classList.remove("active");
+        }),
+      );
+    </script>
+
+    <div id="berlin-greet-overlay" class="berlin-greet-layer">
+      <div class="berlin-greet-container">
+        <div id="berlin-step-1">
+          <div class="berlin-stk-wrapper">
+            <img
+              src="stiker berlin.png"
+              alt="Sticker"
+              class="berlin-greet-stk-img"
+            />
+            <div class="berlin-tear-puddle"></div>
+          </div>
+          <h1 id="berlin-greet-msg-title">huffft...</h1>
+          <p id="berlin-greet-msg-desc">
+            Masih Menunggu Kamu Kembali ke Sini...
+          </p>
+          <button onclick="berlinShowChallenge()" class="berlin-greet-btn">
+            Lihat menjelajah...
+          </button>
+        </div>
+
+        <div id="berlin-step-2" style="display: none">
+          <h2 style="font-weight: 800; color: #1e293b">Verifikasi Dulu Ya</h2>
+          <p
+            id="berlin-question-text"
+            style="font-weight: 600; color: #64748b"
+          ></p>
+          <input
+            type="text"
+            id="berlin-answer-input"
+            placeholder="Tulis jawaban..."
+            autocomplete="off"
+          />
+          <br />
+          <button onclick="berlinCheckAnswer()" class="berlin-greet-btn-submit">
+            Let's Join
+          </button>
+          <p id="berlin-error-msg">Jawaban salah! Coba ingat lagi?</p>
+        </div>
+      </div>
+    </div>
+
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;500;800&display=swap");
+
+      .berlin-greet-layer {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: radial-gradient(circle, #f3f4f6 0%, #d1d5db 100%);
+        z-index: 999999;
+        display: none;
+        justify-content: center;
+        align-items: center;
+        font-family: "Plus Jakarta Sans", sans-serif;
+        text-align: center;
+        color: #334155;
+        transition: opacity 0.6s ease;
+      }
+
+      .berlin-greet-container {
+        background: transparent;
+        max-width: 800px;
+        width: 90%;
+        animation: berlinEnter 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        text-transform: capitalize;
+      }
+
+      .berlin-stk-wrapper {
+        position: relative;
+        display: inline-block;
+        width: clamp(180px, 30vw, 280px);
+        margin-bottom: 40px;
+        animation: berlinFloatModern 6s ease-in-out infinite;
+        perspective: 1000px;
+      }
+
+      .berlin-greet-stk-img {
+        width: 100%;
+        height: auto;
+        filter: grayscale(60%) drop-shadow(0 0 15px rgba(27, 167, 226, 0.3));
+        opacity: 0.9;
+        transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        border-radius: 20px;
+      }
+
+      .berlin-stk-wrapper:hover .berlin-greet-stk-img {
+        filter: grayscale(0%) drop-shadow(0 0 25px rgba(27, 167, 226, 0.6));
+        transform: scale(1.05) rotate(2deg);
+        opacity: 1;
+      }
+
+      .berlin-tear-puddle {
+        position: absolute;
+        bottom: -15px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80%;
+        height: 10px;
+        background: rgba(186, 230, 253, 0.5);
+        border-radius: 50%;
+        filter: blur(4px);
+        animation: berlinBanjir 4s ease-in-out infinite;
+      }
+
+      #berlin-greet-msg-title {
+        font-size: clamp(2.2rem, 8vw, 4.5rem);
+        font-weight: 800;
+        margin: 0;
+        line-height: 1.1;
+        letter-spacing: -2px;
+        color: #1e293b;
+        text-transform: capitalize !important;
+      }
+
+      #berlin-greet-msg-desc {
+        font-size: 1.05rem;
+        font-weight: 500;
+        color: #64748b;
+        margin: 15px auto 35px;
+        max-width: 550px;
+        line-height: 1.6;
+      }
+
+      .berlin-greet-btn {
+        background: transparent;
+        color: #e11d48;
+        border: none;
+        padding: 10px 20px;
+        font-weight: 700;
+        font-size: 1.1rem;
+        cursor: pointer;
+        text-decoration: underline;
+        text-underline-offset: 6px;
+        transition: 0.3s;
+      }
+
+      #berlin-step-2 {
+        border: 1px solid rgba(203, 213, 225, 0.5);
+        padding: 50px 30px;
+        border-radius: 30px;
+        background: rgba(255, 255, 255, 0.3);
+        backdrop-filter: blur(8px);
+        max-width: 450px;
+        margin: 0 auto;
+      }
+
+      #berlin-answer-input {
+        background: transparent !important;
+        border: none !important;
+        border-bottom: 1.5px solid #94a3b8 !important;
+        color: #1e293b !important;
+        font-size: 1.2rem !important;
+        width: 80%;
+        text-align: center;
+        padding: 10px 0 !important;
+        outline: none !important;
+        margin-bottom: 35px;
+      }
+
+      .berlin-greet-btn-submit {
+        background: transparent;
+        color: #1e293b;
+        border: 2px solid #1e293b;
+        padding: 12px 35px;
+        border-radius: 50px;
+        font-weight: 800;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+
+      .berlin-greet-btn-submit:hover {
+        background: #1e293b;
+        color: white;
+      }
+
+      #berlin-error-msg {
+        display: none;
+        color: #e11d48;
+        font-size: 0.85rem;
+        margin-top: 15px;
+      }
+
+      @keyframes berlinEnter {
+        0% {
+          opacity: 0;
+          filter: blur(15px);
+          transform: scale(0.9) translateY(20px);
+        }
+        100% {
+          opacity: 1;
+          filter: blur(0);
+          transform: scale(1) translateY(0);
+        }
+      }
+
+      @keyframes berlinFloatModern {
+        0%,
+        100% {
+          transform: translateY(0) rotate(-1deg);
+        }
+        50% {
+          transform: translateY(-15px) rotate(1.5deg);
+        }
+      }
+
+      @keyframes berlinBanjir {
+        0%,
+        100% {
+          width: 70%;
+          opacity: 0.4;
+        }
+        50% {
+          width: 95%;
+          opacity: 0.7;
+        }
+      }
+
+      @keyframes shake {
+        0%,
+        100% {
+          transform: translateX(0);
+        }
+        25% {
+          transform: translateX(-6px);
+        }
+        75% {
+          transform: translateX(6px);
+        }
+      }
+    </style>
+
+    <script>
+      const berlinQuestions = [
+        {
+          q: "Siapa nama pemilik web ini?",
+          a: [
+            "Berlin",
+            "Zalukhu",
+            "Septenus",
+            "Berlin Septenus Zalukhu",
+            "Mner Berlin",
+          ],
+        },
+      ];
+
+      const berlinMessages = [
+        {
+          t: "Huffft...",
+          d: "Masih kusiapkan ruang paling nyaman di database-ku, takutnya kamu lupa jalan pulang.",
+        },
+        {
+          t: "Rindu Itu Berat!",
+          d: "Tanpamu, portal ini cuma tumpukan script mati. Kamu adalah nyawa yang membuatnya hidup kembali.",
+        },
+        {
+          t: "Akhirnya...",
+          d: "Meninggalkan tab ini terbuka tanpa aktivitas itu sakit. Rasanya seperti digantung tanpa kepastian.",
+        },
+        {
+          t: "Kemana Saja?",
+          d: "Lama banget perginya, sampai debu di layar monitor Mner sudah setebal kenangan kita.",
+        },
+        {
+          t: "Cuma Mampir?",
+          d: "Jangan cuma lewat seperti mantan ya. Masuk dulu, temani aku lagi seperti dulu.",
+        },
+        {
+          t: "Sangat Sepi...",
+          d: "Di sini sunyi sekali, sampai aku bisa mendengar detak jantungku sendiri yang menunggumu.",
+        },
+      ];
+
+      let berlinActiveQ = null;
+      let isAnswering = false;
+
+      function handleBerlinReunionLogic() {
+        const now = new Date().getTime();
+        const lastSeen = localStorage.getItem("berlin_v3_last_seen");
+        const overlay = document.getElementById("berlin-greet-overlay");
+        const wasPending =
+          localStorage.getItem("berlin_pending_quiz") === "true";
+
+        if (lastSeen || wasPending) {
+          const timeGap = now - parseInt(lastSeen || 0);
+          const limit = 20 * 60 * 1000; // 20 menit
+          // const limit = 5000; // 5 detik untuk testing
+
+          if (timeGap > limit || wasPending) {
+            isAnswering = true;
+            localStorage.setItem("berlin_pending_quiz", "true");
+
+            const pick =
+              berlinMessages[Math.floor(Math.random() * berlinMessages.length)];
+            document.getElementById("berlin-greet-msg-title").innerText =
+              pick.t;
+            document.getElementById("berlin-greet-msg-desc").innerText = pick.d;
+            overlay.style.display = "flex";
+
+            lockNavigation();
+          }
+        }
+        localStorage.setItem("berlin_v3_last_seen", now);
+      }
+
+      function lockNavigation() {
+        window.onbeforeunload = function () {
+          if (isAnswering) return "Jawab dulu kuisnya, Berlin rindu kamu!";
+        };
+      }
+
+      function berlinShowChallenge() {
+        document.getElementById("berlin-step-1").style.display = "none";
+        document.getElementById("berlin-step-2").style.display = "block";
+        berlinActiveQ =
+          berlinQuestions[Math.floor(Math.random() * berlinQuestions.length)];
+        document.getElementById("berlin-question-text").innerText =
+          berlinActiveQ.q;
+        setTimeout(
+          () => document.getElementById("berlin-answer-input").focus(),
+          100,
+        );
+      }
+
+      function berlinCheckAnswer() {
+        const inputEl = document.getElementById("berlin-answer-input");
+        const val = inputEl.value.toLowerCase().trim();
+        const overlay = document.getElementById("berlin-greet-overlay");
+
+        const isCorrect = Array.isArray(berlinActiveQ.a)
+          ? berlinActiveQ.a.some((ans) => ans.toLowerCase() === val)
+          : berlinActiveQ.a.toLowerCase() === val;
+
+        if (isCorrect) {
+          isAnswering = false;
+          localStorage.setItem("berlin_pending_quiz", "false");
+          window.onbeforeunload = null;
+
+          overlay.style.opacity = "0";
+          setTimeout(() => {
+            overlay.style.display = "none";
+            overlay.style.opacity = "1";
+            document.getElementById("berlin-step-1").style.display = "block";
+            document.getElementById("berlin-step-2").style.display = "none";
+            inputEl.value = "";
+            document.getElementById("berlin-error-msg").style.display = "none";
+          }, 600);
+          localStorage.setItem("berlin_v3_last_seen", new Date().getTime());
+        } else {
+          document.getElementById("berlin-error-msg").style.display = "block";
+          inputEl.style.borderColor = "#e11d48";
+          inputEl.style.animation = "shake 0.5s";
+          setTimeout(() => {
+            inputEl.style.borderColor = "#cbd5e1";
+            inputEl.style.animation = "";
+          }, 500);
+        }
+      }
+
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Enter" && isAnswering) {
+          if (
+            document.getElementById("berlin-step-2").style.display === "block"
+          ) {
+            berlinCheckAnswer();
+          } else {
+            berlinShowChallenge();
+          }
+        }
+      });
+
+      window.addEventListener("load", handleBerlinReunionLogic);
+    </script>
+
+    <!-- game offline -->
+    <div id="berlin-offline-layer" style="display: none">
+      <div id="berlin-offline-intro" class="berlin-screen">
+        <div class="berlin-inner">
+          <div class="berlin-sticker-box">
+            <img src="stiker berlin.png" alt="Offline" class="berlin-img" />
+            <div class="berlin-clouds"></div>
+            <div class="berlin-rain"></div>
+          </div>
+
+          <h1 class="berlin-title">
+            <i class="fa-solid fa-wifi"></i> Sinyal Putus...
+          </h1>
+          <p class="berlin-text">
+            Sepertinya koneksi Anda sedang istirahat. Mau main game sebentar?
+          </p>
+
+          <div class="berlin-actions">
+            <button onclick="berlinStartGame()" class="btn-berlin-play">
+              Mainkan Game
+            </button>
+            <button onclick="location.reload()" class="btn-berlin-reload">
+              Refresh Halaman
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div id="berlin-arena" class="berlin-game-box" style="display: none">
+        <div class="berlin-game-header">
+          <h2 style="color: #ff4d00; margin: 0">Berlin Brick Breaker</h2>
+          <p style="font-size: 0.8rem; color: #888">Hancurkan rintangan!</p>
+        </div>
+
+        <div class="berlin-canvas-container">
+          <canvas id="berlinCanvas"></canvas>
+          <div
+            id="berlin-status-layer"
+            style="display: none"
+            onclick="berlinRestart()"
+          >
+            <h3 id="berlin-msg">GAME OVER</h3>
+            <p>Ketuk untuk Main Lagi</p>
+          </div>
+        </div>
+
+        <div class="berlin-stats">
+          <div class="berlin-stat">SKOR: <span id="berlin-score">0</span></div>
+          <div class="berlin-stat">NYAWA: <span id="berlin-lives">3</span></div>
+        </div>
+        <p class="berlin-hint">
+          Gunakan <b>Panah Keyboard</b> atau <b>Geser Layar</b>
+        </p>
+      </div>
+    </div>
+
+    <style>
+      #berlin-offline-layer {
+        position: fixed;
+        inset: 0;
+        z-index: 999999;
+        font-family: "Plus Jakarta Sans", sans-serif;
+        display: none;
+        justify-content: center;
+        align-items: center;
+        background: #f3f4f6;
+      }
+
+      .berlin-screen {
+        text-align: center;
+        width: 90%;
+      }
+
+      /* Sticker Box & Effects */
+      .berlin-sticker-box {
+        position: relative;
+        width: 160px;
+        margin: 0 auto 20px;
+        padding: 20px;
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+        border-radius: 30px;
+        animation: berlinFloat 4s ease-in-out infinite;
+      }
+
+      .berlin-img {
+        width: 100%;
+        filter: grayscale(1);
+        opacity: 0.7;
+        transform: rotate(-5deg);
+      }
+
+      .berlin-rain {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          170deg,
+          rgba(186, 230, 253, 0.2) 10%,
+          transparent 10%
+        );
+        background-size: 3px 50px;
+        animation: berlinRain 0.6s linear infinite;
+      }
+
+      @keyframes berlinFloat {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+      }
+      @keyframes berlinRain {
+        to {
+          background-position: 15px 500px;
+        }
+      }
+
+      .berlin-title {
+        font-size: 2rem;
+        font-weight: 800;
+        color: #1f2937;
+      }
+      .berlin-text {
+        color: #6b7280;
+        margin-bottom: 30px;
+      }
+
+      /* Buttons */
+      .berlin-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        align-items: center;
+      }
+      .btn-berlin-play {
+        color: #22c55e;
+        background: none;
+        border: none;
+        font-weight: 800;
+        cursor: pointer;
+        font-size: 1.1rem;
+      }
+      .btn-berlin-reload {
+        color: #ef4444;
+        background: none;
+        border: none;
+        font-weight: 800;
+        cursor: pointer;
+      }
+
+      /* Game Arena */
+      .berlin-game-box {
+        width: 95%;
+        max-width: 400px;
+        background: #111;
+        padding: 20px;
+        border-radius: 24px;
+        border: 2px solid #ff4d00;
+        color: #fff;
+      }
+      .berlin-canvas-container {
+        position: relative;
+        background: #000;
+        border-radius: 12px;
+        margin: 15px 0;
+        overflow: hidden;
+      }
+      #berlinCanvas {
+        width: 100%;
+        display: block;
+      }
+
+      #berlin-status-layer {
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.8);
+        display: none;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+      }
+
+      .berlin-stats {
+        display: flex;
+        justify-content: space-around;
+        margin-bottom: 10px;
+      }
+      .berlin-stat {
+        background: #222;
+        padding: 5px 15px;
+        border-radius: 8px;
+        color: #ff4d00;
+        font-weight: 700;
+      }
+      .berlin-hint {
+        font-size: 0.75rem;
+        color: #555;
+      }
+    </style>
+
+    <script>
+      let b_canvas, b_ctx, b_status_layer, b_msg;
+      let b_x, b_y, b_dx, b_dy, b_paddleX;
+      let b_bricks = [],
+        b_score = 0,
+        b_lives = 3,
+        b_running = false;
+      let b_right = false,
+        b_left = false;
+      const b_ballR = 8,
+        b_pW = 75,
+        b_pH = 10;
+
+      function berlinCheckStatus() {
+        const layer = document.getElementById("berlin-offline-layer");
+        if (navigator.onLine) {
+          layer.style.display = "none";
+          b_running = false;
+        } else {
+          layer.style.display = "flex";
+        }
+      }
+
+      function berlinStartGame() {
+        document.getElementById("berlin-offline-intro").style.display = "none";
+        document.getElementById("berlin-arena").style.display = "block";
+        if (!b_canvas) berlinInit();
+        berlinRestart();
+      }
+
+      function berlinInit() {
+        b_canvas = document.getElementById("berlinCanvas");
+        b_ctx = b_canvas.getContext("2d");
+        b_status_layer = document.getElementById("berlin-status-layer");
+        b_msg = document.getElementById("berlin-msg");
+        b_canvas.width = 320;
+        b_canvas.height = 400;
+
+        document.addEventListener("keydown", (e) => {
+          if (e.key == "ArrowRight") b_right = true;
+          if (e.key == "ArrowLeft") b_left = true;
+        });
+        document.addEventListener("keyup", (e) => {
+          if (e.key == "ArrowRight") b_right = false;
+          if (e.key == "ArrowLeft") b_left = false;
+        });
+
+        const move = (ex) => {
+          let rect = b_canvas.getBoundingClientRect();
+          let rx = ex - rect.left;
+          if (rx > 0 && rx < b_canvas.width) b_paddleX = rx - b_pW / 2;
+        };
+        b_canvas.addEventListener("mousemove", (e) => move(e.clientX));
+        b_canvas.addEventListener(
+          "touchmove",
+          (e) => {
+            move(e.touches[0].clientX);
+            if (b_running) e.preventDefault();
+          },
+          { passive: false },
+        );
+      }
+
+      function berlinRestart() {
+        b_score = 0;
+        b_lives = 3;
+        document.getElementById("berlin-score").innerText = b_score;
+        document.getElementById("berlin-lives").innerText = b_lives;
+        b_status_layer.style.display = "none";
+
+        for (let c = 0; c < 4; c++) {
+          b_bricks[c] = [];
+          for (let r = 0; r < 5; r++)
+            b_bricks[c][r] = { x: 0, y: 0, status: 1 };
+        }
+        b_x = b_canvas.width / 2;
+        b_y = b_canvas.height - 30;
+        b_dx = 3;
+        b_dy = -3;
+        b_paddleX = (b_canvas.width - b_pW) / 2;
+        b_running = true;
+        berlinDraw();
+      }
+
+      function berlinDraw() {
+        if (!b_running) return;
+        b_ctx.clearRect(0, 0, b_canvas.width, b_canvas.height);
+
+        // Bricks
+        for (let c = 0; c < 4; c++) {
+          for (let r = 0; r < 5; r++) {
+            let b = b_bricks[c][r];
+            if (b.status == 1) {
+              let bX = c * (70 + 5) + 15;
+              let bY = r * (20 + 5) + 30;
+              b.x = bX;
+              b.y = bY;
+              b_ctx.fillStyle = "#ff4d00";
+              b_ctx.fillRect(bX, bY, 70, 20);
+            }
+          }
+        }
+
+        // Ball & Paddle
+        b_ctx.beginPath();
+        b_ctx.arc(b_x, b_y, b_ballR, 0, Math.PI * 2);
+        b_ctx.fillStyle = "#fff";
+        b_ctx.fill();
+        b_ctx.closePath();
+        b_ctx.fillStyle = "#ff4d00";
+        b_ctx.fillRect(b_paddleX, b_canvas.height - 15, b_pW, b_pH);
+
+        // Collision Logic
+        for (let c = 0; c < 4; c++) {
+          for (let r = 0; r < 5; r++) {
+            let b = b_bricks[c][r];
+            if (
+              b.status == 1 &&
+              b_x > b.x &&
+              b_x < b.x + 70 &&
+              b_y > b.y &&
+              b_y < b.y + 20
+            ) {
+              b_dy = -b_dy;
+              b.status = 0;
+              b_score++;
+              document.getElementById("berlin-score").innerText = b_score;
+              if (b_score == 20) {
+                b_running = false;
+                b_msg.innerText = "MENANG!";
+                b_status_layer.style.display = "flex";
+              }
+            }
+          }
+        }
+
+        if (b_x + b_dx > b_canvas.width - b_ballR || b_x + b_dx < b_ballR)
+          b_dx = -b_dx;
+        if (b_y + b_dy < b_ballR) b_dy = -b_dy;
+        else if (b_y + b_dy > b_canvas.height - b_ballR) {
+          if (b_x > b_paddleX && b_x < b_paddleX + b_pW) b_dy = -b_dy;
+          else {
+            b_lives--;
+            document.getElementById("berlin-lives").innerText = b_lives;
+            if (!b_lives) {
+              b_running = false;
+              b_msg.innerText = "GAME OVER";
+              b_status_layer.style.display = "flex";
+            } else {
+              b_x = b_canvas.width / 2;
+              b_y = b_canvas.height - 30;
+              b_dx = 3;
+              b_dy = -3;
+            }
+          }
+        }
+
+        if (b_right && b_paddleX < b_canvas.width - b_pW) b_paddleX += 7;
+        if (b_left && b_paddleX > 0) b_paddleX -= 7;
+
+        b_x += b_dx;
+        b_y += b_dy;
+        requestAnimationFrame(berlinDraw);
+      }
+
+      window.addEventListener("online", berlinCheckStatus);
+      window.addEventListener("offline", berlinCheckStatus);
+      window.addEventListener("load", berlinCheckStatus);
+    </script>
+  </body>
+</html>
