@@ -8,7 +8,10 @@
 
     <link rel="canonical" href="https://berlinzalukhu.ac.id" />
 
-    <meta name="google-site-verification" content="49GU-PdX2b9IMycpVY8s0vo-lH2CzY0tmGG73MGj9mI" />
+    <meta
+      name="google-site-verification"
+      content="49GU-PdX2b9IMycpVY8s0vo-lH2CzY0tmGG73MGj9mI"
+    />
 
     <link
       rel="stylesheet"
@@ -28,7 +31,8 @@
       header {
         background: #2c3e50;
         color: white;
-        padding: 1.2rem 8%; /* Padding atas-bawah dipertebal agar header lebih tinggi */
+        /* Padding dikurangi dari 1.2rem ke 0.8rem (Seimbang) */
+        padding: 0.8rem 8%;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -39,96 +43,62 @@
         width: 100%;
         box-sizing: border-box;
         z-index: 1000;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); /* Shadow lebih tegas */
-      }
-
-      .brand {
-        display: flex;
-        align-items: center;
-        gap: 25px; /* Jarak foto ke teks sedikit ditambah agar seimbang dengan ukuran foto baru */
-      }
-
-      .profile-frame {
-        /* Diperbesar agar sebanding dengan foto yang lebih besar */
-        width: 90px;
-        height: 90px;
-        border-radius: 50%;
-        position: relative;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        overflow: visible;
-        /* PERUBAHAN: Cincin tipis emas dihapus agar tampilan lebih bersih */
-        border: none;
-      }
-
-      .brand img {
-        width: 120px;
-        height: auto;
-        position: absolute;
-        bottom: -10px;
-        z-index: 2;
-        filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.6));
-        transition: transform 0.3s ease;
-      }
-
-      /* Efek opsional: sedikit zoom saat di-hover */
-      .brand:hover img {
-        transform: scale(1.05) translateY(-5px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
       }
 
       /* Container teks nama */
+
       .name-container {
         display: flex;
+
         flex-direction: column;
+
         line-height: 1.1;
       }
 
       .first-name {
         font-size: 1.8rem; /* Diperbesar dari 1.3rem */
+
         font-weight: 900;
+
         letter-spacing: 3px;
+
         color: #ffffff;
       }
 
       .full-name {
         font-size: 0.85rem; /* Diperbesar dari 0.65rem */
+
         color: #bdc3c7;
+
         text-transform: uppercase;
+
         letter-spacing: 2px;
       }
 
       .highlight {
         color: #d4af37;
+
         font-weight: 700;
       }
 
-      /* NAV MENU - DIPERBESAR */
-      .nav-menu {
-        display: flex;
-        align-items: center;
-        gap: 20px; /* Jarak antar menu dirapatkan sedikit */
-      }
-
-      .nav-menu a {
-        color: white;
-        text-decoration: none;
-        font-weight: 500; /* Ketebalan dikurangi sedikit agar lebih clean */
-        font-size: 0.95rem; /* Ukuran font lebih kecil dan elegan */
-        transition: 0.3s;
-        position: relative;
-        padding-bottom: 4px; /* Ruang bawah dipersempit agar navbar ramping */
-      }
-
       /* Penyesuaian garis bawah agar tetap proporsional dengan font kecil */
+
       .nav-menu a::after {
         content: "";
+
         position: absolute;
+
         width: 0;
+
         height: 2px; /* Garis lebih tipis */
+
         bottom: 0;
+
         left: 0;
+
         background-color: #3498db;
+
         transition: width 0.3s;
       }
 
@@ -136,54 +106,193 @@
         width: 100%;
       }
 
-      .brand-link {
-        display: inline-block;
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 20px; /* Jarak proporsional */
+      }
+
+      .profile-frame {
+        /* Ukuran menengah: 70px (Sebelumnya 90px, lalu 50px) */
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: visible;
+        border: none;
+      }
+
+      .brand img {
+        /* Ukuran foto: 95px (Sebelumnya 120px, lalu 65px) */
+        width: 95px;
+        height: auto;
+        position: absolute;
+        bottom: -8px;
+        z-index: 2;
+        filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.5));
         transition: transform 0.3s ease;
       }
 
-      .brand-link:hover {
-        transform: scale(1.02); /* Sedikit membesar saat disentuh */
-        opacity: 0.9;
+      .name-container {
+        display: flex;
+        flex-direction: column;
+        line-height: 1.1;
       }
 
-      .brand {
-        cursor: pointer;
+      .first-name {
+        /* Font size medium: 1.5rem (Sebelumnya 1.8rem) */
+        font-size: 1.5rem;
+        font-weight: 900;
+        letter-spacing: 2px;
+        color: #ffffff;
+      }
+
+      .full-name {
+        /* Font size medium: 0.75rem (Sebelumnya 0.85rem) */
+        font-size: 0.75rem;
+        color: #bdc3c7;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+      }
+
+      .nav-menu {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+      }
+
+      .nav-menu a {
+        color: white;
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 0.9rem; /* Ukuran teks menu yang pas */
+        transition: 0.3s;
+        position: relative;
+        padding-bottom: 3px;
+      }
+
+      .nav-menu a::after {
+        content: "";
+        position: absolute;
+        width: 0;
+        height: 2px;
+        bottom: 0;
+        left: 0;
+        background-color: #3498db;
+        transition: width 0.3s;
       }
 
       /* HAMBURGER - DIPERBESAR */
+
       .menu-toggle {
         display: none;
+
         flex-direction: column;
+
         cursor: pointer;
+
         gap: 6px;
+
         z-index: 1100; /* Pastikan berada di atas lapisan menu */
+
         transition: 0.3s;
       }
 
       .menu-toggle .bar {
         width: 32px;
+
         height: 4px;
+
         background-color: white;
+
         transition: all 0.4s cubic-bezier(0.68, -0.6, 0.32, 1.6); /* Animasi lebih kenyal/smooth */
+
         border-radius: 5px;
       }
 
       /* LOGIKA TOMBOL X (Saat Active) */
+
       .menu-toggle.active .bar:nth-child(1) {
         transform: translateY(10px) rotate(45deg);
+
         background-color: #ff5e4d; /* Opsional: Berubah warna saat jadi 'X' agar kontras */
       }
 
       /* Garis Kedua: Hilangkan (Fade out) */
+
       .menu-toggle.active .bar:nth-child(2) {
         opacity: 0;
+
         transform: translateX(-20px);
       }
 
       /* Garis Ketiga: Putar -45 derajat ke atas */
+
       .menu-toggle.active .bar:nth-child(3) {
         transform: translateY(-10px) rotate(-45deg);
+
         background-color: #ff5e4d;
+      }
+
+      @media (max-width: 900px) {
+        header {
+          /* Padding sedikit lebih rapat di mobile agar area konten lebih luas */
+          padding: 0.6rem 5%;
+        }
+
+        /* --- BRANDING ADJUSTMENT --- */
+        .profile-frame {
+          /* Ukuran disesuaikan agar tidak menabrak menu */
+          width: 60px;
+          height: 60px;
+        }
+
+        .brand img {
+          width: 80px; /* Sedikit lebih kecil dari desktop */
+          bottom: -5px;
+        }
+
+        .first-name {
+          font-size: 1.2rem; /* Ukuran pas untuk layar 900px kebawah */
+          letter-spacing: 1.5px;
+        }
+
+        .full-name {
+          font-size: 0.65rem;
+          letter-spacing: 1px;
+        }
+
+        /* --- NAV MENU MOBILE --- */
+        .menu-toggle {
+          display: flex; /* Tampilkan hamburger */
+          gap: 5px;
+        }
+
+        .nav-menu {
+          position: fixed;
+          right: -100%;
+          top: 0;
+          background: #2c3e50;
+          width: 65%; /* Tidak terlalu lebar, tidak terlalu sempit */
+          height: 100vh;
+          flex-direction: column;
+          justify-content: center;
+          transition: 0.4s cubic-bezier(0.68, -0.6, 0.32, 1.6);
+          box-shadow: -5px 0 20px rgba(0, 0, 0, 0.4);
+          gap: 30px; /* Jarak antar link di menu vertikal */
+        }
+
+        .nav-menu.active {
+          right: 0;
+        }
+
+        .nav-menu a {
+          font-size: 1.1rem;
+          font-weight: 600;
+        }
       }
 
       /* HERO SECTION */
@@ -340,18 +449,39 @@
 
         .hero-image {
           width: 100%;
-          margin-top: 10px; /* Jarak kecil sebelum foto */
+          margin-top: 15px; /* Sedikit ditambah ruangnya agar tidak sesak */
+          display: flex;
+          justify-content: center; /* Memastikan foto tetap di tengah */
+          align-items: center;
         }
 
         .hero-image img {
-          width: 85%; /* Sedikit diperkecil agar background ikut memendek */
-          max-width: 250px;
+          /* Diperbesar dari 85% ke 95% untuk mengisi lebar layar mobile */
+          width: 95%;
+          /* Batas maksimal diperbesar dari 250px ke 350px agar terlihat gagah */
+          max-width: 350px;
           height: auto;
           object-fit: contain;
-          border-radius: 30px; /* Tetap 30px sesuai permintaan */
+          border-radius: 30px;
+
+          /* Shadow dipertebal agar foto yang besar terlihat lebih 3D/Pop-out */
+          filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.4));
 
           /* ANIMASI ZOOM OTOMATIS AKTIF KEMBALI */
           animation: mobile-zoom 5s infinite ease-in-out;
+        }
+
+        /* Penyesuaian keyframe agar zoom-nya tetap elegan di ukuran besar */
+        @keyframes mobile-zoom {
+          0%,
+          100% {
+            transform: scale(1);
+          }
+          50% {
+            transform: scale(
+              1.05
+            ); /* Zoom tipis saja karena fotonya sudah besar */
+          }
         }
 
         .btn-primary {
@@ -1149,12 +1279,16 @@
       }
 
       /* MOBILE RESPONSIVE */
-      @media (max-width: 768px) {
+      @media (max-width: 900px) {
         header {
-          padding: 0.8rem 5%;
+          /* Padding diperkecil (atas-bawah 0.5rem) agar navbar lebih tipis */
+          padding: 0.5rem 5%;
         }
+
         .menu-toggle {
           display: flex;
+          /* Skala toggle dikecilkan sedikit jika diperlukan */
+          transform: scale(0.9);
         }
 
         .nav-menu {
@@ -1162,12 +1296,18 @@
           right: -100%;
           top: 0;
           background: #2c3e50;
-          width: 70%;
+          /* Lebar menu diperkecil dari 70% menjadi 60% agar lebih sleek */
+          width: 60%;
           height: 100vh;
           flex-direction: column;
           justify-content: center;
           transition: 0.4s;
           box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Perkecil jarak antar link di dalam menu mobile */
+        .nav-menu li {
+          margin: 1rem 0;
         }
 
         .nav-menu.active {
@@ -1178,31 +1318,40 @@
           flex-direction: column;
           text-align: center;
         }
+
         .hero-text {
           order: 2;
-          margin-top: 30px;
+          margin-top: 20px; /* Jarak dikurangi */
         }
+
         .hero-text h1 {
-          font-size: 2.2rem;
+          /* Font size h1 diperkecil agar tidak 'balapan' dengan navbar yang tipis */
+          font-size: 1.8rem;
         }
+
         .hero-image {
           order: 1;
         }
+
         .hero-image img {
-          width: 220px;
-        }
-        .social-links {
-          justify-content: center;
+          /* Ukuran gambar hero diperkecil sedikit agar menghemat ruang vertikal */
+          width: 180px;
         }
 
+        .social-links {
+          justify-content: center;
+          gap: 15px; /* Pastikan gap tetap proporsional */
+        }
+
+        /* Animasi Hamburger: Sesuaikan translateY jika bar ditaruh lebih rapat */
         .menu-toggle.active .bar:nth-child(1) {
-          transform: translateY(8px) rotate(45deg);
+          transform: translateY(6px) rotate(45deg);
         }
         .menu-toggle.active .bar:nth-child(2) {
           opacity: 0;
         }
         .menu-toggle.active .bar:nth-child(3) {
-          transform: translateY(-8px) rotate(-45deg);
+          transform: translateY(-6px) rotate(-45deg);
         }
       }
 
@@ -1313,6 +1462,96 @@
         .footer-column {
           text-align: center;
           margin-bottom: 30px;
+        }
+      }
+
+      /* Container Admin di Footer */
+      .admin-control-wrapper {
+        margin-top: 15px;
+        display: flex;
+        justify-content: center;
+      }
+
+      .admin-gate-btn {
+        position: relative;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 8px 18px;
+        border-radius: 12px;
+        color: #bdc3c7;
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 0.7rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        cursor: pointer;
+        overflow: hidden;
+        transition: all 0.4s ease;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        backdrop-filter: blur(5px);
+      }
+
+      /* Icon Shield */
+      .gate-icon {
+        color: #d4af37; /* Aksen Emas Luxury */
+        transition: all 0.4s ease;
+      }
+
+      /* Efek Scanner Laser (Modern) */
+      .gate-scanner {
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, #3498db, transparent);
+        animation: scanning 3s infinite linear;
+        opacity: 0;
+      }
+
+      @keyframes scanning {
+        0% {
+          top: 0;
+          left: -100%;
+          opacity: 1;
+        }
+        50% {
+          top: 100%;
+          left: 100%;
+          opacity: 1;
+        }
+        100% {
+          top: 0;
+          left: -100%;
+          opacity: 0;
+        }
+      }
+
+      /* Hover Effect */
+      .admin-gate-btn:hover {
+        background: rgba(52, 152, 219, 0.1);
+        border-color: #3498db;
+        color: #ffffff;
+        box-shadow: 0 0 20px rgba(52, 152, 219, 0.2);
+        transform: translateY(-3px);
+      }
+
+      .admin-gate-btn:hover .gate-icon {
+        transform: rotate(360deg);
+        color: #3498db;
+      }
+
+      .admin-gate-btn:hover .gate-scanner {
+        opacity: 1;
+      }
+
+      /* Mobile Adjustment */
+      @media (max-width: 900px) {
+        .admin-gate-btn {
+          padding: 6px 12px;
+          font-size: 0.6rem;
         }
       }
     </style>
@@ -1537,27 +1776,11 @@
         </p>
 
         <p class="about-text">
-          Perjalanan kreatif saya di YouTube dimulai sejak tahun 2023. Berawal
-          dari keinginan sederhana untuk berbagi, kini telah menjadi dedikasi
-          konsisten dalam menyajikan tutorial coding dan tips teknologi. Tak
-          hanya di balik layar monitor, saya juga menekuni desain visual dan
-          ilustrasi yang dipublikasikan secara internasional, salah satunya
-          melalui platform <strong>Shutterstock</strong>. Bagi
-          <strong>Berlin Septenus Zalukhu</strong>, setiap konten adalah jejak
-          digital yang diharapkan mampu memberikan inspirasi bagi sesama
-          kreator.
-        </p>
-
-        <p class="about-text">
-          Di luar kesibukan mengelola proyek web dan memproduksi video, saya
-          adalah penikmat hiburan yang santai. Saya sering menghabiskan waktu
-          dengan bermain <strong>EA Sports FC (FIFA)</strong>, di mana
-          <strong>Real Madrid</strong> selalu menjadi tim andalan saya. Untuk
-          urusan tontonan, anime seperti <em>Hunter x Hunter</em> dan
-          <em>Naruto</em> selalu punya tempat di hati, ditemani alunan musik
-          dari <strong>Musik-Musik Timur</strong>, <strong>Lagu Nias</strong>,
-          hingga lirik-lirik reflektif yang sangat pas menemani proses kreatif
-          saya.
+          Saya Berlin Septenus Zalukhu, seorang kreator yang fokus pada coding,
+          desain, dan editing video. Saya berbagi pengetahuan dan pengalaman
+          melalui tutorial dan tips di YouTube, serta mempublikasikan karya
+          desain visual dan ilustrasi di platform. Setiap konten yang saya buat
+          bertujuan untuk menginspirasi dan membantu sesama kreator.
         </p>
 
         <p
@@ -1839,7 +2062,7 @@
             </div>
           </a>
 
-          <a href="mailto:email-anda@gmail.com" class="contact-card">
+          <a href="mailto:berlinsepzal6@gmail.com" class="contact-card">
             <div class="contact-icon" style="background: #e74c3c">
               <i class="fa-solid fa-envelope"></i>
             </div>
@@ -1862,10 +2085,30 @@
       </div>
     </section>
 
-    <div class="floating-chat-container">
-      <button class="chat-trigger-btn" onclick="toggleChat()">
+    <div
+      class="floating-chat-container"
+      style="position: fixed; bottom: 20px; right: 20px; z-index: 9999"
+    >
+      <button
+        class="chat-trigger-btn"
+        onclick="toggleChat()"
+        style="
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          padding: 12px 20px;
+          background: #3498db;
+          color: white;
+          border: none;
+          border-radius: 50px;
+          cursor: pointer;
+          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+          font-weight: 600;
+          transition: 0.3s;
+        "
+      >
         <div style="position: relative">
-          <i class="fa-solid fa-comment-dots"></i>
+          <i class="fa-solid fa-comment-dots" style="font-size: 1.2rem"></i>
           <span
             id="draftBadge"
             style="
@@ -1884,11 +2127,47 @@
         <span>Chat Me</span>
       </button>
 
-      <div class="chat-popup" id="chatPopup">
-        <div class="chat-header">
-          <div class="chat-profile">
-            <img src="icon berlin.png" alt="Berlin Septenus Zalukhu" />
-
+      <div
+        class="chat-popup"
+        id="chatPopup"
+        style="
+          display: none;
+          position: absolute;
+          bottom: 70px;
+          right: 0;
+          width: 320px;
+          background: white;
+          border-radius: 16px;
+          overflow: hidden;
+          box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+          flex-direction: column;
+        "
+      >
+        <div
+          class="chat-header"
+          style="
+            background: #3498db;
+            color: white;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+          "
+        >
+          <div
+            class="chat-profile"
+            style="display: flex; align-items: center; gap: 10px"
+          >
+            <img
+              src="icon berlin.png"
+              alt="Berlin Septenus Zalukhu"
+              style="
+                width: 35px;
+                height: 35px;
+                border-radius: 50%;
+                border: 2px solid rgba(255, 255, 255, 0.3);
+              "
+            />
             <div class="chat-status">
               <strong
                 style="
@@ -1896,10 +2175,8 @@
                   font-size: 0.95rem;
                   letter-spacing: 0.3px;
                 "
+                >Berlin S. Z.</strong
               >
-                Berlin S. Z.
-              </strong>
-
               <small
                 style="
                   font-size: 0.75rem;
@@ -1917,7 +2194,19 @@
               </small>
             </div>
           </div>
-          <button class="close-chat" onclick="toggleChat()">&times;</button>
+          <button
+            class="close-chat"
+            onclick="toggleChat()"
+            style="
+              background: none;
+              border: none;
+              color: white;
+              font-size: 1.5rem;
+              cursor: pointer;
+            "
+          >
+            &times;
+          </button>
         </div>
 
         <form
@@ -1948,27 +2237,59 @@
             "
           />
 
-          <input
-            type="tel"
-            name="Telepon"
-            placeholder="Nomor tlp Aktif"
-            required
-            pattern="[0-9]{9,15}"
-            oninvalid="
-              this.setCustomValidity(
-                'Nomor telepon harus berupa angka (9-15 digit)',
-              )
-            "
-            oninput="this.setCustomValidity('')"
-            style="
-              padding: 12px 15px;
-              border: 1px solid rgba(0, 0, 0, 0.1);
-              border-radius: 12px;
-              outline: none;
-              font-size: 0.9rem;
-              transition: border-color 0.3s;
-            "
-          />
+          <div style="margin-bottom: 5px">
+            <div
+              id="phone-container"
+              style="
+                position: relative;
+                display: flex;
+                align-items: center;
+                transition: 0.3s;
+              "
+            >
+              <span
+                style="
+                  position: absolute;
+                  left: 15px;
+                  color: #64748b;
+                  font-weight: bold;
+                  pointer-events: none;
+                "
+                >+62</span
+              >
+              <input
+                type="tel"
+                id="phone-input"
+                placeholder="812xxxx"
+                required
+                inputmode="numeric"
+                oninput="validatePhone(this)"
+                style="
+                  width: 100%;
+                  padding: 12px 15px 12px 48px;
+                  border: 1px solid rgba(0, 0, 0, 0.1);
+                  border-radius: 12px;
+                  outline: none;
+                  font-size: 0.9rem;
+                  transition: all 0.3s;
+                "
+              />
+              <input type="hidden" name="Telepon" id="real-phone" />
+            </div>
+            <p
+              id="phone-warn"
+              style="
+                color: #ef4444;
+                font-size: 0.75rem;
+                margin-top: 5px;
+                display: none;
+                padding-left: 5px;
+              "
+            >
+              <i class="fa-solid fa-circle-info"></i> Harus diawali angka 8
+              (Contoh: 812 xxx xxxx)
+            </p>
+          </div>
 
           <input
             type="email"
@@ -2009,6 +2330,7 @@
             type="submit"
             id="submitBtn"
             style="
+              width: 100%;
               background: #3498db;
               color: white;
               border: none;
@@ -2017,13 +2339,27 @@
               font-weight: 700;
               cursor: pointer;
               display: flex;
+              flex-direction: column; /* Ubah ke kolom agar timer di bawah teks */
               align-items: center;
               justify-content: center;
-              gap: 10px;
+              gap: 4px;
               transition: 0.3s;
             "
           >
-            Kirim Pesan <i class="fa-regular fa-paper-plane"></i>
+            <span id="submitBtnText"
+              >Kirim Pesan <i class="fa-regular fa-paper-plane"></i
+            ></span>
+            <span
+              id="btnTimerContainer"
+              style="
+                display: none;
+                font-size: 0.75rem;
+                opacity: 0.9;
+                font-weight: 400;
+              "
+            >
+              Kirim kembali dalam: <span id="countdownTimer">00j 00m 00d</span>
+            </span>
           </button>
         </form>
 
@@ -2031,14 +2367,19 @@
           id="successMsg"
           style="
             display: none;
-            padding: 20px;
+            padding: 40px 20px;
             text-align: center;
             color: #27ae60;
-            font-weight: 600;
+            background: #f9f9f9;
           "
         >
-          <i class="fa-solid fa-check-circle"></i> Pesan terkirim ke kami! Dan
-          segera kami proses
+          <i
+            class="fa-solid fa-check-circle"
+            style="font-size: 2.5rem; margin-bottom: 15px"
+          ></i>
+          <p style="font-weight: 600">
+            Pesan terkirim ke kami!<br />Segera kami proses.
+          </p>
         </div>
       </div>
     </div>
@@ -2057,7 +2398,7 @@
         }
       }
 
-      // Pengiriman Data ke Google Sheets
+      // --- KONFIGURASI & VARIABEL ---
       const scriptURL =
         "https://script.google.com/macros/s/AKfycbyKndT1ZqWdUXHQQjwUIacp947KRxzmdZUw_ikQ7pUs7E-vS6h6I9vR2GeaXRH_8PkeSA/exec";
       const form = document.getElementById("chatForm");
@@ -2065,32 +2406,105 @@
       const submitBtn = document.getElementById("submitBtn");
       const successMsg = document.getElementById("successMsg");
       const chatPopup = document.getElementById("chatPopup");
+      const COOLDOWN_TIME = 6 * 60 * 60 * 1000; // 6 Jam
 
-      // 1. FUNGSI TOGGLE (Buka/Tutup Chat)
+      // --- 1. FUNGSI TOGGLE (Buka/Tutup Chat) ---
       function toggleChat() {
         if (chatPopup.style.display === "flex") {
           chatPopup.style.display = "none";
         } else {
           chatPopup.style.display = "flex";
+          // Setiap kali buka, cek apakah sedang masa cooldown
+          checkCooldownStatus();
         }
       }
 
-      // 2. FUNGSI BADGE (Titik Notifikasi)
+      // --- 2. LOGIKA COOLDOWN (1x6 JAM) ---
+      function checkCooldownStatus() {
+        const lastSend = localStorage.getItem("last_message_sent");
+        const submitBtn = document.getElementById("submitBtn");
+        const btnText = document.getElementById("submitBtnText");
+        const timerContainer = document.getElementById("btnTimerContainer");
+
+        if (lastSend) {
+          const timePassed = Date.now() - parseInt(lastSend);
+          if (timePassed < COOLDOWN_TIME) {
+            // MODE TERKUNCI
+            submitBtn.disabled = true;
+            submitBtn.style.background = "#94a3b8"; // Warna abu-abu (locked)
+            submitBtn.style.cursor = "not-allowed";
+            btnText.innerHTML = 'LOCKED <i class="fa-solid fa-lock"></i>';
+            timerContainer.style.display = "block";
+
+            startCountdown(COOLDOWN_TIME - timePassed);
+            return true;
+          }
+        }
+
+        // MODE NORMAL
+        submitBtn.disabled = false;
+        submitBtn.style.background = "#3498db";
+        submitBtn.style.cursor = "pointer";
+        btnText.innerHTML =
+          'Kirim Pesan <i class="fa-regular fa-paper-plane"></i>';
+        timerContainer.style.display = "none";
+        return false;
+      }
+
+      function startCountdown(duration) {
+        const timerDisplay = document.getElementById("countdownTimer");
+
+        const interval = setInterval(() => {
+          duration -= 1000;
+
+          if (duration <= 0) {
+            clearInterval(interval);
+            checkCooldownStatus(); // Refresh tombol jadi aktif kembali
+            return;
+          }
+
+          const h = Math.floor(duration / 3600000);
+          const m = Math.floor((duration % 3600000) / 60000);
+          const s = Math.floor((duration % 60000) / 1000);
+
+          // Format 00j 00m 00d
+          timerDisplay.innerHTML = `${h}j ${m}m ${s}d`;
+        }, 1000);
+      }
+
+      function startCountdown(duration) {
+        const timerDisplay = document.getElementById("countdownTimer");
+        if (!timerDisplay) return;
+
+        const interval = setInterval(() => {
+          duration -= 1000;
+          if (duration <= 0) {
+            clearInterval(interval);
+            checkCooldownStatus();
+            return;
+          }
+          const h = Math.floor(duration / 3600000);
+          const m = Math.floor((duration % 3600000) / 60000);
+          const s = Math.floor((duration % 60000) / 1000);
+          timerDisplay.innerHTML = `${h}j ${m}m ${s}d`;
+        }, 1000);
+      }
+
+      // --- 3. FUNGSI BADGE (Titik Notifikasi) ---
       function updateDraftBadge() {
         const formData = new FormData(form);
         let hasContent = false;
-
         for (let [key, value] of formData.entries()) {
-          if (value.trim() !== "") {
+          if (value.trim() !== "" && key !== "Telepon") {
+            // Telepon diabaikan karena +62 otomatis
             hasContent = true;
             break;
           }
         }
-        // Tampilkan titik jika ada isi, sembunyikan jika kosong
         draftBadge.style.display = hasContent ? "block" : "none";
       }
 
-      // 3. AUTO-SAVE (Simpan ke LocalStorage saat mengetik)
+      // --- 4. AUTO-SAVE & LOAD DATA ---
       form.addEventListener("input", () => {
         const data = {
           Nama: form.Nama.value,
@@ -2102,7 +2516,6 @@
         updateDraftBadge();
       });
 
-      // 4. LOAD DATA (Muat draf saat halaman dibuka)
       window.addEventListener("load", () => {
         const savedDraft = localStorage.getItem("chat_draft");
         if (savedDraft) {
@@ -2113,47 +2526,76 @@
           if (form.Pesan) form.Pesan.value = data.Pesan || "";
           updateDraftBadge();
         }
+        checkCooldownStatus(); // Cek saat halaman dimuat
       });
 
-      // 5. KIRIM DATA KE GOOGLE SHEETS
+      // --- 5. VALIDASI NOMOR TELEPON ---
+      function validatePhone(input) {
+        const warn = document.getElementById("phone-warn");
+        const container = document.getElementById("phone-container");
+        const hiddenInput = document.getElementById("real-phone");
+        let val = input.value.replace(/\D/g, "");
+
+        if (val.length > 0) {
+          if (val[0] !== "8") {
+            val = "";
+            warn.style.display = "block";
+            input.style.borderColor = "#ef4444";
+            container.style.transform = "translateX(5px)";
+            setTimeout(
+              () => (container.style.transform = "translateX(-5px)"),
+              100,
+            );
+            setTimeout(
+              () => (container.style.transform = "translateX(0)"),
+              200,
+            );
+            if (navigator.vibrate) navigator.vibrate(200);
+          } else {
+            warn.style.display = "none";
+            input.style.borderColor = "rgba(0, 0, 0, 0.1)";
+          }
+        } else {
+          warn.style.display = "none";
+        }
+        input.value = val;
+        hiddenInput.value = val ? "+62" + val : "";
+      }
+
+      // --- 6. KIRIM DATA KE GOOGLE SHEETS ---
       form.addEventListener("submit", (e) => {
         e.preventDefault();
-
-        // Validasi tambahan sebelum kirim
         if (!form.checkValidity()) return;
 
-        // Animasi Loading pada tombol
         submitBtn.disabled = true;
         submitBtn.innerHTML =
           'Mengirim... <i class="fa-solid fa-spinner fa-spin"></i>';
 
         fetch(scriptURL, { method: "POST", body: new FormData(form) })
           .then((response) => {
-            // BERHASIL TERKIRIM
-            localStorage.removeItem("chat_draft"); // Hapus draf
-            updateDraftBadge(); // Hilangkan titik merah
+            // BERHASIL
+            localStorage.removeItem("chat_draft");
+            localStorage.setItem("last_message_sent", Date.now().toString()); // Simpan waktu kirim
 
-            form.reset(); // Kosongkan form
-            form.style.display = "none"; // Sembunyikan form
-            successMsg.style.display = "block"; // Tampilkan pesan sukses
+            updateDraftBadge();
+            form.reset();
+            form.style.display = "none";
+            successMsg.style.display = "block";
 
-            // Otomatis tutup popup setelah 3 detik
             setTimeout(() => {
               toggleChat();
-              // Kembalikan tampilan form untuk pengirim selanjutnya
               setTimeout(() => {
                 successMsg.style.display = "none";
-                form.style.display = "flex";
                 submitBtn.disabled = false;
                 submitBtn.innerHTML =
                   'Kirim Pesan <i class="fa-regular fa-paper-plane"></i>';
+                checkCooldownStatus(); // Tampilkan timer setelah sukses
               }, 500);
             }, 3000);
           })
           .catch((error) => {
-            // GAGAL TERKIRIM
             console.error("Error!", error.message);
-            alert("Maaf Mner, sepertinya ada gangguan koneksi. Coba lagi ya!");
+            alert("Maaf Mner, ada gangguan koneksi. Coba lagi!");
             submitBtn.disabled = false;
             submitBtn.innerHTML =
               'Kirim Pesan <i class="fa-regular fa-paper-plane"></i>';
@@ -2204,7 +2646,19 @@
       </div>
 
       <div class="footer-bottom">
-        <p>&copy; 2026 Berlin Septenus Zalukhu, All Rights Reserved.</p>
+        <p>&copy; 2026 Berlin S. Zalukhu, All Rights Reserved.</p>
+
+        <div class="admin-control-wrapper">
+          <button
+            class="admin-gate-btn"
+            onclick="toggleAdminPanel()"
+            title="Master Access"
+          >
+            <span class="gate-icon"><i class="fa-solid fa-user-tie"></i></span>
+            <span class="gate-text">Admin</span>
+            <div class="gate-scanner"></div>
+          </button>
+        </div>
       </div>
     </footer>
 
@@ -2229,6 +2683,19 @@
           navMenu.classList.remove("active");
         }),
       );
+
+      // adminq
+      function toggleAdminPanel() {
+        // Memberikan efek visual sebelum pindah
+        document.body.style.transition = "0.5s";
+        document.body.style.opacity = "0";
+        document.body.style.transform = "translateX(-20px)";
+
+        setTimeout(() => {
+          // Ganti dengan URL halaman admin Anda
+          window.location.href = "admin.html";
+        }, 500);
+      }
     </script>
 
     <div id="berlin-greet-overlay" class="berlin-greet-layer">
@@ -2980,4 +3447,3 @@
     </script>
   </body>
 </html>
-
