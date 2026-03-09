@@ -744,22 +744,91 @@
         </div>
       </section>
 
-      <section id="content-analytics" class="admin-page" style="display: none">
-        <div class="data-container">
-          <h2><i class="fa-solid fa-chart-line"></i> Analytics Overview</h2>
-          <p style="color: #94a3b8; margin-top: 10px">
-            Statistik performa pesan harian.
-          </p>
+      <style>
+        /* Optimasi Responsif untuk Kontainer Analitik */
+        .analytics-wrapper {
+          margin-top: 20px;
+          position: relative;
+          width: 100%;
+          background: rgba(0, 0, 0, 0.1);
+          padding: 15px;
+          border-radius: 12px;
+          box-sizing: border-box; /* Pastikan padding tidak menambah lebar */
+        }
 
+        /* Tinggi dinamis: Desktop 400px, Mobile 250px-300px */
+        #analyticsChartContainer {
+          height: 400px;
+          width: 100%;
+          max-width: 100%;
+        }
+
+        @media (max-width: 768px) {
+          #analyticsChartContainer {
+            height: 280px; /* Lebih pendek di mobile supaya tidak scroll kejauhan */
+          }
+          .data-container h2 {
+            font-size: 1.2rem;
+          }
+        }
+      </style>
+
+      <section id="content-analytics" class="admin-page" style="display: none">
+        <div class="data-container" style="max-width: 100%; overflow-x: hidden">
           <div
             style="
-              margin-top: 20px;
-              position: relative;
-              height: 300px;
-              width: 100%;
+              display: flex;
+              justify-content: space-between;
+              align-items: flex-start;
+              flex-wrap: wrap;
+              gap: 15px;
             "
           >
-            <canvas id="analyticsChart"></canvas>
+            <div style="flex: 1; min-width: 200px">
+              <h2 style="margin: 0">
+                <i class="fa-solid fa-chart-line"></i> Analytics Grafik Message
+              </h2>
+              <p style="color: #94a3b8; margin-top: 5px; font-size: 0.85rem">
+                Statistik performa pesan harian.
+              </p>
+            </div>
+
+            <div
+              style="
+                background: rgba(255, 255, 255, 0.05);
+                padding: 5px;
+                border-radius: 10px;
+                border: 1px solid rgba(255, 255, 255, 0.1);
+              "
+            >
+              <select
+                id="analyticsFilter"
+                onchange="updateAnalytics(this.value)"
+                style="
+                  background: transparent;
+                  color: #fff;
+                  border: none;
+                  outline: none;
+                  padding: 5px 10px;
+                  font-size: 0.85rem;
+                  cursor: pointer;
+                "
+              >
+                <option value="1d" style="background: #1e293b">1 Hari</option>
+                <option value="1w" style="background: #1e293b">1 Minggu</option>
+                <option value="1m" style="background: #1e293b" selected>
+                  1 Bulan
+                </option>
+                <option value="6m" style="background: #1e293b">6 Bulan</option>
+                <option value="1y" style="background: #1e293b">1 Tahun</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="analytics-wrapper">
+            <div id="analyticsChartContainer">
+              <canvas id="analyticsChart"></canvas>
+            </div>
           </div>
         </div>
       </section>
@@ -833,105 +902,174 @@
     </main>
 
     <script>
-      // logout
+      const SCRIPT_URL =
+        "https://script.google.com/macros/s/AKfycbykuOoSt2AflJ3wStfCPOZTtHvXL_jl6hyTkKqKV1-XRov3nI03nWb9O0E58eb1ujmY/exec";
+      let myChart = null;
+
+      // --- 1. INISIALISASI HALAMAN ---
+      document.addEventListener("DOMContentLoaded", () => {
+        // Muat Tema
+        const savedTheme = localStorage.getItem("admin_theme") || "dark";
+        toggleTheme(savedTheme);
+        const themeSelect = document.getElementById("theme-select");
+        if (themeSelect) themeSelect.value = savedTheme;
+
+        // Muat Data Awal
+        fetchMessages();
+        updateAnalytics("1m"); // Default 1 Bulan
+      });
+
+      // --- 2. SISTEM AUTENTIKASI & LOGOUT ---
       function handleLogout() {
-        // 1. Konfirmasi ke user agar tidak sengaja terpencet
         if (
           confirm("Mner Berlin, yakin ingin logout dan kembali ke beranda?")
         ) {
-          // 2. Hapus status autentikasi dari sessionStorage (jika ada)
           sessionStorage.removeItem("admin_authenticated");
-
-          // 3. Opsional: Berikan efek loading sebentar agar transisi smooth
           const navLink = document.querySelector('a[onclick="handleLogout()"]');
-          navLink.innerHTML =
-            '<i class="fa-solid fa-spinner fa-spin"></i> Logging out...';
-
-          // 4. Arahkan kembali ke beranda
+          if (navLink)
+            navLink.innerHTML =
+              '<i class="fa-solid fa-spinner fa-spin"></i> Logging out...';
           setTimeout(() => {
             window.location.href = "index.html";
-          }, 500); // Delay 500ms untuk efek visual
+          }, 500);
         }
       }
 
-      const SCRIPT_URL =
-        "https://script.google.com/macros/s/AKfycbzmzc45kDyBO-uKMvQTob7o6hDaaYByuyDAqk3KQGMfOzv84-D49X5ZTeZGn7Ms-_MPLA/exec";
-      let myChart = null;
-
-      window.onload = () => {
-        fetchMessages();
-        updateAnalytics();
-      };
-
+      // --- 3. MANAJEMEN DATA (FETCH & RENDER) ---
       async function fetchMessages() {
-        const syncBtn = document.querySelector(".action-btn i");
-        const tableBody = document.getElementById("message-table");
-
-        const cachedData = localStorage.getItem("cached_messages");
-        if (cachedData) renderTable(JSON.parse(cachedData));
-
-        if (syncBtn) syncBtn.classList.add("fa-spin");
-
-        try {
-          const response = await fetch(`${SCRIPT_URL}?action=read`);
-          if (!response.ok) throw new Error("Network error");
-          const data = await response.json();
-
-          localStorage.setItem("cached_messages", JSON.stringify(data));
-          renderTable(data);
-          saveToPermanentHistory(data);
-        } catch (error) {
-          console.error("Fetch error:", error);
-          if (!cachedData && tableBody) {
-            tableBody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:var(--danger);">Gagal sinkronisasi data.</td></tr>`;
-          }
-        } finally {
-          if (syncBtn) syncBtn.classList.remove("fa-spin");
-        }
-      }
-
-      function renderTable(messages) {
         const tableBody = document.getElementById("message-table");
         const totalCount = document.getElementById("total-count");
         const unreadCount = document.getElementById("unread-count");
-
         if (!tableBody) return;
-        if (totalCount) totalCount.innerText = messages.length;
-        if (unreadCount) unreadCount.innerText = messages.length;
 
-        tableBody.innerHTML =
-          messages.length === 0
-            ? `<tr><td colspan="6" style="text-align:center; padding: 20px;">Database Pesan kosong.</td></tr>`
-            : "";
+        try {
+          // Menambahkan timestamp unik agar tidak terkena cache browser
+          const response = await fetch(
+            `${SCRIPT_URL}?action=read&_=${new Date().getTime()}`,
+          );
+          const messages = await response.json();
+
+          // 1. Simpan ke riwayat permanen untuk grafik analitik
+          saveToPermanentHistory(messages);
+
+          // 2. Update Counter
+          if (totalCount) totalCount.innerText = messages.length;
+          if (unreadCount)
+            unreadCount.innerText = messages.filter((m) => !m.read).length || 0;
+
+          // 3. Render Tabel
+          tableBody.innerHTML =
+            messages.length === 0
+              ? `<tr><td colspan="6" style="text-align: center; color: #94a3b8">Tidak ada pesan.</td></tr>`
+              : "";
+
+          messages.forEach((msg) => {
+            const row = document.createElement("tr");
+
+            // PERBAIKAN LOGIKA TANGGAL:
+            // Mengonversi string dari Sheets menjadi Objek Date yang valid
+            const dateObj = msg.timestamp ? new Date(msg.timestamp) : null;
+
+            // Format untuk tampilan tabel (contoh: 09 Mar 2026)
+            const displayDate =
+              dateObj && !isNaN(dateObj)
+                ? dateObj.toLocaleDateString("id-ID", {
+                    day: "2-digit",
+                    month: "short",
+                    year: "numeric",
+                  })
+                : "-";
+
+            const cleanPhone = String(msg.telepon || "").replace(/\D/g, "");
+            const welcomeWA = encodeURIComponent(
+              `Halo ${msg.nama}, terima kasih sudah menghubungi saya.`,
+            );
+
+            row.innerHTML = `
+        <td style="color: #fff">${displayDate}</td>
+        <td><strong>${msg.nama}</strong><br><small style="color:#94a3b8">${msg.telepon || ""}</small></td>
+        <td style="color: var(--accent)">${msg.email}</td>
+        <td><div style="max-width:200px; font-style:italic; font-size:0.85rem">"${msg.pesan}"</div></td>
+        <td>
+          <span class="status-badge ${msg.read ? "status-read" : "status-unread"}">
+            ${msg.read ? "Read" : "Unread"}
+          </span>
+        </td>
+        <td>
+          <button class="action-btn" onclick="window.location.href='mailto:${msg.email}'"><i class="fa-solid fa-reply"></i></button>
+          <button class="action-btn" onclick="window.location.href='https://wa.me/${cleanPhone}?text=${welcomeWA}'" style="color:#25d366;"><i class="fa-brands fa-whatsapp"></i></button>
+          <button class="action-btn" onclick="deleteMessage(${msg.rowNumber}, this)" style="color:var(--danger);"><i class="fa-solid fa-trash-can"></i></button>
+        </td>
+      `;
+            tableBody.appendChild(row);
+          });
+        } catch (error) {
+          console.error("Sync Error:", error);
+          tableBody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #ef4444">Gagal sinkronisasi data.</td></tr>`;
+        }
+      }
+
+      function saveToPermanentHistory(messages) {
+        let history =
+          JSON.parse(localStorage.getItem("permanent_message_history")) || {};
 
         messages.forEach((msg) => {
-          const displayDate = msg.timestamp
-            ? String(msg.timestamp).split(/[ T]/)[0]
-            : "-";
-          const cleanPhone = String(msg.telepon || "").replace(/\D/g, "");
-          const welcomeWA = encodeURIComponent(
-            `Halo ${msg.nama}, terima kasih sudah menghubungi saya mengenai: "${msg.pesan}". Ada lagi yang bisa saya bantu? 😊`,
-          );
+          // Pastikan ID unik menggunakan email + timestamp asli
+          const msgId = btoa((msg.email || "anon") + (msg.timestamp || "0"));
 
-          tableBody.innerHTML += `
-        <tr>
-          <td>${displayDate}</td>
-          <td><strong>${msg.nama}</strong><br><small style="color:#94a3b8">${msg.telepon}</small></td>
-          <td><span style="color:var(--accent)">${msg.email}</span></td>
-          <td><div style="max-width:200px; font-style:italic; font-size:0.85rem">"${msg.pesan}"</div></td>
-          <td><span class="status-pill status-new">NEW</span></td>
-          <td>
-            <button class="action-btn" onclick="window.location.href='mailto:${msg.email}?subject=Tanggapan'"><i class="fa-solid fa-reply"></i></button>
-            <button class="action-btn" onclick="window.location.href='https://wa.me/${cleanPhone}?text=${welcomeWA}'" style="color:#25d366;"><i class="fa-brands fa-whatsapp"></i></button>
-            <button class="action-btn" onclick="deleteMessage(${msg.rowNumber}, this)" style="color:var(--danger);"><i class="fa-solid fa-trash-can"></i></button>
-          </td>
-        </tr>`;
+          // Normalisasi tanggal ke format YYYY-MM-DD untuk key history
+          const d = msg.timestamp ? new Date(msg.timestamp) : null;
+          if (d && !isNaN(d)) {
+            const dateKey = d.toISOString().split("T")[0];
+            if (!history[dateKey]) history[dateKey] = {};
+            history[dateKey][msgId] = true;
+          }
         });
+
+        localStorage.setItem(
+          "permanent_message_history",
+          JSON.stringify(history),
+        );
+
+        if (
+          document.getElementById("content-analytics").style.display !== "none"
+        ) {
+          const currentFilter =
+            document.getElementById("analyticsFilter")?.value || "1m";
+          updateAnalytics(currentFilter);
+        }
+      }
+
+      function saveToPermanentHistory(messages) {
+        let history =
+          JSON.parse(localStorage.getItem("permanent_message_history")) || {};
+        messages.forEach((msg) => {
+          const date = msg.timestamp
+            ? String(msg.timestamp).split(/[ T]/)[0]
+            : "Unknown";
+          const msgId = btoa(msg.email + msg.timestamp);
+          if (!history[date]) history[date] = {};
+          history[date][msgId] = true;
+        });
+        localStorage.setItem(
+          "permanent_message_history",
+          JSON.stringify(history),
+        );
+
+        // Refresh grafik jika sedang di halaman analytics
+        if (
+          document.getElementById("content-analytics").style.display !== "none"
+        ) {
+          const currentFilter =
+            document.getElementById("analyticsFilter")?.value || "1m";
+          updateAnalytics(currentFilter);
+        }
       }
 
       async function deleteMessage(rowId, btnElement) {
         if (!confirm("Mner Berlin, yakin ingin menghapus pesan ini?")) return;
         const icon = btnElement.querySelector("i");
+        const originalClass = icon.className;
         icon.className = "fa-solid fa-spinner fa-spin";
 
         try {
@@ -944,18 +1082,97 @@
           }
         } catch (error) {
           alert("Gagal menghapus data.");
-          icon.className = "fa-solid fa-trash-can";
+          icon.className = originalClass;
         }
       }
 
-      function toggleSidebar() {
-        const elements = [
-          document.getElementById("sidebar"),
-          document.querySelector(".overlay"),
-        ];
-        elements.forEach((el) => el && el.classList.toggle("active"));
+      // --- 4. SISTEM ANALITIK (WAVE ORANGE STYLE) ---
+      function updateAnalytics(filter = "1m") {
+        const canvas = document.getElementById("analyticsChart");
+        if (!canvas) return;
+        const ctx = canvas.getContext("2d");
+        const history =
+          JSON.parse(localStorage.getItem("permanent_message_history")) || {};
+
+        const now = new Date();
+        now.setHours(0, 0, 0, 0);
+        const todayStr = now.toISOString().split("T")[0];
+
+        // 1. Ambil semua tanggal dan pastikan hari ini ada di sana
+        let allDates = Object.keys(history);
+        if (!allDates.includes(todayStr)) allDates.push(todayStr);
+
+        // 2. Filter dulu sebelum diurutkan (lebih efisien)
+        let filteredDates = allDates;
+        if (filter !== "all") {
+          filteredDates = allDates.filter((dateStr) => {
+            const entryDate = new Date(dateStr);
+            entryDate.setHours(0, 0, 0, 0);
+            const diffDays = Math.floor(
+              (now - entryDate) / (1000 * 60 * 60 * 24),
+            );
+
+            if (filter === "1d") return diffDays === 0;
+            if (filter === "1w") return diffDays <= 7;
+            if (filter === "1m") return diffDays <= 30;
+            if (filter === "6m") return diffDays <= 182;
+            if (filter === "1y") return diffDays <= 365;
+            return true;
+          });
+        }
+
+        // 3. WAJIB URUTKAN di sini agar garis grafik tidak bolak-balik
+        filteredDates.sort((a, b) => new Date(a) - new Date(b));
+
+        const counts = filteredDates.map((date) =>
+          history[date] ? Object.keys(history[date]).length : 0,
+        );
+
+        // --- Sisa kode Chart.js Anda sudah sempurna ---
+        const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+        gradient.addColorStop(0, "rgba(255, 99, 32, 0.4)");
+        gradient.addColorStop(1, "rgba(255, 99, 32, 0.0)");
+
+        if (window.myChart) window.myChart.destroy();
+        window.myChart = new Chart(ctx, {
+          type: "line",
+          data: {
+            labels: filteredDates, // Gunakan hasil filter yang sudah urut
+            datasets: [
+              {
+                label: "Pesan Masuk",
+                data: counts,
+                borderColor: "#ff6320",
+                borderWidth: 4,
+                backgroundColor: gradient,
+                fill: true,
+                tension: 0.45,
+                pointBackgroundColor: "#ff6320",
+                pointBorderColor: "#fff",
+                pointBorderWidth: 2,
+                pointRadius: 6,
+                pointHoverRadius: 8,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+              y: {
+                beginAtZero: true,
+                suggestedMax: Math.max(...counts, 5) + 5,
+                ticks: { color: "#94a3b8", stepSize: 5 },
+                grid: { color: "rgba(255,255,255,0.05)", drawBorder: false },
+              },
+              x: { ticks: { color: "#94a3b8" }, grid: { display: false } },
+            },
+          },
+        });
       }
 
+      // --- 5. NAVIGASI & UI ---
       function switchPage(pageId, element) {
         document
           .querySelectorAll(".admin-page")
@@ -976,144 +1193,51 @@
           .forEach((l) => l.classList.remove("active"));
         if (element) element.classList.add("active");
 
-        if (pageId === "analytics") updateAnalytics();
-        if (window.innerWidth <= 900) toggleSidebar();
+        if (pageId === "analytics") {
+          const currentFilter =
+            document.getElementById("analyticsFilter")?.value || "1m";
+          updateAnalytics(currentFilter);
+        }
       }
 
-      function saveToPermanentHistory(messages) {
-        let history =
-          JSON.parse(localStorage.getItem("permanent_message_history")) || {};
-        messages.forEach((msg) => {
-          const date = msg.timestamp
-            ? String(msg.timestamp).split(/[ T]/)[0]
-            : "Unknown";
-          const msgId = btoa(msg.email + msg.timestamp);
-          if (!history[date]) history[date] = {};
-          history[date][msgId] = true;
-        });
-        localStorage.setItem(
-          "permanent_message_history",
-          JSON.stringify(history),
-        );
+      function toggleSidebar() {
+        const sidebar = document.getElementById("sidebar");
+        const overlay = document.querySelector(".overlay");
+        if (sidebar) sidebar.classList.toggle("active");
+        if (overlay) overlay.classList.toggle("active");
       }
 
-      function updateAnalytics() {
-        const canvas = document.getElementById("analyticsChart");
-        if (!canvas) return;
-
-        const history =
-          JSON.parse(localStorage.getItem("permanent_message_history")) || {};
-        const sortedDates = Object.keys(history).sort();
-        const counts = sortedDates.map(
-          (date) => Object.keys(history[date]).length,
-        );
-
-        if (myChart) myChart.destroy();
-        myChart = new Chart(canvas.getContext("2d"), {
-          type: "line",
-          data: {
-            labels: sortedDates,
-            datasets: [
-              {
-                label: "Pesan Masuk",
-                data: counts,
-                borderColor: "#3498db",
-                backgroundColor: "rgba(52, 152, 219, 0.1)",
-                borderWidth: 3,
-                tension: 0.4,
-                fill: true,
-                pointRadius: 4,
-              },
-            ],
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-              legend: { display: true, labels: { color: "#94a3b8" } },
-            },
-            scales: {
-              y: {
-                beginAtZero: true,
-                ticks: { stepSize: 1, color: "#94a3b8" },
-                grid: { color: "rgba(255,255,255,0.05)" },
-              },
-              x: { ticks: { color: "#94a3b8" }, grid: { display: false } },
-            },
-          },
-        });
-      }
-
-      //   setting
-      // 1. Ganti Tema
+      // --- 6. PENGATURAN (SETTINGS) ---
       function toggleTheme(theme) {
         document.documentElement.setAttribute("data-theme", theme);
         localStorage.setItem("admin_theme", theme);
       }
 
-      // 2. Ganti Bahasa
-      const translations = {
-        id: {
-          dash: "Dasbor",
-          stats: "Analitik",
-          sett: "Pengaturan",
-          greet: "Halo, Mner Berlin",
-        },
-        en: {
-          dash: "Dashboard",
-          stats: "Analytics",
-          sett: "Settings",
-          greet: "Hello, Mner Berlin",
-        },
-      };
-
-      function changeLanguage(lang) {
-        const titleEl = document.getElementById("page-title");
-        if (lang === "en") {
-          alert("Language switched to English");
-          // Contoh mengubah teks secara manual (bisa dikembangkan ke seluruh elemen)
-          if (titleEl) titleEl.innerText = "Admin Control Panel";
-        } else {
-          location.reload(); // Reset ke Indonesia
-        }
-      }
-
-      // 3. Backup Data (Sudah diperbaiki formatnya)
       function backupData() {
         const data = localStorage.getItem("permanent_message_history");
         if (!data || data === "{}")
-          return alert("Belum ada sejarah data untuk dibackup.");
-
+          return alert("Belum ada data untuk dibackup.");
         const blob = new Blob([data], { type: "application/json" });
         const url = URL.createObjectURL(blob);
         const a = document.createElement("a");
         a.href = url;
-        a.download = `backup_admin_${new Date().toLocaleDateString("id-ID")}.json`;
+        a.download = `backup_admin_${new Date().toISOString().split("T")[0]}.json`;
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
       }
 
-      // 4. Clear Analytics (Langsung update chart)
       function clearAnalyticsHistory() {
         if (confirm("Hapus semua sejarah grafik permanen secara lokal?")) {
           localStorage.removeItem("permanent_message_history");
           alert("Sejarah dibersihkan.");
-          if (myChart) {
-            myChart.destroy();
-            myChart = null;
+          if (window.myChart) {
+            window.myChart.destroy();
+            window.myChart = null;
           }
           updateAnalytics();
         }
       }
-
-      // 5. Inisialisasi saat halaman dibuka
-      document.addEventListener("DOMContentLoaded", () => {
-        const savedTheme = localStorage.getItem("admin_theme") || "dark";
-        toggleTheme(savedTheme);
-        const themeSelect = document.getElementById("theme-select");
-        if (themeSelect) themeSelect.value = savedTheme;
-      });
     </script>
   </body>
 </html>
