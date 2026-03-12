@@ -943,13 +943,12 @@
         if (!tableBody) return;
 
         try {
-          // Menambahkan timestamp unik agar tidak terkena cache browser
           const response = await fetch(
             `${SCRIPT_URL}?action=read&_=${new Date().getTime()}`,
           );
           const messages = await response.json();
 
-          // 1. Simpan ke riwayat permanen untuk grafik analitik
+          // 1. Simpan ke riwayat permanen (Hanya menambah jika ID baru)
           saveToPermanentHistory(messages);
 
           // 2. Update Counter
@@ -964,13 +963,7 @@
               : "";
 
           messages.forEach((msg) => {
-            const row = document.createElement("tr");
-
-            // PERBAIKAN LOGIKA TANGGAL:
-            // Mengonversi string dari Sheets menjadi Objek Date yang valid
             const dateObj = msg.timestamp ? new Date(msg.timestamp) : null;
-
-            // Format untuk tampilan tabel (contoh: 09 Mar 2026)
             const displayDate =
               dateObj && !isNaN(dateObj)
                 ? dateObj.toLocaleDateString("id-ID", {
@@ -980,32 +973,110 @@
                   })
                 : "-";
 
-            const cleanPhone = String(msg.telepon || "").replace(/\D/g, "");
+            // Normalisasi Nomor HP
+            let cleanPhone = String(msg.telepon || "").replace(/\D/g, "");
+            if (cleanPhone.startsWith("0"))
+              cleanPhone = "62" + cleanPhone.substring(1);
+            else if (cleanPhone.startsWith("8")) cleanPhone = "62" + cleanPhone;
+
+            // Salam & Template
+            const jam = new Date().getHours();
+            let salam =
+              jam < 11
+                ? "Pagi"
+                : jam < 15
+                  ? "Siang"
+                  : jam < 18
+                    ? "Sore"
+                    : "Malam";
+            const customerName = (msg.nama || "Pelanggan").trim();
+            const customerMessage = (msg.pesan || "...").trim();
+
             const welcomeWA = encodeURIComponent(
-              `Halo ${msg.nama}, terima kasih sudah menghubungi saya.`,
+              `Selamat ${salam}, *${customerName}*! 👋\n\nTerima kasih sudah menghubungi saya.\n\nMengenai pesan:\n_"${customerMessage}"_\n\nAda yang bisa saya bantu?`,
             );
 
+            const row = document.createElement("tr");
             row.innerHTML = `
-        <td style="color: #fff">${displayDate}</td>
-        <td><strong>${msg.nama}</strong><br><small style="color:#94a3b8">${msg.telepon || ""}</small></td>
-        <td style="color: var(--accent)">${msg.email}</td>
-        <td><div style="max-width:200px; font-style:italic; font-size:0.85rem">"${msg.pesan}"</div></td>
-        <td>
-          <span class="status-badge ${msg.read ? "status-read" : "status-unread"}">
-            ${msg.read ? "Read" : "Unread"}
-          </span>
-        </td>
-        <td>
-          <button class="action-btn" onclick="window.location.href='mailto:${msg.email}'"><i class="fa-solid fa-reply"></i></button>
-          <button class="action-btn" onclick="window.location.href='https://wa.me/${cleanPhone}?text=${welcomeWA}'" style="color:#25d366;"><i class="fa-brands fa-whatsapp"></i></button>
-          <button class="action-btn" onclick="deleteMessage(${msg.rowNumber}, this)" style="color:var(--danger);"><i class="fa-solid fa-trash-can"></i></button>
-        </td>
-      `;
+              <td style="color: #fff">${displayDate}</td>
+              <td><strong>${msg.nama}</strong><br><small style="color:#94a3b8">${msg.telepon || ""}</small></td>
+              <td style="color: var(--accent)">${msg.email}</td>
+              <td><div style="max-width:200px; font-style:italic; font-size:0.85rem">"${msg.pesan}"</div></td>
+              <td>
+                <span class="status-badge ${msg.read ? "status-read" : "status-unread"}">
+                  ${msg.read ? "Read" : "Unread"}
+                </span>
+              </td>
+              <td>
+                <button class="action-btn" onclick="handleReply('${msg.rowNumber}', 'mailto:${msg.email}')" title="Email"><i class="fa-solid fa-reply"></i></button>
+                <button class="action-btn" onclick="handleReply('${msg.rowNumber}', 'https://wa.me/${cleanPhone}?text=${welcomeWA}')" style="color:#25d366;" title="WA"><i class="fa-brands fa-whatsapp"></i></button>
+                <button class="action-btn" onclick="deleteMessage(${msg.rowNumber}, this)" style="color:var(--danger);" title="Hapus"><i class="fa-solid fa-trash-can"></i></button>
+              </td>
+            `;
             tableBody.appendChild(row);
           });
         } catch (error) {
           console.error("Sync Error:", error);
-          tableBody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #ef4444">Gagal sinkronisasi data.</td></tr>`;
+        }
+      }
+
+      // --- 4. SISTEM UPDATE STATUS & BALAS ---
+      async function handleReply(rowNumber, url) {
+        // Tandai sebagai 'Read' di Google Sheets tanpa menambah pesan baru
+        try {
+          fetch(`${SCRIPT_URL}?action=update&row=${rowNumber}&read=true`, {
+            mode: "no-cors",
+          });
+        } catch (e) {
+          console.error(e);
+        }
+
+        // Buka link chat/email
+        window.open(url, "_blank");
+
+        // Refresh tabel setelah jeda singkat agar status berubah di UI
+        setTimeout(fetchMessages, 1500);
+      }
+
+      // --- 5. PERMANENT HISTORY (HANYA SATU FUNGSI) ---
+      function saveToPermanentHistory(messages) {
+        let history =
+          JSON.parse(localStorage.getItem("permanent_message_history")) || {};
+        let isNewData = false;
+
+        messages.forEach((msg) => {
+          // Kunci utama: Email + Timestamp asli pesan
+          const msgId = btoa((msg.email || "anon") + (msg.timestamp || "0"));
+
+          // Ambil tanggal (YYYY-MM-DD)
+          const d = msg.timestamp ? new Date(msg.timestamp) : null;
+          if (d && !isNaN(d)) {
+            const dateKey = d.toISOString().split("T")[0];
+
+            if (!history[dateKey]) history[dateKey] = {};
+
+            // Hanya tandai true jika ID belum pernah ada (Mencegah duplikasi saat update status)
+            if (!history[dateKey][msgId]) {
+              history[dateKey][msgId] = true;
+              isNewData = true;
+            }
+          }
+        });
+
+        if (isNewData) {
+          localStorage.setItem(
+            "permanent_message_history",
+            JSON.stringify(history),
+          );
+          // Jika sedang di halaman analitik, langsung refresh grafiknya
+          if (
+            document.getElementById("content-analytics").style.display !==
+            "none"
+          ) {
+            updateAnalytics(
+              document.getElementById("analyticsFilter")?.value || "1m",
+            );
+          }
         }
       }
 
