@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" href="icon berlin.png" type="image/png" />
+    <link rel="icon" href="icon berlin1.png" type="image/png" />
     <title>Berlin Zalukhu</title>
 
     <link rel="canonical" href="https://berlinzalukhu.ac.id" />
@@ -50,53 +50,88 @@
 
       .name-container {
         display: flex;
-
         flex-direction: column;
-
         line-height: 1.1;
+        /* Animasi muncul dari bawah ke atas */
+        animation: brandingEntry 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        opacity: 0;
       }
 
       .first-name {
-        font-size: 1.8rem; /* Diperbesar dari 1.3rem */
-
+        font-size: 1.8rem;
         font-weight: 900;
-
         letter-spacing: 3px;
-
         color: #ffffff;
+        /* Efek kilauan cahaya saat masuk */
+        background: linear-gradient(90deg, #fff 0%, #3498db 50%, #fff 100%);
+        background-size: 200% auto;
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: shine 3s linear infinite;
       }
 
       .full-name {
-        font-size: 0.85rem; /* Diperbesar dari 0.65rem */
-
+        font-size: 0.85rem;
         color: #bdc3c7;
-
         text-transform: uppercase;
-
         letter-spacing: 2px;
+        /* Delay sedikit agar muncul setelah nama utama */
+        animation: fadeIn 1.2s ease forwards 0.3s;
+        opacity: 0;
       }
 
       .highlight {
         color: #d4af37;
-
         font-weight: 700;
+        /* Efek pendaran halus pada teks emas */
+        text-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
+      }
+
+      /* --- KEYFRAMES ANIMASI --- */
+
+      /* Animasi kontainer muncul ke atas */
+      @keyframes brandingEntry {
+        0% {
+          opacity: 0;
+          transform: translateY(15px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Animasi Fade In sederhana untuk subtitle */
+      @keyframes fadeIn {
+        to {
+          opacity: 1;
+        }
+      }
+
+      /* Animasi kilauan cahaya pada teks 'Berlin' */
+      @keyframes shine {
+        to {
+          background-position: 200% center;
+        }
+      }
+
+      /* Interaksi Hover tambahan agar lebih responsif */
+      .name-container:hover .highlight {
+        color: #ffffff;
+        text-shadow: 0 0 15px #d4af37;
+        transition: 0.4s;
       }
 
       /* Penyesuaian garis bawah agar tetap proporsional dengan font kecil */
 
       .nav-menu a::after {
         content: "";
-
         position: absolute;
-
         width: 0;
-
         height: 2px; /* Garis lebih tipis */
-
         bottom: 0;
-
         left: 0;
-
         background-color: #3498db;
 
         transition: width 0.3s;
@@ -323,52 +358,187 @@
         flex: 1;
         z-index: 2;
       }
+      /* --- HERO TEXT ENHANCEMENT --- */
+
       .hero-text h1 {
         font-size: 3rem;
         color: #fff;
         line-height: 1.2;
+
+        /* Animasi Masuk: Muncul dari bawah ke atas */
+        opacity: 0;
+        transform: translateY(20px);
+        animation: textRevealUp 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards 0.2s;
       }
+
       .hero-text h1 span {
         color: #3498db;
+        /* Efek pendaran halus yang berdenyut pelan */
+        text-shadow: 0 0 10px rgba(52, 152, 219, 0.3);
+        display: inline-block;
+        animation: softPulse 4s infinite alternate;
       }
+
       .hero-text p {
         font-size: 1.1rem;
         color: #bdc3c7;
         margin-bottom: 30px;
+
+        /* Animasi Masuk: Memudar perlahan setelah judul */
+        opacity: 0;
+        animation: fadeInBlur 1s ease-out forwards 0.8s;
+      }
+
+      /* --- KEYFRAMES --- */
+
+      /* Efek muncul dari bawah */
+      @keyframes textRevealUp {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Efek memudar dengan sedikit blur di awal agar artistik */
+      @keyframes fadeInBlur {
+        from {
+          opacity: 0;
+          filter: blur(5px);
+        }
+        to {
+          opacity: 1;
+          filter: blur(0);
+        }
+      }
+
+      /* Denyut cahaya halus pada nama Berlin */
+      @keyframes softPulse {
+        from {
+          text-shadow: 0 0 10px rgba(52, 152, 219, 0.3);
+          transform: scale(1);
+        }
+        to {
+          text-shadow: 0 0 20px rgba(52, 152, 219, 0.6);
+          transform: scale(1.02);
+        }
+      }
+
+      /* --- BUTTONS ENHANCEMENT --- */
+
+      .btn-primary,
+      .btn-secondary {
+        display: inline-block;
+        padding: 12px 25px;
+        text-decoration: none;
+        border-radius: 5px;
+        font-weight: bold;
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+        /* Animasi Awal: Muncul memudar dari bawah */
+        opacity: 0;
+        transform: translateY(20px);
+        animation: btnReveal 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards 1s;
       }
 
       .btn-primary {
-        padding: 12px 25px;
         background: #ff5e4d;
         color: white;
-        text-decoration: none;
-        border-radius: 5px;
-        font-weight: bold;
         margin-right: 15px;
+        box-shadow: 0 4px 15px rgba(255, 94, 77, 0.2);
+      }
+
+      .btn-primary:hover {
+        background: #ff7b6d;
+        transform: translateY(-5px) scale(1.05);
+        box-shadow: 0 8px 25px rgba(255, 94, 77, 0.4);
       }
 
       .btn-secondary {
-        padding: 12px 25px;
         border: 2px solid #ffffff;
         color: white;
-        text-decoration: none;
-        border-radius: 5px;
-        font-weight: bold;
       }
 
+      .btn-secondary:hover {
+        background: #ffffff;
+        color: #121f28;
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(255, 255, 255, 0.2);
+      }
+
+      /* --- KEYFRAMES --- */
+
+      @keyframes btnReveal {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* --- SOCIAL LINKS ENHANCEMENT --- */
       .social-links {
         display: flex;
-        gap: 20px;
+        gap: 25px; /* Sedikit diperlebar agar ikon tidak bertabrakan saat membesar */
         margin-top: 25px;
+        opacity: 0;
+        animation: fadeIn 1s ease-out forwards 1.2s;
+        align-items: center;
+        /* Memastikan container memiliki ruang cukup untuk ikon yang membesar ke atas */
+        height: 50px;
       }
+
       .social-links a {
         color: #bdc3c7;
         font-size: 1.5rem;
-        transition: 0.3s;
+        display: inline-block;
+        opacity: 0;
+        transform: scale(0.5);
+        animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+
+        /* Transisi khusus untuk efek MacBook Dock: Smooth & Elastic */
+        transition: all 0.4s cubic-bezier(0.25, 0.1, 0.25, 1.5);
+        transform-origin: bottom center; /* Memastikan ikon membesar ke atas, bukan ke bawah */
       }
+
+      /* Mengatur delay muncul satu per satu */
+      .social-links a:nth-child(1) {
+        animation-delay: 1.3s;
+      }
+      .social-links a:nth-child(2) {
+        animation-delay: 1.4s;
+      }
+      .social-links a:nth-child(3) {
+        animation-delay: 1.5s;
+      }
+      .social-links a:nth-child(4) {
+        animation-delay: 1.6s;
+      }
+
+      /* EFEK HOVER MACBOOK DOCK STYLE */
       .social-links a:hover {
-        color: #ff5e4d;
-        transform: translateY(-3px);
+        color: #3498db;
+        /* Skala diperbesar secara signifikan dan diangkat ke atas */
+        transform: scale(1.6) translateY(-15px);
+        filter: drop-shadow(0 10px 15px rgba(52, 152, 219, 0.4));
+        z-index: 10;
+      }
+
+      .social-links:hover a:not(:hover) {
+        transform: scale(0.9);
+        opacity: 0.7;
+      }
+
+      /* --- KEYFRAMES --- */
+      @keyframes popIn {
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      @keyframes fadeIn {
+        to {
+          opacity: 1;
+        }
       }
 
       .hero-image {
@@ -821,16 +991,77 @@
         color: #5d6d7e;
       }
 
+      /* siapa berlin s zalukhu */
+      .premium-landscape-frame {
+        position: relative;
+        margin: 0 auto;
+        /* max-width tetap 1000px agar proporsional di layar monitor */
+        max-width: 1000px;
+        overflow: hidden;
+        border-radius: 25px;
+        border: 1px solid rgba(52, 152, 219, 0.2);
+        padding: 8px;
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        box-shadow:
+          0 20px 40px rgba(0, 0, 0, 0.5),
+          inset 0 0 20px rgba(255, 255, 255, 0.05);
+        transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+
+      .bio-main-img {
+        width: 100%;
+        height: auto;
+        /* DISESUAIKAN: Menggunakan rasio asli foto Mner (16:9) */
+        aspect-ratio: 16 / 9;
+        object-fit: cover;
+        display: block;
+        border-radius: 18px;
+        filter: brightness(1.05) contrast(1.05);
+      }
+
+      .frame-overlay {
+        position: absolute;
+        inset: 8px;
+        border-radius: 18px;
+        background: linear-gradient(
+          to bottom,
+          transparent 70%,
+          /* Gradient digeser ke bawah agar area tengah foto bersih */
+          rgba(0, 0, 0, 0.5)
+        );
+        pointer-events: none;
+      }
+
+      /* Interaksi Hover */
+      .premium-landscape-frame:hover {
+        transform: scale(1.02);
+        box-shadow: 0 25px 50px rgba(52, 152, 219, 0.3);
+      }
+
+      /* Penyesuaian Mobile */
+      @media (max-width: 768px) {
+        .premium-landscape-frame {
+          border-radius: 15px;
+          padding: 5px;
+          /* Lebar penuh di mobile agar detail foto 3264px tetap terlihat jelas */
+          max-width: 100%;
+        }
+        .bio-main-img {
+          aspect-ratio: 16 / 9;
+          border-radius: 10px;
+        }
+      }
+
       /* projects */
-      /* Layout Utama */
       #projects {
-        background: #eff8ff;
+        background: #eff8ff; /* Tetap cerah sesuai file awal Mner */
         padding: 80px 0;
         width: 100%;
       }
 
       .projects-wrapper {
-        max-width: 1100px;
+        max-width: 1200px; /* Sedikit diperlebar agar lebih lega */
         margin: auto;
         padding: 0 20px;
       }
@@ -842,32 +1073,35 @@
 
       .about-text {
         max-width: 700px;
-        margin: 10px auto 0 auto;
+        margin: 15px auto 0 auto;
         text-align: center;
         color: #5d6d7e;
+        line-height: 1.6;
       }
 
-      /* Grid System yang Mendukung Mobile */
+      /* Grid System */
       .projects-grid {
         display: grid;
-        /* Menggunakan minmax agar kartu tidak terlalu kecil di layar tanggung */
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 25px;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 30px;
       }
 
-      /* Kartu Project */
+      /* Kartu Project Gacor Style */
       .project-card {
         background: #ffffff;
-        border-radius: 15px;
+        border-radius: 20px; /* Lebih bulat agar modern */
         overflow: hidden;
-        box-shadow: 0 8px 25px rgba(52, 152, 219, 0.08);
-        transition: transform 0.3s ease;
+        box-shadow: 0 10px 30px rgba(52, 152, 219, 0.1);
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        border: 1px solid rgba(52, 152, 219, 0.05);
       }
 
       .project-card:hover {
-        transform: translateY(-8px);
+        transform: translateY(-12px);
+        box-shadow: 0 20px 40px rgba(52, 152, 219, 0.15);
       }
 
+      /* Thumbnail & Badge Bagian */
       .project-thumb {
         position: relative;
         aspect-ratio: 16 / 9;
@@ -878,32 +1112,60 @@
         width: 100%;
         height: 100%;
         object-fit: cover;
+        transition: transform 0.6s ease;
       }
 
+      .project-card:hover .project-thumb img {
+        transform: scale(1.1);
+      }
+
+      /* Badge Kategori */
+      .project-badge {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        padding: 5px 15px;
+        border-radius: 30px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: white;
+        z-index: 2;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      }
+
+      /* Warna Khusus 3 Bagian */
+      .dev-card .project-badge {
+        background: #3498db;
+      } /* Biru - Web/Apk */
+      .video-card .project-badge {
+        background: #e74c3c;
+      } /* Merah - Video */
+      .design-card .project-badge {
+        background: #d4af37;
+      } /* Emas - Desainer */
+
       .project-info {
-        padding: 20px;
+        padding: 25px;
       }
 
       .project-info h3 {
-        font-size: 1.1rem;
+        font-size: 1.2rem;
         color: #2c3e50;
-        margin-bottom: 5px;
+        margin-bottom: 8px;
+        font-weight: 700;
       }
 
-      /* RESPONSIVE BREAKPOINTS */
+      .project-info p {
+        font-size: 0.9rem;
+        color: #7f8c8d;
+        margin: 0;
+      }
+
+      /* RESPONSIVE */
       @media (max-width: 768px) {
-        #projects {
-          padding: 60px 0; /* Padding lebih kecil di mobile */
-        }
-
         .projects-grid {
-          grid-template-columns: 1fr; /* Paksa 1 kolom di HP */
-          gap: 20px;
-          padding: 0 10px;
-        }
-
-        .project-info h3 {
-          font-size: 1rem;
+          grid-template-columns: 1fr;
+          gap: 25px;
         }
       }
 
@@ -1099,6 +1361,7 @@
       }
 
       /* Header Profil Berlin S. Z. */
+
       .chat-header {
         background: #3498db;
         padding: 15px 20px;
@@ -1107,21 +1370,45 @@
         justify-content: space-between;
         align-items: center;
         border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        /* Tambahkan sedikit glassmorphism agar lebih edgy */
+        backdrop-filter: blur(10px);
       }
 
       .chat-profile {
         display: flex;
         align-items: center;
-        gap: 15px; /* Jarak sedikit diperlebar agar seimbang dengan foto yang lebih besar */
+        gap: 15px;
+      }
+
+      /* Container untuk Foto + Dot Online */
+      .profile-img-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
       }
 
       .chat-profile img {
         width: 50px;
         height: 50px;
         border-radius: 50%;
-        border: none;
         object-fit: cover;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* Shadow sedikit diperkuat agar foto tetap menonjol tanpa border */
+        /* Bayangan lebih dalam agar foto terlihat 'pop-out' */
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        transition: transform 0.3s ease;
+      }
+
+      /* Titik Hijau Online yang Menyatu di Foto */
+      .status-dot {
+        position: absolute;
+        bottom: 2px;
+        right: 2px;
+        width: 12px;
+        height: 12px;
+        background: #2ecc71;
+        border: 3px solid #3498db; /* Efek cut-out agar rapi */
+        border-radius: 50%;
+        animation: pulse-green 2s infinite;
       }
 
       .chat-status {
@@ -1132,7 +1419,7 @@
 
       .chat-status strong {
         display: block;
-        font-size: 1rem; /* Ukuran font nama sedikit disesuaikan dengan ukuran foto baru */
+        font-size: 1rem;
         font-weight: 700;
         letter-spacing: 0.2px;
         line-height: 1.2;
@@ -1150,9 +1437,23 @@
         color: rgba(255, 255, 255, 0.9);
       }
 
-      /* Icon online agar tetap presisi */
-      .chat-status small i {
-        font-size: 0.65rem;
+      /* --- KEYFRAMES --- */
+
+      @keyframes pulse-green {
+        0% {
+          box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.7);
+        }
+        70% {
+          box-shadow: 0 0 0 8px rgba(46, 204, 113, 0);
+        }
+        100% {
+          box-shadow: 0 0 0 0 rgba(46, 204, 113, 0);
+        }
+      }
+
+      /* Interaksi Hover */
+      .chat-profile:hover img {
+        transform: scale(1.05);
       }
 
       /* Form Input Mewah */
@@ -1679,7 +1980,7 @@
           class="youtube-header"
           style="text-align: center; margin-bottom: 40px"
         >
-          <h2 class="yt-title-static">Latest on YouTube</h2>
+          <h2 class="yt-title-static">Visit My YouTube</h2>
           <p
             class="about-text"
             style="max-width: 600px; margin: 10px auto 0 auto"
@@ -1692,7 +1993,7 @@
         <div class="video-card" style="max-width: 800px; margin: auto">
           <div class="video-container">
             <a
-              href="https://www.youtube.com/watch?v=M7F7nIHONog"
+              href="https://www.youtube.com/@Berlin_witworks/videos"
               target="_blank"
               class="thumbnail-overlay-trigger"
               style="display: block; text-decoration: none"
@@ -1718,37 +2019,27 @@
       style="max-width: 900px; margin: 60px auto; padding: 0 20px"
     >
       <div class="bio-content">
-        <div class="bio-header" style="text-align: center; margin-bottom: 40px">
+        <div class="bio-header" style="text-align: center; margin-bottom: 50px">
           <h2
             class="yt-title-static"
-            style="text-align: center; border-left: none; padding-left: 0"
+            style="
+              text-align: center;
+              border-left: none;
+              padding-left: 0;
+              margin-bottom: 30px;
+              font-size: 2.2rem;
+            "
           >
             Siapa Berlin Septenus Zalukhu?
           </h2>
 
-          <div
-            class="landscape-photo-container"
-            style="
-              margin-top: 25px;
-              overflow: hidden;
-              border-radius: 20px;
-              box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
-            "
-          >
+          <div class="premium-landscape-frame">
             <img
               src="berlin x coding wallppaper.jpeg"
               alt="Berlin Septenus Zalukhu"
-              style="
-                width: 100%;
-                max-width: 1280px;
-                height: auto;
-                aspect-ratio: 1280 / 368;
-                object-fit: cover;
-                display: block;
-                margin: auto;
-                filter: brightness(0.9);
-              "
+              class="bio-main-img"
             />
+            <div class="frame-overlay"></div>
           </div>
         </div>
 
@@ -1812,31 +2103,33 @@
         </div>
 
         <div class="projects-grid">
-          <div class="project-card">
+          <div class="project-card dev-card">
             <a
               href="https://berlins-zal6.github.io/pmkn-tondano/"
               target="_blank"
             >
               <div class="project-thumb">
                 <img src="logo PMKN.jpeg" alt="PMKN Tondano" />
+                <div class="project-badge">Web Dev</div>
                 <div class="project-overlay">
                   <i class="fa-solid fa-link"></i>
                 </div>
               </div>
               <div class="project-info">
                 <h3>PMKN Tondano</h3>
-                <p>Portal Website</p>
+                <p>Portal Website Organisasi</p>
               </div>
             </a>
           </div>
 
-          <div class="project-card">
+          <div class="project-card dev-card">
             <a
               href="https://berlins-zal6.github.io/kominfopmkn/"
               target="_blank"
             >
               <div class="project-thumb">
                 <img src="kominfo.jpg" alt="Kominfo PMKN" />
+                <div class="project-badge">Web Dev</div>
                 <div class="project-overlay">
                   <i class="fa-solid fa-link"></i>
                 </div>
@@ -1848,67 +2141,7 @@
             </a>
           </div>
 
-          <div class="project-card">
-            <a href="https://youtu.be/5R_HAakqHmY" target="_blank">
-              <div class="project-thumb">
-                <img
-                  src="https://img.youtube.com/vi/5R_HAakqHmY/maxresdefault.jpg"
-                  alt="Tutorial YouTube"
-                />
-                <div class="project-overlay">
-                  <i class="fa-brands fa-youtube"></i>
-                </div>
-              </div>
-              <div class="project-info">
-                <h3>Film Pendek</h3>
-                <p>YouTube Video</p>
-              </div>
-            </a>
-          </div>
-
-          <div class="project-card">
-            <a
-              href="https://youtu.be/mp67UZzi0_k?si=l1GLMBlY9sy2U7iP"
-              target="_blank"
-            >
-              <div class="project-thumb">
-                <img
-                  src="https://img.youtube.com/vi/PqYGZy5YCK8/maxresdefault.jpg"
-                  alt="Technology Tips"
-                />
-                <div class="project-overlay">
-                  <i class="fa-brands fa-youtube"></i>
-                </div>
-              </div>
-              <div class="project-info">
-                <h3>Bahasa C++</h3>
-                <p>YouTube Video</p>
-              </div>
-            </a>
-          </div>
-
-          <div class="project-card">
-            <a
-              href="https://youtu.be/PqYGZy5YCK8?si=DKn3Btj4lCDAjP5X"
-              target="_blank"
-            >
-              <div class="project-thumb">
-                <img
-                  src="https://img.youtube.com/vi/mp67UZzi0_k/maxresdefault.jpg"
-                  alt="Design Creative"
-                />
-                <div class="project-overlay">
-                  <i class="fa-brands fa-youtube"></i>
-                </div>
-              </div>
-              <div class="project-info">
-                <h3>Lagu POP Berlin</h3>
-                <p>YouTube Video</p>
-              </div>
-            </a>
-          </div>
-
-          <div class="project-card">
+          <div class="project-card dev-card">
             <a
               href="https://youtu.be/M7F7nIHONog?si=ec8x7cEQPVCGVHjr"
               target="_blank"
@@ -1918,13 +2151,77 @@
                   src="https://img.youtube.com/vi/M7F7nIHONog/maxresdefault.jpg"
                   alt="Berlin Project"
                 />
+                <div class="project-badge">Apk Dev</div>
                 <div class="project-overlay">
                   <i class="fa-solid fa-code"></i>
                 </div>
               </div>
               <div class="project-info">
                 <h3>Running Code C++</h3>
-                <p>Web Development</p>
+                <p>Software Logic Development</p>
+              </div>
+            </a>
+          </div>
+
+          <div class="project-card video-card">
+            <a href="https://youtu.be/5R_HAakqHmY" target="_blank">
+              <div class="project-thumb">
+                <img
+                  src="https://img.youtube.com/vi/5R_HAakqHmY/maxresdefault.jpg"
+                  alt="Tutorial YouTube"
+                />
+                <div class="project-badge">Video</div>
+                <div class="project-overlay">
+                  <i class="fa-brands fa-youtube"></i>
+                </div>
+              </div>
+              <div class="project-info">
+                <h3>Film Pendek</h3>
+                <p>Sinematografi & Editing</p>
+              </div>
+            </a>
+          </div>
+
+          <div class="project-card video-card">
+            <a
+              href="https://youtu.be/PqYGZy5YCK8?si=DKn3Btj4lCDAjP5X"
+              target="_blank"
+            >
+              <div class="project-thumb">
+                <img
+                  src="https://img.youtube.com/vi/mp67UZzi0_k/maxresdefault.jpg"
+                  alt="Design Creative"
+                />
+                <div class="project-badge">Video</div>
+                <div class="project-overlay">
+                  <i class="fa-brands fa-youtube"></i>
+                </div>
+              </div>
+              <div class="project-info">
+                <h3>Lagu POP Berlin</h3>
+                <p>Music Video Content</p>
+              </div>
+            </a>
+          </div>
+
+          <div class="project-card design-card">
+            <a
+              href="https://youtu.be/mp67UZzi0_k?si=l1GLMBlY9sy2U7iP"
+              target="_blank"
+            >
+              <div class="project-thumb">
+                <img
+                  src="https://img.youtube.com/vi/PqYGZy5YCK8/maxresdefault.jpg"
+                  alt="Technology Tips"
+                />
+                <div class="project-badge">Designer</div>
+                <div class="project-overlay">
+                  <i class="fa-solid fa-palette"></i>
+                </div>
+              </div>
+              <div class="project-info">
+                <h3>Bahasa C++ Visual</h3>
+                <p>Visual Asset Design</p>
               </div>
             </a>
           </div>
@@ -2128,7 +2425,7 @@
       </button>
 
       <div
-        class="chat-popup"
+        class="chat-popup animate-popup"
         id="chatPopup"
         style="
           display: none;
@@ -2158,22 +2455,27 @@
             class="chat-profile"
             style="display: flex; align-items: center; gap: 10px"
           >
-            <img
-              src="icon berlin.png"
-              alt="Berlin Septenus Zalukhu"
-              style="
-                width: 35px;
-                height: 35px;
-                border-radius: 50%;
-                border: 2px solid rgba(255, 255, 255, 0.3);
-              "
-            />
+            <div style="position: relative; display: flex; align-items: center">
+              <img
+                src="icon berlin1.png"
+                alt="Berlin Septenus Zalukhu"
+                style="
+                  width: 35px;
+                  height: 35px;
+                  border-radius: 50%;
+                  border: 2px solid rgba(255, 255, 255, 0.3);
+                "
+              />
+              <span class="online-status-dot"></span>
+            </div>
+
             <div class="chat-status">
               <strong
                 style="
                   display: block;
                   font-size: 0.95rem;
                   letter-spacing: 0.3px;
+                  animation: slideInText 0.5s ease-out forwards;
                 "
                 >Berlin S. Z.</strong
               >
@@ -2184,13 +2486,14 @@
                   align-items: center;
                   gap: 5px;
                   opacity: 0.9;
+                  animation: fadeInStatus 1s ease-out forwards 0.3s;
                 "
               >
                 <i
-                  class="fa-solid fa-circle"
+                  class="fa-solid fa-circle pulsing-icon"
                   style="color: #2ecc71; font-size: 0.6rem"
                 ></i>
-                Online | Developer
+                <span class="status-text">Online | Developer</span>
               </small>
             </div>
           </div>
@@ -2203,6 +2506,7 @@
               color: white;
               font-size: 1.5rem;
               cursor: pointer;
+              transition: 0.3s;
             "
           >
             &times;
