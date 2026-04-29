@@ -1782,6 +1782,42 @@
         text-align: center; /* Rata tengah sesuai contoh gambar */
       }
 
+      /* --- Penambahan Gaya Foto 1:1 & Branding --- */
+      .footer-column.branding {
+        display: flex;
+        flex-direction: column;
+        align-items: center; /* Memastikan semua ke tengah sesuai gambar */
+        justify-content: flex-start;
+      }
+
+      .footer-profile-frame {
+        /* Ukuran ditingkatkan menjadi 180px untuk kesan lebih bold */
+        width: 180px;
+        height: 180px;
+        margin-bottom: 25px; /* Jarak ditambah sedikit agar tidak menempel ke nama */
+        overflow: hidden;
+        border-radius: 8px; /* Radius sedikit ditambah agar tetap proporsional dengan ukuran besar */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 1px solid rgba(255, 255, 255, 0.1); /* Tipis saja agar ada pemisah dengan background hitam */
+      }
+
+      .footer-profile-frame img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* Foto tetap proporsional 1:1 */
+        filter: grayscale(
+          100%
+        ); /* Full monokrom sesuai referensi foto grup tadi */
+        transition: transform 0.5s ease;
+      }
+
+      /* Efek interaktif saat kursor mendekat */
+      .footer-profile-frame:hover img {
+        transform: scale(1.1); /* Sedikit zoom saat hover */
+      }
+
       /* Kolom Branding */
       .footer-name {
         font-size: 1.8rem;
@@ -3030,6 +3066,10 @@
     <footer class="main-footer">
       <div class="footer-container">
         <div class="footer-column branding">
+          <div class="footer-profile-frame">
+            <img src="berlin_footer.jpeg" alt="Berlin S. Zalc" />
+          </div>
+
           <h2 class="footer-name">BERLIN SEPTENUS ZALUKHU</h2>
           <p class="footer-slogan">
             Tetap berkarya, berbagi, dan menginspirasi.
