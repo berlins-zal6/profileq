@@ -809,6 +809,129 @@
         }
       }
 
+      /* slider-section */
+      .slider-section {
+        width: 100%;
+        padding: 0;
+        display: block;
+        background: transparent;
+        overflow: hidden;
+      }
+
+      .slider-container-main {
+        position: relative;
+        width: 100%;
+        max-width: 100%;
+      }
+
+      .slider-container {
+        width: 100%;
+        aspect-ratio: 2 / 1; /* Konsisten 1000x500 */
+        overflow: hidden;
+        border-radius: 0;
+        border: none;
+        box-shadow: none;
+        background: #0b0f1a;
+        z-index: 2;
+        position: relative;
+      }
+
+      .slider-wrapper {
+        display: flex;
+        height: 100%;
+        transition: transform 1s cubic-bezier(0.7, 0, 0.3, 1);
+      }
+
+      .slide {
+        min-width: 100%;
+        height: 100%;
+        position: relative;
+      }
+
+      .slide img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      /* --- Teks Caption Minimalis (Sudut Kiri Bawah) --- */
+      .slide-caption {
+        position: absolute;
+        bottom: 30px;
+        left: 30px;
+        color: white;
+        text-align: left;
+        z-index: 10;
+        max-width: 450px;
+      }
+
+      .slide-caption h3 {
+        font-size: 0.9rem;
+        font-weight: 700;
+        letter-spacing: 0.4em;
+        margin-bottom: 5px;
+        text-shadow: 1px 1px 8px rgba(0, 0, 0, 0.8);
+        text-transform: uppercase;
+      }
+
+      .slide-caption p {
+        font-size: 0.65rem;
+        line-height: 1.4;
+        font-weight: 400;
+        letter-spacing: 0.1em;
+        text-shadow: 1px 1px 6px rgba(0, 0, 0, 0.8);
+        opacity: 0.7;
+      }
+
+      /* --- Navigasi Dots (Sudut Kanan Bawah) --- */
+      .slider-dots {
+        position: absolute;
+        bottom: 20px;
+        right: 30px;
+        display: flex;
+        gap: 10px;
+        z-index: 15;
+      }
+
+      .dot {
+        width: 8px;
+        height: 8px;
+        background-color: rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        cursor: pointer;
+        transition: all 0.4s ease;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .dot.active {
+        background-color: #fff;
+        transform: scale(1.3);
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+      }
+
+      .dot:hover {
+        background-color: rgba(255, 255, 255, 0.6);
+      }
+
+      /* --- Pengaturan Responsif Mobile --- */
+      @media (max-width: 768px) {
+        .slide-caption {
+          bottom: 15px;
+          left: 15px;
+        }
+        .slide-caption h3 {
+          font-size: 0.75rem;
+          letter-spacing: 0.2em;
+        }
+        .slide-caption p {
+          font-size: 0.55rem;
+        }
+        .slider-dots {
+          bottom: 15px;
+          right: 15px;
+        }
+      }
+
       /* TYPING TEXT */
       .typing-text {
         display: block;
@@ -2085,6 +2208,42 @@
       </div>
     </section>
 
+    <!-- Slider Section -->
+    <div class="slider-section">
+      <div class="slider-container-main">
+        <div class="slider-container">
+          <div class="slider-wrapper" id="sliderWrapper">
+            <!-- Slide 1 -->
+            <div class="slide">
+              <img src="produk baju berlin.png" alt="Berlin Profile 1" />
+              <div class="slide-caption">
+                <h3>PRODUC BERLIN</h3>
+                <p>
+                  ISLAN SERIES NIAS Illustration maskot brand berlin Mado
+                  Zalukhu and others
+                </p>
+              </div>
+            </div>
+            <!-- Slide 2 -->
+            <div class="slide">
+              <img src="Spanduk welcome.png" alt="Berlin Profile 2" />
+            </div>
+            <!-- Slide 3 -->
+            <div class="slide">
+              <img src="welcome spanduk.png" alt="Berlin Profile 3" />
+            </div>
+          </div>
+
+          <!-- Navigasi Dot di Kanan Bawah -->
+          <div class="slider-dots" id="sliderDots">
+            <span class="dot active" onclick="currentSlide(0)"></span>
+            <span class="dot" onclick="currentSlide(1)"></span>
+            <span class="dot" onclick="currentSlide(2)"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <article
       id="about"
       style="max-width: 1000px; margin: auto; padding: 60px 20px"
@@ -3127,6 +3286,47 @@
     </footer>
 
     <script>
+      // slider section
+      const wrapper = document.getElementById("sliderWrapper");
+      const dots = document.querySelectorAll(".dot");
+      let currentIndex = 0;
+      const totalSlides = dots.length;
+
+      // Fungsi utama untuk memperbarui tampilan slider
+      function updateSlider() {
+        // Geser Gambar sesuai index aktif
+        wrapper.style.transform = `translateX(-${currentIndex * 100}%)`;
+
+        // Update status aktif pada titik (dot)
+        dots.forEach((dot, index) => {
+          dot.classList.toggle("active", index === currentIndex);
+        });
+      }
+
+      // Fungsi yang dipicu saat Mner klik dot secara manual
+      function currentSlide(index) {
+        currentIndex = index;
+        updateSlider();
+        resetTimer(); // Reset timer agar perpindahan otomatis mulai dari awal lagi
+      }
+
+      // Fungsi untuk berpindah ke slide berikutnya
+      function nextSlide() {
+        currentIndex = (currentIndex + 1) % totalSlides;
+        updateSlider();
+      }
+
+      // Mengatur perpindahan otomatis setiap 5 detik (kesan elegan)
+      let slideTimer = setInterval(nextSlide, 5000);
+
+      // Fungsi untuk mengatur ulang timer jika ada interaksi manual
+      function resetTimer() {
+        clearInterval(slideTimer);
+        slideTimer = setInterval(nextSlide, 5000);
+      }
+
+      // - batasan slider -
+
       const menuToggle = document.querySelector("#mobile-menu");
       const navMenu = document.querySelector(".nav-menu");
 
