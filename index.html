@@ -685,6 +685,112 @@
         }
       }
 
+      /* Kontainer utama Orbit */
+      .social-orbit {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 100%;
+        height: 100%;
+        z-index: 3;
+        pointer-events: none;
+      }
+
+      .social-icon {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 50px;
+        height: 50px;
+        background: white;
+        color: #ff5e4d;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-decoration: none;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        pointer-events: auto;
+
+        /* Keadaan awal: Sembunyi di tengah foto */
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0);
+
+        /* Transisi halus saat keluar satu per satu */
+        transition:
+          opacity 0.5s ease,
+          transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+        /* Delay diatur oleh JS melalui variabel --i */
+        transition-delay: calc(var(--i) * 0.1s);
+      }
+
+      /* Saat Container Aktif */
+      .social-orbit.active .social-icon {
+        opacity: 1;
+        /* Jarak ditingkatkan sedikit dari jari-jari foto (225px + margin) */
+        /* Coba 245px agar ikon pas di pinggir foto */
+        --radius: 245px;
+
+        transform: translate(
+            calc(cos(var(--angle)) * var(--radius) - 50%),
+            calc(sin(var(--angle)) * var(--radius) - 50%)
+          )
+          scale(1);
+      }
+
+      /* Animasi Putaran setelah semua ikon keluar */
+      .social-orbit.active {
+        /* Beri delay putaran sampai ikon terakhir selesai keluar (6 ikon * 0.1s = 0.6s) */
+        animation: orbit-rotate 15s linear infinite 0.8s;
+      }
+
+      .social-icon i {
+        /* Agar ikon tetap tegak saat orbit berputar */
+        animation: counter-rotate 15s linear infinite 0.8s;
+      }
+
+      @keyframes orbit-rotate {
+        from {
+          transform: translate(-50%, -50%) rotate(0deg);
+        }
+        to {
+          transform: translate(-50%, -50%) rotate(360deg);
+        }
+      }
+
+      @keyframes counter-rotate {
+        from {
+          transform: rotate(0deg);
+        }
+        to {
+          transform: rotate(-360deg);
+        }
+      }
+
+      /* Responsif Mobile */
+      @media (max-width: 900px) {
+        .social-icon {
+          width: 42px;
+          height: 42px;
+        }
+        .social-orbit.active .social-icon {
+          --radius: 110px;
+        }
+      }
+
+      /* Penyesuaian untuk Mobile (Max 900px) */
+      @media (max-width: 900px) {
+        .orbit-icon {
+          width: 40px;
+          height: 40px;
+          font-size: 1.1rem;
+          transform: translate(-50%, -50%) rotate(calc(360deg / 6 * var(--i)))
+            translateX(180px); /* Jarak lebih dekat di HP agar tidak off-screen */
+        }
+      }
+
       /* RESPONSIVE DESIGN - MAX 900PX */
       @media (max-width: 900px) {
         .hero {
@@ -2175,8 +2281,10 @@
       <div class="hero-container">
         <div class="hero-text">
           <h1>
-            <span class="wave">👋</span> Hello.<br />
-            I'm <span>Berlin Septenus Zalukhu</span>
+            <span id="triggerText" style="cursor: pointer"></span>
+              <span class="wave">👋</span> Hello.<br />
+              I'm <span>Berlin Septenus Zalukhu</span>
+            </span>
           </h1>
           <p>Developer Web | Content Creator | Desainer</p>
 
@@ -2201,9 +2309,19 @@
           </div>
         </div>
 
-        <div class="hero-image">
-          <div class="image-glow"></div>
-          <img src="icon berlin.png" alt="Berlin Profile" />
+        <div class="hero-image" id="profileContainer">
+          <img src="icon berlin.png" alt="Hero" />
+
+          <div class="social-orbit" id="socialOrbit">
+            <a href="https://www.instagram.com/berlin_zalukhu/" class="social-icon"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.facebook.com/berlin.zalukhu.351939" class="social-icon"><i class="fab fa-facebook"></i></a>
+            <a href="https://twitter.com/berlin_zalukhu" class="social-icon"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="social-icon"><i class="fab fa-linkedin"></i></a>
+            <a href="https://github.com/berlins-zal6" class="social-icon"><i class="fab fa-github"></i></a>
+            <a href="https://wa.me/6282358478663?text=Halo%20Berlin!%20%F0%9F%91%8B%20Saya%20baru%20saja%20mampir%20ke%20website%20kamu%20dan%20tertarik%20untuk%20mengobrol%20lebih%20lanjut.%20Apa%20kabar%3F" class="social-icon">
+              <i class="fab fa-whatsapp"></i>
+            </a>
+          </div>
         </div>
       </div>
     </section>
@@ -3286,6 +3404,78 @@
     </footer>
 
     <script>
+      // orbiting effect
+      const container = document.getElementById("profileContainer");
+      const orbit = document.getElementById("socialOrbit");
+      const icons = document.querySelectorAll(".social-icon");
+      // Tambahkan trigger untuk teks Hello
+      const triggerText = document.querySelector(".wave").parentElement; 
+
+      // 1. Set posisi dan delay secara dinamis (Tetap)
+      icons.forEach((icon, index) => {
+        const totalIcons = icons.length;
+        const angle = (index / totalIcons) * 2 * Math.PI;
+        icon.style.setProperty("--angle", `${angle}rad`);
+        icon.style.setProperty("--i", index);
+      });
+
+      // Fungsi pembantu agar kode lebih rapi
+      function toggleOrbitEffect() {
+        orbit.classList.toggle("active");
+
+        // Feedback visual pada gambar profil
+        const img = container.querySelector("img");
+        img.style.transform = "scale(0.95)";
+        setTimeout(() => (img.style.transform = ""), 150);
+      }
+
+      // 2. Event Klik pada area Foto Profil
+      container.addEventListener("click", (e) => {
+        if (!e.target.closest(".social-icon")) {
+          e.stopPropagation(); // Mencegah window menangkap klik ini
+          toggleOrbitEffect();
+        }
+      });
+
+      // 3. Event Klik pada teks "👋 Hello"
+      if (triggerText) {
+        triggerText.style.cursor = "pointer"; // Tambahkan pointer agar user tahu bisa diklik
+        triggerText.addEventListener("click", (e) => {
+          e.stopPropagation(); // Penting: agar tidak langsung ditutup oleh window listener
+          toggleOrbitEffect();
+        });
+      }
+
+      // Saat kursor masuk ke area orbit
+      orbit.addEventListener("mouseenter", () => {
+        orbit.style.animationPlayState = "paused";
+        
+        // Berhenti memutar balik ikon (agar ikon tetap tegak)
+        icons.forEach(icon => {
+          const iconTag = icon.querySelector("i");
+          if (iconTag) iconTag.style.animationPlayState = "paused";
+        });
+      });
+
+      // Saat kursor keluar dari area orbit
+      orbit.addEventListener("mouseleave", () => {
+        // Jalankan kembali animasi
+        orbit.style.animationPlayState = "running";
+        
+        icons.forEach(icon => {
+          const iconTag = icon.querySelector("i");
+          if (iconTag) iconTag.style.animationPlayState = "running";
+        });
+      });
+
+      // 4. Tutup jika klik di luar area profil atau area teks
+      window.addEventListener("click", (e) => {
+        // Jika yang diklik bukan container foto dan bukan teks trigger, maka tutup
+        if (!container.contains(e.target) && !triggerText.contains(e.target)) {
+          orbit.classList.remove("active");
+        }
+      });
+
       // slider section
       const wrapper = document.getElementById("sliderWrapper");
       const dots = document.querySelectorAll(".dot");
