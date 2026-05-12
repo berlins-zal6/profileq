@@ -26,7 +26,7 @@
         margin: 0;
         line-height: 1.6;
         color: #333;
-        padding: 80px 0 60px 0; /* Padding atas disesuaikan untuk navbar */
+        padding: 80px 0 60px 0;
       }
 
       /* NAVBAR STYLE */
@@ -581,13 +581,13 @@
       /* --- SOCIAL LINKS ENHANCEMENT --- */
       .social-links {
         display: flex;
-        gap: 25px; /* Sedikit diperlebar agar ikon tidak bertabrakan saat membesar */
+        gap: 25px; 
         margin-top: 25px;
         opacity: 0;
         animation: fadeIn 1s ease-out forwards 1.2s;
         align-items: center;
-        /* Memastikan container memiliki ruang cukup untuk ikon yang membesar ke atas */
-        height: 50px;
+        height: 80px; /* Dipertinggi sedikit agar tooltip tidak terpotong ke atas */
+        position: relative;
       }
 
       .social-links a {
@@ -597,38 +597,67 @@
         opacity: 0;
         transform: scale(0.5);
         animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-
-        /* Transisi khusus untuk efek MacBook Dock: Smooth & Elastic */
         transition: all 0.4s cubic-bezier(0.25, 0.1, 0.25, 1.5);
-        transform-origin: bottom center; /* Memastikan ikon membesar ke atas, bukan ke bawah */
+        transform-origin: bottom center;
+        position: relative; /* Patokan Tooltip */
       }
 
-      /* Mengatur delay muncul satu per satu */
-      .social-links a:nth-child(1) {
-        animation-delay: 1.3s;
-      }
-      .social-links a:nth-child(2) {
-        animation-delay: 1.4s;
-      }
-      .social-links a:nth-child(3) {
-        animation-delay: 1.5s;
-      }
-      .social-links a:nth-child(4) {
-        animation-delay: 1.6s;
+      /* Mengatur delay muncul satu per satu (Tetap sama) */
+      .social-links a:nth-child(1) { animation-delay: 1.3s; }
+      .social-links a:nth-child(2) { animation-delay: 1.4s; }
+      .social-links a:nth-child(3) { animation-delay: 1.5s; }
+      .social-links a:nth-child(4) { animation-delay: 1.6s; }
+
+      /* --- TOOLTIP STYLE (NAMA USER) --- */
+      .social-links a::after {
+        content: attr(data-username);
+        position: absolute;
+        bottom: 110%; /* Muncul di atas icon */
+        left: 50%;
+        transform: translateX(-50%) scale(0.5); /* Awalnya kecil */
+        background: rgba(52, 152, 219, 0.9);
+        color: white;
+        padding: 4px 10px;
+        border-radius: 6px;
+        font-size: 0.65rem; /* Ukuran kecil minimalis */
+        letter-spacing: 0.1em;
+        white-space: nowrap;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+        pointer-events: none;
       }
 
-      /* EFEK HOVER MACBOOK DOCK STYLE */
+      /* EFEK HOVER MACBOOK DOCK + TOOLTIP */
       .social-links a:hover {
         color: #3498db;
-        /* Skala diperbesar secara signifikan dan diangkat ke atas */
         transform: scale(1.6) translateY(-15px);
         filter: drop-shadow(0 10px 15px rgba(52, 152, 219, 0.4));
         z-index: 10;
       }
 
+      /* Memunculkan Tooltip saat hover */
+      .social-links a:hover::after {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(-50%) scale(0.7); /* Ukuran tetap proporsional saat icon membesar */
+        bottom: 120%;
+      }
+
       .social-links:hover a:not(:hover) {
         transform: scale(0.9);
         opacity: 0.7;
+      }
+
+      /* Keyframes (Pastikan ini ada di CSS Mner) */
+      @keyframes popIn {
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+      @keyframes fadeIn {
+        to { opacity: 1; }
       }
 
       /* --- KEYFRAMES --- */
@@ -823,22 +852,20 @@
         .hero-text p {
           font-size: 0.9rem;
           margin-bottom: 15px;
-          padding: 0; /* Menghapus padding samping agar benar-benar menempel di kiri */
-          text-align: left; /* Memastikan paragraf rata kiri */
+          padding: 0; 
+          text-align: left; 
         }
 
         .hero-image {
           width: 100%;
-          margin-top: 15px; /* Sedikit ditambah ruangnya agar tidak sesak */
+          margin-top: 15px; 
           display: flex;
-          justify-content: center; /* Memastikan foto tetap di tengah */
+          justify-content: center; 
           align-items: center;
         }
 
         .hero-image img {
-          /* Diperbesar dari 85% ke 95% untuk mengisi lebar layar mobile */
           width: 95%;
-          /* Batas maksimal diperbesar dari 250px ke 350px agar terlihat gagah */
           max-width: 350px;
           height: auto;
           object-fit: contain;
@@ -1356,6 +1383,23 @@
           margin: 0 auto;
       }
 
+      /* kata Mahasiswa */
+      .link-mahasiswa {
+        color: #3498db;
+        text-decoration: none;
+        font-weight: 600;
+        border-bottom: 1px dashed #3498db; 
+        transition: all 0.3s ease;
+      }
+
+      .link-mahasiswa:hover {
+        color: #ff5e4d; /* Berubah warna saat disentuh kursor */
+        border-bottom: 1px solid #ff5e4d;
+        background-color: rgba(255, 94, 77, 0.1); /* Efek highlight tipis */
+        padding: 0 4px;
+        border-radius: 4px;
+      }
+
       /* --- Kolom Kiri: Foto & Kontak --- */
       .left-column {
           display: flex;
@@ -1390,6 +1434,7 @@
           border-radius: 12px;
           padding: 25px;
           position: relative;
+          transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       }
 
       .contact-box-title {
@@ -1402,6 +1447,52 @@
           font-size: 0.8rem;
           border-radius: 20px;
           font-weight: bold;
+          transition: all 0.3s ease;
+          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+          z-index: 2;
+      }
+
+      /* --- Pengaturan Link di Dalam Box --- */
+      .contact-info-list a {
+          text-decoration: none; /* Hilangkan garis bawah bawaan */
+          color: inherit; /* Warna mengikuti teks sekitar */
+          transition: all 0.3s ease;
+          display: inline-block;
+      }
+
+      /* --- EFEK HOVER --- */
+      .contact-box:hover {
+          transform: translateY(-8px);
+          background: #ffffff;
+          border-color: var(--primary-color);
+          box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08);
+      }
+
+      .contact-box:hover .contact-box-title {
+          background: #333;
+          transform: scale(1.1);
+          letter-spacing: 1px;
+      }
+
+      /* Efek saat baris list disentuh */
+      .contact-info-list li {
+          list-style: none;
+          margin-bottom: 10px;
+          transition: transform 0.3s ease;
+      }
+
+      .contact-info-list li:hover {
+          transform: translateX(5px); /* Sedikit bergeser ke kanan */
+      }
+
+      .contact-info-list li:hover a {
+          color: var(--primary-color); /* Link berubah warna saat baris di-hover */
+      }
+
+      .contact-box:hover i {
+          transform: scale(1.2) rotate(-5deg);
+          color: var(--primary-color);
+          transition: all 0.3s ease;
       }
 
       .contact-content {
@@ -1419,7 +1510,7 @@
           justify-content: center;
           align-items: center;
           flex-shrink: 0;
-          overflow: hidden; /* Agar gambar QR tidak keluar jalur */
+          overflow: hidden;
       }
 
       /* Pastikan gambar di dalam QR code memenuhi kontainer */
@@ -1459,8 +1550,6 @@
           /* Membuat teks terlihat lebih alami */
           transform: rotate(-1deg);
           display: inline-block;
-          
-          /* Efek garis bawah coretan tangan manual (opsional) */
           background: linear-gradient(120deg, transparent 0%, transparent 80%, var(--primary-color) 80%, var(--primary-color) 100%);
           background-size: 100% 15px;
           background-repeat: no-repeat;
@@ -1507,9 +1596,8 @@
       .skill-icons img {
           width: 40px;
           height: 40px;
-          /* FILTER GRAYSCALE DIHAPUS - Ikon berwarna */
           transition: 0.3s;
-          opacity: 1; /* Opacity dibuat penuh */
+          opacity: 1;
       }
 
       .skill-icons img:hover {
@@ -2431,7 +2519,7 @@
               I'm <span>Berlin Septenus Zalukhu</span>
             </span>
           </h1>
-          <p>Developer Web | Content Creator | Desainer</p>
+          <p><a href="https://ptik.unima.ac.id/en/mahasiswa/01kqq65dnt2hf5ax0pccsa378z" target="_blank" class="link-mahasiswa">Mahasiswa</a> | Web Dev Newbie | Creator | Desainer</p>
 
           <div class="hero-buttons">
             <a href="#projects" class="btn-primary">Got a project?</a>
@@ -2439,18 +2527,18 @@
           </div>
 
           <div class="social-links">
-            <a href="https://www.facebook.com/berlin.zalukhu.351939"
-              ><i class="fa-brands fa-facebook"></i
-            ></a>
-            <a href="http://tiktok.com/@berlin_szalukhu697"
-              ><i class="fa-brands fa-tiktok"></i
-            ></a>
-            <a href="https://www.youtube.com/@Berlin_witworks"
-              ><i class="fa-brands fa-youtube"></i
-            ></a>
-            <a href="https://www.instagram.com/berlin_zalukhu/"
-              ><i class="fa-brands fa-instagram"></i
-            ></a>
+            <a href="https://www.facebook.com/berlin.zalukhu.351939" data-username="Berlin Zalukhu">
+              <i class="fa-brands fa-facebook"></i>
+            </a>
+            <a href="http://tiktok.com/@berlin_szalukhu697" data-username="@berlin_szalukhu697">
+              <i class="fa-brands fa-tiktok"></i>
+            </a>
+            <a href="https://www.youtube.com/@Berlin_witworks" data-username="Berlin Witworks">
+              <i class="fa-brands fa-youtube"></i>
+            </a>
+            <a href="https://www.instagram.com/berlin_zalukhu/" data-username="@berlin_zalukhu">
+              <i class="fa-brands fa-instagram"></i>
+            </a>
           </div>
         </div>
 
@@ -2465,9 +2553,7 @@
             <a href="#" class="social-icon"><i class="fab fa-linkedin"></i></a>
             <a href="https://github.com/berlins-zal6" class="social-icon"><i class="fab fa-github"></i></a>
             <a href="https://www.tiktok.com/@berlin_szalukhu697" class="social-icon"><i class="fab fa-tiktok"></i></a>
-            <a href="https://wa.me/6282358478663?text=Halo%20Berlin!%20%F0%9F%91%8B%20Saya%20baru%20saja%20mampir%20ke%20website%20kamu%20dan%20tertarik%20untuk%20mengobrol%20lebih%20lanjut.%20Apa%20kabar%3F" class="social-icon">
-              <i class="fab fa-whatsapp"></i>
-            </a>
+            <a href="https://wa.me/6282358478663?text=Halo%20Berlin!%20%F0%9F%91%8B%20Saya%20baru%20saja%20mampir%20ke%20website%20kamu%20dan%20tertarik%20untuk%20mengobrol%20lebih%20lanjut.%20Apa%20kabar%3F" class="social-icon"><i class="fab fa-whatsapp"></i></a>
           </div>
         </div>
       </div>
@@ -2601,7 +2687,7 @@
     </section>
 
   <section id="about-me">
-    <div class="side-decor">BERLIN SEPTENUS ZALUKHU • 2026</div>
+    <div class="side-decor">BERLIN ZALUKHU • 2026</div>
     
     <div class="main-container">
         <div class="left-column">
@@ -2611,25 +2697,35 @@
             </div>
             
             <div class="contact-box">
-                <div class="contact-box-title">Let's Work Together :</div>
-                <div class="contact-content">
-                    <div class="qr-code"><img src="qr saya.png" alt="QR Contact"></div>
-                    <ul class="contact-info-list">
-                        <li><i class="fas fa-envelope"></i> berlinsepzal6@gmail.com</li>
-                        <li><i class="fas fa-phone-alt"></i> +62 823 5847 8663</li>
-                        <li><i class="fab fa-instagram"></i> berlin_zalukhu</li>
-                        <li><i class="fas fa-globe"></i> https://berlins-zal6.github.io/profileq</li>
-                    </ul>
-                </div>
-            </div>
+              <div class="contact-content">
+                  <div class="qr-code"><img src="qr saya.png" alt="QR Contact"></div>
+                  <ul class="contact-info-list">
+                      <li>
+                          <i class="fa-solid fa-cake-candles"></i>
+                          <a href="https://almnk.com/kalender/masehi/tanggal/6-september-2007" class="contact-link">06 September 2007</a>
+                      </li>
+                      <li>
+                          <i class="fas fa-graduation-cap"></i>
+                          <a href="https://ptik.unima.ac.id/en/mahasiswa/01kqq65dnt2hf5ax0pccsa378z" target="_blank" class="contact-link link-mahasiswa">Mahasiswa</a>
+                      </li>
+                      <li>
+                          <i class="fas fa-envelope"></i> 
+                          <a href="mailto:berlinsepzal6@gmail.com" class="contact-link">berlinsepzal6@gmail.com</a>
+                      </li> 
+                      <li>
+                          <i class="fas fa-phone-alt"></i> 
+                          <a href="tel:+6282358478663" class="contact-link">(+62) 823 5847 8663</a>
+                      </li>
+                  </ul>
+              </div>
+          </div>
         </div>
         
         <div class="right-column">
             <p class="greeting">“HELLO</p>
             <h2 class="yt-title-static">I’m Berlin Septenus <span style="color: var(--primary-color); font-weight: 400;">Zalukhu"</span></h2>
             
-            <p class="about-text">
-                Saya Berlin Septenus Zalukhu, seorang Mahasiswa yang jatuh cinta pada dunia digital dan kreatif, dan percaya bahwa teknologi adalah kanvas untuk berkarya. Dan sedang berproses dalam program studi <strong style="color:#000;">Pendidikan Teknologi Informasi dan Komunikasi</strong>, saya memiliki ketertarikan mendalam pada cara kita berkomunikasi.
+            <p class="about-text">Saya Berlin Septenus Zalukhu, saya dari Indonesia berasal dari Nias, seorang <a href="https://ptik.unima.ac.id/en/mahasiswa/01kqq65dnt2hf5ax0pccsa378z" target="_blank" class="link-mahasiswa">Mahasiswa</a> yang jatuh cinta pada dunia digital dan kreatif, dan percaya bahwa teknologi adalah kanvas untuk berkarya. Dan sekarang sedang berproses dalam program studi <strong style="color:#000;">Pendidikan Teknologi Informasi dan Komunikasi</strong> di <strong style="color:#000;">Universitas Negeri Manado</strong>, saya memiliki ketertarikan mendalam pada cara kita berkomunikasi.
             </p>
             
             <p class="about-text">
@@ -2642,8 +2738,6 @@
                 <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" alt="CSS3" title="CSS3" />
                 <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt="JavaScript" title="JavaScript" />
                 <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-original.svg" alt="PHP" title="PHP" />
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/wordpress/wordpress-plain.svg" alt="WordPress" title="WordPress" />
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/premierepro/premierepro-original.svg" alt="Premiere Pro" title="Premiere Pro" />
             </div>
             
             <h3 class="section-title">Focus & Expertise</h3>
