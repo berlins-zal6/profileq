@@ -1201,61 +1201,65 @@
       /* Latest on YouTube */
       .youtube-blue-bg {
         background: #eff8ff;
-        padding: 40px 0;
+        padding: 60px 0;
         border-top: 1px solid rgba(52, 152, 219, 0.1);
       }
 
-      /* Judul Statis Tanpa Typing */
+      .youtube-latest-content {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      /* Header Section */
+      .youtube-header {
+        text-align: center;
+        margin-bottom: 40px;
+      }
+
       .yt-title-static {
         color: #3498db;
         font-family: "Poppins", sans-serif;
         font-size: 2.2rem;
         font-weight: 700;
-        border-left: none;
-        padding-left: 0;
-        text-align: center;
-        margin-bottom: 15px;
+        margin-bottom: 10px;
       }
 
       .youtube-header .about-text {
-        text-align: center; /* Memastikan paragraf juga rata tengah */
-        color: #bdc3c7;
+        max-width: 600px;
+        margin: 0 auto;
+        color: #5d6d7e;
+        font-size: 1rem;
+        line-height: 1.6;
       }
 
-      /* Container Video dengan Efek Glow */
+      /* Card & Container Video */
+      .video-card {
+        max-width: 800px;
+        margin: 0 auto;
+      }
+
       .video-container {
         position: relative;
         padding-bottom: 56.25%; /* Rasio 16:9 */
         height: 0;
         overflow: hidden;
-        border-radius: 25px; /* Lebih bulat agar terlihat modern */
+        border-radius: 20px;
         background: #000;
-        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
-        border: 2px solid rgba(52, 152, 219, 0.3); /* Bingkai biru tipis */
-        transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        border: 2px solid rgba(52, 152, 219, 0.3);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
       }
 
-      .video-container iframe {
+      /* Link Wrapper yang Menutupi Seluruh Card */
+      .yt-card-link {
         position: absolute;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
-      }
-
-      /* Efek Hover Video Thumbnail */
-      .video-card:hover .video-container {
-        transform: scale(1.02);
-        border-color: #3498db;
-        box-shadow: 0 25px 60px rgba(52, 152, 219, 0.3); /* Pendaran biru */
-      }
-
-      .thumbnail-wrapper {
-        position: relative;
         display: block;
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
+        text-decoration: none;
         cursor: pointer;
       }
 
@@ -1263,7 +1267,7 @@
         width: 100%;
         height: 100%;
         object-fit: cover;
-        transition: transform 0.5s ease;
+        transition: transform 0.4s ease;
       }
 
       .video-overlay {
@@ -1272,83 +1276,62 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background: linear-gradient(
-          0deg,
-          rgba(10, 25, 47, 0.6) 0%,
-          transparent 100%
-        );
-        transition: 0.3s;
+        background: rgba(10, 25, 47, 0.3);
+        transition: background 0.3s ease;
       }
 
-      /* Tombol Play di Tengah */
+      /* Tombol Play */
       .play-button {
         position: absolute;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        width: 70px;
-        height: 70px;
+        width: 65px;
+        height: 65px;
         background: #ff5e4d;
-        color: white;
+        color: #ffffff;
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 1.5rem;
-        z-index: 10;
-        box-shadow: 0 0 20px rgba(255, 94, 77, 0.5);
-        transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        font-size: 1.4rem;
+        z-index: 2;
+        box-shadow: 0 8px 20px rgba(255, 94, 77, 0.4);
+        transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
       }
 
-      /* EFEK HOVER */
+      /* Interaksi Hover Minimalis */
+      .video-card:hover .video-container {
+        transform: translateY(-4px);
+        border-color: #3498db;
+        box-shadow: 0 20px 40px rgba(52, 152, 219, 0.25);
+      }
+
       .video-card:hover .yt-thumbnail {
-        transform: scale(1.1);
-      }
-
-      .video-card:hover .play-button {
-        transform: translate(-50%, -50%) scale(1.2);
-        background: #3498db;
-        box-shadow: 0 0 30px rgba(52, 152, 219, 0.6);
+        transform: scale(1.05);
       }
 
       .video-card:hover .video-overlay {
-        background: rgba(10, 25, 47, 0.2);
+        background: rgba(10, 25, 47, 0.15);
       }
 
-      @media (max-width: 900px) {
+      .video-card:hover .play-button {
+        transform: translate(-50%, -50%) scale(1.1);
+        background: #3498db;
+        box-shadow: 0 10px 25px rgba(52, 152, 219, 0.5);
+      }
+
+      /* Responsif untuk Layar Kecil */
+      @media (max-width: 768px) {
         .yt-title-static {
-          font-size: 1.8rem;
+          font-size: 1.75rem;
         }
-        .youtube-header {
-          padding: 0 5%;
+        
+        .play-button {
+          width: 55px;
+          height: 55px;
+          font-size: 1.2rem;
         }
-        .video-card {
-          padding: 0 5%;
-        }
-      }
-
-      /* Menumpuk thumbnail tepat di atas iframe */
-      .thumbnail-overlay-trigger {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 5;
-        pointer-events: none; /* Klik akan tembus ke iframe di bawahnya */
-        transition: opacity 0.5s ease;
-      }
-      .video-card:hover .thumbnail-overlay-trigger {
-        opacity: 0.8;
-      }
-      .youtube-blue-bg {
-        background: #eff8ff;
-        padding: 60px 0;
-        border-top: 1px solid rgba(52, 152, 219, 0.1);
-      }
-      .youtube-header .about-text {
-        text-align: center;
-        color: #5d6d7e;
       }
 
       /* siapa berlin s zalukhu */
@@ -1625,119 +1608,516 @@
           }
       }
 
-      /* projects */
-      #projects {
-        background: #eff8ff; 
-        padding: 80px 0;
+      /* Pendidikan saya */
+      #education {
+        background-color: #344356;
+        padding: 100px 0;
         width: 100%;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       }
 
-      .projects-wrapper {
-        max-width: 1200px;
-        margin: auto;
-        padding: 0 20px;
+      .education-wrapper {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 0 24px;
       }
 
-      .projects-header {
+      .education-header {
         text-align: center;
         margin-bottom: 50px;
       }
 
-      .about-text {
-        max-width: 700px;
-        margin: 15px auto 0 auto;
-        text-align: center;
-        color: #5d6d7e;
+      .education-header .section-subtitle {
+        display: block;
+        font-size: 0.95rem;
+        font-weight: 700;
+        color: #a855f7;
+        margin-bottom: 12px;
+        letter-spacing: 0.5px;
+      }
+
+      .education-title {
+        font-size: 2.75rem;
+        font-weight: 800;
+        color: #ffffff;
+        margin: 0 0 16px 0;
+      }
+
+      .education-description {
+        max-width: 600px;
+        margin: 0 auto;
+        color: #94a3b8;
+        font-size: 1.05rem;
         line-height: 1.6;
       }
 
-      /* Grid System */
-      .projects-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-        gap: 30px;
+      /* Grid Logo Cards */
+      .education-logos {
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        gap: 32px;
+        flex-wrap: wrap;
+        transition: all 0.4s ease;
       }
 
-      /* Kartu Project Gacor Style */
+      .edu-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        cursor: pointer;
+        width: 170px;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+
+      .edu-logo-box {
+        width: 130px;
+        height: 130px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 20px;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        padding: 20px;
+        transition: all 0.4s ease;
+        margin-bottom: 16px;
+      }
+
+      .edu-logo {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+        filter: grayscale(80%) brightness(1.2) opacity(0.7);
+        transition: all 0.4s ease;
+      }
+
+      .edu-info h3 {
+        font-size: 0.95rem;
+        font-weight: 700;
+        color: #ffffff;
+        margin: 0 0 4px 0;
+      }
+
+      .edu-info p {
+        font-size: 0.8rem;
+        color: #94a3b8;
+        margin: 0;
+      }
+
+      /* Hover Effect pada Logo */
+      .edu-card:hover .edu-logo-box {
+        background: rgba(168, 85, 247, 0.12);
+        border-color: rgba(168, 85, 247, 0.5);
+        transform: translateY(-8px);
+        box-shadow: 0 15px 35px rgba(168, 85, 247, 0.25);
+      }
+
+      .edu-card:hover .edu-logo {
+        filter: grayscale(0%) brightness(1) opacity(1);
+      }
+
+      /* State Sembunyi / Aktif saat salah satu logo diklik */
+      .edu-card.is-hidden {
+        opacity: 0;
+        transform: scale(0.8);
+        pointer-events: none;
+        display: none;
+      }
+
+      .edu-card.is-selected {
+        transform: scale(1.05);
+      }
+
+      .edu-card.is-selected .edu-logo-box {
+        background: rgba(168, 85, 247, 0.2);
+        border-color: #a855f7;
+        box-shadow: 0 0 25px rgba(168, 85, 247, 0.4);
+      }
+
+      .edu-card.is-selected .edu-logo {
+        filter: grayscale(0%) brightness(1) opacity(1);
+      }
+
+      /* ==========================================
+        DETAIL PANELS STYLING
+        ========================================== */
+      .education-details-container {
+        margin-top: 20px;
+      }
+
+      .edu-detail-panel {
+        display: none;
+        background: rgba(15, 23, 42, 0.6);
+        border: 1px solid rgba(168, 85, 247, 0.3);
+        border-radius: 20px;
+        padding: 36px;
+        color: #ffffff;
+        backdrop-filter: blur(10px);
+        animation: fadeInDetail 0.4s ease forward;
+      }
+
+      .edu-detail-panel.is-active {
+        display: block;
+      }
+
+      @keyframes fadeInDetail {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .close-detail-btn {
+        background: transparent;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: #a855f7;
+        padding: 8px 16px;
+        border-radius: 30px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        cursor: pointer;
+        margin-bottom: 24px;
+        transition: all 0.2s ease;
+      }
+
+      .close-detail-btn:hover {
+        background: #a855f7;
+        color: #ffffff;
+        border-color: #a855f7;
+      }
+
+      .detail-header {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        padding-bottom: 20px;
+        margin-bottom: 28px;
+      }
+
+      .detail-period {
+        display: inline-block;
+        background: rgba(168, 85, 247, 0.2);
+        color: #d8b4fe;
+        font-size: 0.8rem;
+        font-weight: 700;
+        padding: 4px 12px;
+        border-radius: 12px;
+        margin-bottom: 10px;
+      }
+
+      .detail-header h3 {
+        font-size: 1.75rem;
+        margin: 0 0 6px 0;
+      }
+
+      .detail-subtitle {
+        color: #94a3b8;
+        margin: 0;
+        font-size: 1rem;
+      }
+
+      .detail-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 24px;
+      }
+
+      .detail-box {
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 14px;
+        padding: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+      }
+
+      .detail-box h4 {
+        color: #a855f7;
+        margin: 0 0 14px 0;
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .detail-box ul {
+        margin: 0;
+        padding-left: 18px;
+        color: #cbd5e1;
+        font-size: 0.9rem;
+        line-height: 1.6;
+      }
+
+      .detail-box li {
+        margin-bottom: 8px;
+      }
+
+      .detail-box li:last-child {
+        margin-bottom: 0;
+      }
+
+      @media (max-width: 768px) {
+        .education-logos {
+          gap: 16px;
+        }
+        .edu-card {
+          width: 140px;
+        }
+        .edu-logo-box {
+          width: 100px;
+          height: 100px;
+        }
+        .edu-detail-panel {
+          padding: 24px;
+        }
+      }
+
+      .instansi-info-footer {
+        margin-top: 28px;
+        padding-top: 20px;
+        border-top: 1px dashed rgba(255, 255, 255, 0.15);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 16px;
+      }
+
+      .dapo-info {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        font-size: 0.825rem;
+        color: #94a3b8;
+      }
+
+      .dapo-info span {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .dapo-info i {
+        color: #a855f7;
+        font-size: 0.9rem;
+      }
+
+      .instansi-socials {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      .instansi-socials a {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: #e2e8f0;
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.25s ease;
+      }
+
+      .instansi-socials a:hover {
+        background: #a855f7;
+        color: #ffffff;
+        border-color: #a855f7;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(168, 85, 247, 0.3);
+      }
+
+      @media (max-width: 640px) {
+        .instansi-info-footer {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+      }
+
+      /* projects */
+      #projects {
+        background-color: #f8fafc;
+        padding: 90px 0;
+        width: 100%;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      }
+
+      .projects-wrapper {
+        max-width: 1140px;
+        margin: 0 auto;
+        padding: 0 24px;
+      }
+
+      /* Header Styling */
+      .projects-header {
+        text-align: center;
+        margin-bottom: 36px;
+      }
+
+      .section-subtitle {
+        display: inline-block;
+        font-size: 0.85rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        color: #2563eb;
+        margin-bottom: 8px;
+      }
+
+      .projects-title {
+        font-size: 2.25rem;
+        font-weight: 800;
+        color: #0f172a;
+        margin: 0 0 12px 0;
+        line-height: 1.2;
+      }
+
+      .projects-description {
+        max-width: 600px;
+        margin: 0 auto;
+        color: #64748b;
+        font-size: 1rem;
+        line-height: 1.6;
+      }
+
+      /* Grid Layout */
+      .projects-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 28px;
+      }
+
+      /* Project Card Structure */
       .project-card {
         background: #ffffff;
-        border-radius: 20px; /* Lebih bulat agar modern */
+        border-radius: 16px;
         overflow: hidden;
-        box-shadow: 0 10px 30px rgba(52, 152, 219, 0.1);
-        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        border: 1px solid rgba(52, 152, 219, 0.05);
+        border: 1px solid #e2e8f0;
+        transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
       }
 
       .project-card:hover {
-        transform: translateY(-12px);
-        box-shadow: 0 20px 40px rgba(52, 152, 219, 0.15);
+        transform: translateY(-6px);
+        box-shadow: 0 16px 32px -8px rgba(15, 23, 42, 0.08);
+        border-color: #cbd5e1;
       }
 
-      /* Thumbnail & Badge Bagian */
+      .project-link {
+        text-decoration: none;
+        color: inherit;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+      }
+
+      /* Card Thumbnail */
       .project-thumb {
         position: relative;
         aspect-ratio: 16 / 9;
         overflow: hidden;
+        background-color: #e2e8f0;
       }
 
       .project-thumb img {
         width: 100%;
         height: 100%;
         object-fit: cover;
-        transition: transform 0.6s ease;
+        transition: transform 0.4s ease;
       }
 
       .project-card:hover .project-thumb img {
-        transform: scale(1.1);
+        transform: scale(1.05);
       }
 
-      /* Badge Kategori */
+      /* Badges */
       .project-badge {
         position: absolute;
-        top: 15px;
-        right: 15px;
-        padding: 5px 15px;
-        border-radius: 30px;
+        top: 12px;
+        right: 12px;
+        padding: 4px 12px;
+        border-radius: 6px;
         font-size: 0.75rem;
         font-weight: 700;
-        color: white;
-        z-index: 2;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        color: #ffffff;
+        letter-spacing: 0.3px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
       }
 
-      /* Warna Khusus 3 Bagian */
-      .dev-card .project-badge {
-        background: #3498db;
-      } /* Biru - Web/Apk */
-      .video-card .project-badge {
-        background: #e74c3c;
-      } /* Merah - Video */
-      .design-card .project-badge {
-        background: #d4af37;
-      } /* Emas - Desainer */
+      .badge-dev { background-color: #2563eb; }
+      .badge-app { background-color: #0d9488; }
+      .badge-video { background-color: #dc2626; }
 
+      /* Card Content Info */
       .project-info {
-        padding: 25px;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+      }
+
+      .project-title-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 6px;
       }
 
       .project-info h3 {
-        font-size: 1.2rem;
-        color: #2c3e50;
-        margin-bottom: 8px;
+        font-size: 1.1rem;
         font-weight: 700;
+        color: #0f172a;
+        margin: 0;
+        transition: color 0.2s ease;
+      }
+
+      .project-card:hover .project-info h3 {
+        color: #2563eb;
+      }
+
+      .external-icon {
+        font-size: 0.85rem;
+        color: #94a3b8;
+        transition: color 0.2s ease, transform 0.2s ease;
+      }
+
+      .project-card:hover .external-icon {
+        color: #2563eb;
+        transform: translate(2px, -2px);
       }
 
       .project-info p {
-        font-size: 0.9rem;
-        color: #7f8c8d;
+        font-size: 0.875rem;
+        color: #64748b;
         margin: 0;
+        line-height: 1.5;
       }
 
-      /* RESPONSIVE */
-      @media (max-width: 768px) {
+      /* Utility for filtering via JavaScript */
+      .project-card.is-hidden {
+        display: none;
+      }
+
+      /* Responsive Breakpoints */
+      @media (max-width: 640px) {
+        #projects {
+          padding: 60px 0;
+        }
+        
         .projects-grid {
           grid-template-columns: 1fr;
-          gap: 25px;
+          gap: 20px;
+        }
+
+        .projects-title {
+          font-size: 1.75rem;
         }
       }
 
@@ -2502,11 +2882,12 @@
       </div>
 
       <nav class="nav-menu">
-        <a href="#">Home</a>
-        <a href="#about-me">About</a>
-        <a href="#projects">Project</a>
-        <a href="#skills">Skills</a>
-        <a href="#contact">Contact</a>
+        <a href="#">Beranda</a>
+        <a href="#about-me">Tentang Saya</a>
+        <a href="#education">Pendidikan</a>
+        <a href="#projects">Projek</a>
+        <a href="#skills">Keahlian</a>
+        <a href="#contact">Kontak</a>
       </nav>
     </header>
 
@@ -2522,8 +2903,8 @@
           <p><a href="https://ptik.unima.ac.id/en/mahasiswa/01kqq65dnt2hf5ax0pccsa378z" target="_blank" class="link-mahasiswa">Mahasiswa</a> | Web Dev Newbie | Creator | Desainer</p>
 
           <div class="hero-buttons">
-            <a href="#projects" class="btn-primary">Got a project?</a>
-            <a href="#" class="btn-secondary">My resume</a>
+            <a href="#projects" class="btn-primary"><i class="fa-solid fa-eye"></i> Projek Saya</a>
+            <a href="#" class="btn-secondary"><i class="fa-solid fa-file-alt"></i> Resume Saya</a>
           </div>
 
           <div class="social-links">
@@ -2622,7 +3003,7 @@
             </p>
 
             <div class="about-action" style="margin-top: 25px">
-              <a href="#lates on YT" class="btn-explore"> Let's Explore </a>
+              <a href="#latest-on-yt" class="btn-explore">yuk, jelajahi <i class="fa-solid fa-angles-right"></i></a>
             </div>
           </div>
 
@@ -2641,47 +3022,37 @@
       </div>
     </article>
 
-    <section id="lates on YT" class="youtube-blue-bg">
-      <div
-        class="youtube-latest-content"
-        style="max-width: 1000px; margin: auto; padding: 60px 20px"
-      >
-        <div
-          class="youtube-header"
-          style="text-align: center; margin-bottom: 40px"
+    <section id="latest-on-yt" class="youtube-blue-bg">
+  <div class="youtube-latest-content">
+    <div class="youtube-header">
+      <h2 class="yt-title-static">Klik YT Saya</h2>
+      <p class="about-text">
+        Di sela-sela waktu luang, saya suka buat kreatif editing video sederhana yang mudah-mudahan bermanfaat.
+      </p>
+    </div>
+
+    <div class="video-card">
+      <div class="video-container">
+        <a
+          href="https://www.youtube.com/@Berlin_witworks"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="yt-card-link"
         >
-          <h2 class="yt-title-static">Visit My YouTube</h2>
-          <p
-            class="about-text"
-            style="max-width: 600px; margin: 10px auto 0 auto"
-          >
-            Di sela-sela waktu luang, saya suka buat kreatif editing video sederhana yang mudah-mudahan bermanfaat.
-          </p>
-        </div>
-
-        <div class="video-card" style="max-width: 800px; margin: auto">
-          <div class="video-container">
-            <a
-              href="https://www.youtube.com/@Berlin_witworks"
-              target="_blank"
-              class="thumbnail-overlay-trigger"
-              style="display: block; text-decoration: none"
-            >
-              <img
-                src="https://img.youtube.com/vi/M7F7nIHONog/maxresdefault.jpg"
-                alt="Tutorial Video Berlin"
-                class="yt-thumbnail"
-              />
-
-              <div class="video-overlay"></div>
-              <div class="play-button">
-                <i class="fa-solid fa-play"></i>
-              </div>
-            </a>
+          <img
+            src="https://img.youtube.com/vi/M7F7nIHONog/maxresdefault.jpg"
+            alt="Tutorial Video Berlin"
+            class="yt-thumbnail"
+          />
+          <div class="video-overlay"></div>
+          <div class="play-button">
+            <i class="fa-solid fa-play"></i>
           </div>
-        </div>
+        </a>
       </div>
-    </section>
+    </div>
+  </div>
+</section>
 
   <section id="about-me">
     <div class="side-decor">BERLIN • 2026</div>
@@ -2756,136 +3127,363 @@
     </div>
 </section>
 
-    <section id="projects">
-      <div class="projects-wrapper">
-        <div class="projects-header">
-          <h2 class="yt-title-static">Projects</h2>
-          <p class="about-text">
-            Beberapa project yang saya kerjakan isinya campuran antara tutorial
-            coding dan desain, sederhana tapi jadi cara saya terus berkembang.
-          </p>
+<section id="education">
+  <div class="education-wrapper">
+    <!-- Header Section (Sama persis) -->
+    <div class="education-header">
+      <span class="section-subtitle">Pendidikan</span>
+      <h2 class="education-title">Riwayat Pendidikan</h2>
+      <p class="education-description">
+        Pernah dan sedang belajar pada sekolah dan universitas berikut
+      </p>
+    </div>
+
+    <!-- Grid / Flex Logo Institusi (Konten teks asli dipertahankan) -->
+    <div class="education-logos" id="eduLogos">
+      <!-- SD -->
+      <div class="edu-card" data-target="detail-sd">
+        <div class="edu-logo-box">
+          <img 
+            src="https://logos.ruangkosong.net/wp-content/uploads/2019/01/237-design_Logo-SD-Sekolah-Dasar.png" 
+            alt="Tut Wuri Handayani - SD" 
+            class="edu-logo"
+          />
+        </div>
+        <div class="edu-info">
+          <h3>Sekolah Dasar</h3>
+          <p>SDN 076440 Sifaoro'asi</p>
+        </div>
+      </div>
+
+      <!-- SMP -->
+      <div class="edu-card" data-target="detail-smp">
+        <div class="edu-logo-box">
+          <img 
+            src="https://cdn.kibrispdr.org/data/760/logo-osis-smp-png-0.png" 
+            alt="Tut Wuri Handayani - SD" 
+            class="edu-logo"
+          />
+        </div>
+        <div class="edu-info">
+          <h3>Sekolah Menengah Pertama</h3>
+          <p>SMP Negeri 2 Lahewa</p>
+        </div>
+      </div>
+
+      <!-- SMK -->
+      <div class="edu-card" data-target="detail-smk">
+        <div class="edu-logo-box">
+          <img 
+            src="https://freepnglogo.com/images/all_img/tut-wuri-handayani-logo-png-6ef6.png" 
+            alt="Tut Wuri Handayani - SD" 
+            class="edu-logo"
+          />
+        </div>
+        <div class="edu-info">
+          <h3>Sekolah Menengah Kejuruan</h3>
+          <p>SMK Negeri 1 Lahewa</p>
+        </div>
+      </div>
+
+      <!-- Universitas Negeri Manado (UNIMA) -->
+      <div class="edu-card" data-target="detail-unima">
+        <div class="edu-logo-box">
+          <img 
+            src="https://th.bing.com/th/id/R.a50119ae8fe47ed56bd18dfb43c91437?rik=G5M0IHyDpe67%2fg&riu=http%3a%2f%2f3.bp.blogspot.com%2f-sAyKYINpWdI%2fULIhpL0GWUI%2fAAAAAAAAHQM%2fbOwIDNPoCDs%2fs1600%2fLOGO%2bUNIMA.png&ehk=bM4Umkj5S%2bS4C3gyUO2UK2qxAFzwcbU5hxxrc7WdcH0%3d&risl=&pid=ImgRaw&r=0" 
+            alt="Universitas Negeri Manado (UNIMA)" 
+            class="edu-logo"
+          />
+        </div>
+        <div class="edu-info">
+          <h3>UNIMA</h3>
+          <p>Universitas Negeri Manado</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Container Detail Riwayat Sekolah -->
+    <div class="education-details-container">
+      
+      <!-- Detail SD -->
+      <div class="edu-detail-panel" id="detail-sd">
+        <button class="close-detail-btn">&larr; Kembali</button>
+        <div class="detail-header">
+          <span class="detail-period">2013 — 2019</span>
+          <h3>SDN 076440 Sifaoro'asi</h3>
+          <p class="detail-subtitle">Pendidikan Dasar</p>
+        </div>
+        <div class="detail-grid">
+          <div class="detail-box">
+            <h4><i class="fa-solid fa-book-open"></i> Pengalaman & Kegiatan</h4>
+            <ul>
+              <li>Membangun fondasi akademik dasar, literasi, dan matematika.</li>
+              <li>Aktif dalam kegiatan ekstrakurikuler yang diadakan di sekolah.</li>
+            </ul>
+          </div>
+          <div class="detail-box">
+            <h4><i class="fa-solid fa-trophy"></i> Prestasi & Capaian</h4>
+            <ul>
+              <li>Lulus dengan hasil ujian memuaskan.</li>
+              <li>Pernah meraih prestasi Juara kelas.</li>
+            </ul>
+          </div>
         </div>
 
-        <div class="projects-grid">
-          <div class="project-card dev-card">
-            <a
-              href="https://berlins-zal6.github.io/pmkn-tondano/"
-              target="_blank"
-            >
-              <div class="project-thumb">
-                <img src="logo PMKN.jpeg" alt="PMKN Tondano" />
-                <div class="project-badge">Web Dev</div>
-                <div class="project-overlay">
-                  <i class="fa-solid fa-link"></i>
-                </div>
-              </div>
-              <div class="project-info">
-                <h3>PMKN Tondano</h3>
-                <p>Portal Website Organisasi</p>
-              </div>
-            </a>
+        <!-- Data Pokok & Media Sosial Instansi -->
+        <div class="instansi-info-footer">
+          <div class="dapo-info">
+            <span><i class="fa-solid fa-id-card"></i> NPSN: 10207814</span>
+            <span><i class="fa-solid fa-location-dot"></i> Desa Sifaoro'asi, Kec. Lahewa, Kab. Nias Utara</span>
           </div>
-
-          <div class="project-card dev-card">
-            <a
-              href="https://berlins-zal6.github.io/kominfopmkn/"
-              target="_blank"
-            >
-              <div class="project-thumb">
-                <img src="kominfo.jpg" alt="Kominfo PMKN" />
-                <div class="project-badge">Web Dev</div>
-                <div class="project-overlay">
-                  <i class="fa-solid fa-link"></i>
-                </div>
-              </div>
-              <div class="project-info">
-                <h3>Kominfo PMKN</h3>
-                <p>Upload Portal Website</p>
-              </div>
-            </a>
-          </div>
-
-          <div class="project-card dev-card">
-            <a
-              href="https://youtu.be/M7F7nIHONog?si=ec8x7cEQPVCGVHjr"
-              target="_blank"
-            >
-              <div class="project-thumb">
-                <img
-                  src="https://img.youtube.com/vi/M7F7nIHONog/maxresdefault.jpg"
-                  alt="Berlin Project"
-                />
-                <div class="project-badge">Video</div>
-                <div class="project-overlay">
-                  <i class="fa-solid fa-code"></i>
-                </div>
-              </div>
-              <div class="project-info">
-                <h3>Running Code C++</h3>
-                <p>Software Logic Development</p>
-              </div>
-            </a>
-          </div>
-
-          <div class="project-card video-card">
-            <a href="https://youtu.be/5R_HAakqHmY" target="_blank">
-              <div class="project-thumb">
-                <img
-                  src="https://img.youtube.com/vi/5R_HAakqHmY/maxresdefault.jpg"
-                  alt="Tutorial YouTube"
-                />
-                <div class="project-badge">Video</div>
-                <div class="project-overlay">
-                  <i class="fa-brands fa-youtube"></i>
-                </div>
-              </div>
-              <div class="project-info">
-                <h3>Film Pendek</h3>
-                <p>Sinematografi & Editing</p>
-              </div>
-            </a>
-          </div>
-
-          <div class="project-card video-card">
-            <a
-              href="https://youtu.be/PqYGZy5YCK8?si=DKn3Btj4lCDAjP5X"
-              target="_blank"
-            >
-              <div class="project-thumb">
-                <img
-                  src="https://img.youtube.com/vi/mp67UZzi0_k/maxresdefault.jpg"
-                  alt="Design Creative"
-                />
-                <div class="project-badge">Video</div>
-                <div class="project-overlay">
-                  <i class="fa-brands fa-youtube"></i>
-                </div>
-              </div>
-              <div class="project-info">
-                <h3>Lagu POP Berlin</h3>
-                <p>Music Video Content</p>
-              </div>
-            </a>
-          </div>
-
-          <div class="project-card design-card">
-            <a href="https://studitman-berlin.free.nf/" target="_blank">
-              <div class="project-thumb">
-                <img src="studitman.jpeg" alt="Technology Tips" />
-                <div class="project-badge">Aplikasi</div>
-                <div class="project-overlay">
-                  <i class="fa-solid fa-palette"></i>
-                </div>
-              </div>
-              <div class="project-info">
-                <h3>STUDITMAN</h3>
-                <p>Solusi Keuangan & Studi Terbaik</p>
-              </div>
-            </a>
+          <div class="instansi-socials">
+            <a href="https://referensi.data.kemendikdasmen.go.id/pendidikan/npsn/10207814" target="_blank" rel="noopener noreferrer" title="Website Resmi"><i class="fa-solid fa-globe"></i> Website</a>
+            <a href="https://www.facebook.com/profile.php?id=61561988775744" target="_blank" rel="noopener noreferrer" title="Facebook"><i class="fa-brands fa-facebook"></i> Facebook</a>
           </div>
         </div>
       </div>
-    </section>
+
+      <!-- Detail SMP -->
+      <div class="edu-detail-panel" id="detail-smp">
+        <button class="close-detail-btn">&larr; Kembali</button>
+        <div class="detail-header">
+          <span class="detail-period">2019 — 2022</span>
+          <h3>SMP Negeri 2 Lahewa</h3>
+          <p class="detail-subtitle">Pendidikan Menengah Pertama</p>
+        </div>
+        <div class="detail-grid">
+          <div class="detail-box">
+            <h4><i class="fa-solid fa-users"></i> Organisasi & Pengalaman</h4>
+            <ul>
+              <li>Aktif dalam kegiatan belajar dan ekstrakurikuler yang diadakan di sekolah.</li>
+              <li>- </li>
+            </ul>
+          </div>
+          <div class="detail-box">
+            <h4><i class="fa-solid fa-award"></i> Prestasi & Highlight</h4>
+            <ul>
+              <li>- </li>
+              <li>- </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Data Pokok & Media Sosial Instansi -->
+        <div class="instansi-info-footer">
+          <div class="dapo-info">
+            <span><i class="fa-solid fa-id-card"></i> NPSN: 10259163</span>
+            <span><i class="fa-solid fa-location-dot"></i> Jln. Desa Afia, Kec. Lahewa, Kab. Nias Utara, Sumatera Utara</span>
+          </div>
+          <div class="instansi-socials">
+            <a href="https://data-sekolah.zekolah.id/sekolah/SMP%20NEGERI%202%20LAHEWA-241332" target="_blank" rel="noopener noreferrer" title="Website Resmi"><i class="fa-solid fa-globe"></i> Portal DAPODIK</a>
+            <a href="https://www.facebook.com/smp.negeri.2.lahewa" target="_blank" rel="noopener noreferrer" title="Facebook"><i class="fa-brands fa-facebook"></i> Facebook</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Detail SMK -->
+      <div class="edu-detail-panel" id="detail-smk">
+        <button class="close-detail-btn">&larr; Kembali</button>
+        <div class="detail-header">
+          <span class="detail-period">2022 — 2025</span>
+          <h3>SMK Negeri 1 Lahewa</h3>
+          <p class="detail-subtitle">Pendidikan Kejuruan</p>
+        </div>
+        <div class="detail-grid">
+          <div class="detail-box">
+            <h4><i class="fa-solid fa-laptop-code"></i> Fokus & Keahlian</h4>
+            <ul>
+              <li>Memilih jurusan Teknik Komputer dan Jaringan (TKJ).</li>
+              <li>Mempelajari dasar pemrograman, dasar jaringan komputer, memahami perangkat keras dan rekayasa perangkat lunak.</li>
+              <li>Pelaksanaan Praktik Kerja Lapangan (PKL) / Industri dengan hasil sangat baik.</li>
+              <li>Mengikuti Program Tunas Baru (TB) dalam melatih kemampuan menggunakan Komputer dan teknik Publik Speaking.</li>
+            </ul>
+          </div>
+          <div class="detail-box">
+            <h4><i class="fa-solid fa-star"></i> Proyek & Capaian</h4>
+            <ul>
+              <li>Mengembangkan proyek praktikum berbasis teknologi & desain.</li>
+              <li>Penyelesaian studi dengan predikat kejuruan memuaskan.</li>
+              <li>Meraih prestasi akademik yang memuaskan.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Data Pokok & Media Sosial Instansi -->
+        <div class="instansi-info-footer">
+          <div class="dapo-info">
+            <span><i class="fa-solid fa-id-card"></i> Akreditasi: C (2021)</span>
+            <span><i class="fa-solid fa-id-card"></i> NPSN: 10262269</span>
+            <span><i class="fa-solid fa-location-dot"></i> Jln. Desa Afia, Kec. Lahewa, Kab. Nias Utara, Sumatera Utara</span>
+          </div>
+          <div class="instansi-socials">
+            <a href="https://sekolah.data.kemendikdasmen.go.id/profil-sekolah/3F6060E3-B596-449D-B459-B07045FB7035" target="_blank" rel="noopener noreferrer" title="Website Resmi"><i class="fa-solid fa-globe"></i> Website Resmi</a>
+            <a href="https://www.instagram.com/alumni_12tkj2_smkn1lhw2025/" target="_blank" rel="noopener noreferrer" title="Instagram"><i class="fa-brands fa-instagram"></i> Instagram</a>
+            <a href="https://www.facebook.com/profile.php?id=61557144563978" target="_blank" rel="noopener noreferrer" title="Facebook"><i class="fa-brands fa-facebook"></i> Facebook</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Detail UNIMA -->
+      <div class="edu-detail-panel" id="detail-unima">
+        <button class="close-detail-btn">&larr; Kembali</button>
+        <div class="detail-header">
+          <span class="detail-period">2025 — Sekarang</span>
+          <h3>Universitas Negeri Manado (UNIMA)</h3>
+          <p class="detail-subtitle">S1 Pendidikan Teknologi Informasi & Komunikasi (PTIK)</p>
+        </div>
+        <div class="detail-grid">
+          <div class="detail-box">
+            <h4><i class="fa-solid fa-code-branch"></i> Akademik & Pengembangan</h4>
+            <ul>
+              <li>Mendalami Software Engineering, Database Configuration, dan Web Development.</li>
+              <li>Pengembangan aplikasi Studitman serta portal web organisasi.</li>
+            </ul>
+          </div>
+          <div class="detail-box">
+            <h4><i class="fa-solid fa-graduation-cap"></i> Kegiatan & Portfolio</h4>
+            <ul>
+              <li>Aktif dalam kegiatan organisasi internal maupun eksternal kampus.</li>
+              <li>Aktif membangun proyek coding full-stack dan konten teknologi.</li>
+              <li>Pengembangan logika pemrograman (C++, Web Dev, SQL).</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Data Pokok & Media Sosial Instansi -->
+        <div class="instansi-info-footer">
+          <div class="dapo-info">
+            <span><i class="fa-solid fa-building-columns"></i> PTN - Akreditasi Unggul</span>
+            <span><i class="fa-solid fa-location-dot"></i> Kampus UNIMA Tondano, Minahasa, Sulawesi Utara</span>
+          </div>
+          <div class="instansi-socials">
+            <a href="https://unima.ac.id" target="_blank" rel="noopener noreferrer" title="Website Resmi"><i class="fa-solid fa-globe"></i> unima.ac.id</a>
+            <a href="https://ptik.unima.ac.id/id" target="_blank" rel="noopener noreferrer" title="Website Resmi"><i class="fa-solid fa-globe"></i> ptik.unima.ac.id</a>
+            <a href="https://www.instagram.com/unima_1955/" target="_blank" rel="noopener noreferrer" title="Instagram"><i class="fa-brands fa-instagram"></i> Instagram</a>
+            <a href="https://www.facebook.com/PtikFatekUnima" target="_blank" rel="noopener noreferrer" title="Facebook"><i class="fa-brands fa-facebook"></i> Facebook</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+  <section id="projects">
+  <div class="projects-wrapper">
+    <!-- Section Header -->
+    <div class="projects-header">
+      <h2 class="projects-title">My Projects</h2>
+      <p class="projects-description">
+        Kumpulan proyek gabungan antara web development, aplikasi, video, dan desain.
+      </p>
+    </div>
+
+    <!-- Projects Grid -->
+    <div class="projects-grid">
+      <!-- Project Item 1 -->
+      <article class="project-card" data-category="dev">
+        <a href="https://berlins-zal6.github.io/pmkn-tondano/" target="_blank" rel="noopener noreferrer" class="project-link">
+          <div class="project-thumb">
+            <img src="logo PMKN.jpeg" alt="Preview Web PMKN Tondano" loading="lazy" />
+            <span class="project-badge badge-dev">Web Dev</span>
+          </div>
+          <div class="project-info">
+            <div class="project-title-wrapper">
+              <h3>PMKN Tondano</h3>
+              <i class="fa-solid fa-arrow-up-right-from-square external-icon"></i>
+            </div>
+            <p>Portal Website Organisasi</p>
+          </div>
+        </a>
+      </article>
+
+      <!-- Project Item 2 -->
+      <article class="project-card" data-category="dev">
+        <a href="https://berlins-zal6.github.io/kominfopmkn/" target="_blank" rel="noopener noreferrer" class="project-link">
+          <div class="project-thumb">
+            <img src="kominfo.jpg" alt="Preview Web Kominfo PMKN" loading="lazy" />
+            <span class="project-badge badge-dev">Web Dev</span>
+          </div>
+          <div class="project-info">
+            <div class="project-title-wrapper">
+              <h3>Kominfo PMKN</h3>
+              <i class="fa-solid fa-arrow-up-right-from-square external-icon"></i>
+            </div>
+            <p>Upload Portal Website</p>
+          </div>
+        </a>
+      </article>
+
+      <!-- Project Item 3 -->
+      <article class="project-card" data-category="dev">
+        <a href="https://youtu.be/M7F7nIHONog?si=ec8x7cEQPVCGVHjr" target="_blank" rel="noopener noreferrer" class="project-link">
+          <div class="project-thumb">
+            <img src="https://img.youtube.com/vi/M7F7nIHONog/maxresdefault.jpg" alt="Thumbnail Running Code C++" loading="lazy" />
+            <span class="project-badge badge-video">Video</span>
+          </div>
+          <div class="project-info">
+            <div class="project-title-wrapper">
+              <h3>Running Code C++</h3>
+              <i class="fa-solid fa-arrow-up-right-from-square external-icon"></i>
+            </div>
+            <p>Software Logic Development</p>
+          </div>
+        </a>
+      </article>
+
+      <!-- Project Item 4 -->
+      <article class="project-card" data-category="video">
+        <a href="https://youtu.be/5R_HAakqHmY" target="_blank" rel="noopener noreferrer" class="project-link">
+          <div class="project-thumb">
+            <img src="https://img.youtube.com/vi/5R_HAakqHmY/maxresdefault.jpg" alt="Thumbnail Film Pendek" loading="lazy" />
+            <span class="project-badge badge-video">Video</span>
+          </div>
+          <div class="project-info">
+            <div class="project-title-wrapper">
+              <h3>Film Pendek</h3>
+              <i class="fa-solid fa-arrow-up-right-from-square external-icon"></i>
+            </div>
+            <p>Sinematografi & Editing</p>
+          </div>
+        </a>
+      </article>
+
+      <!-- Project Item 5 -->
+      <article class="project-card" data-category="video">
+        <a href="https://youtu.be/PqYGZy5YCK8?si=DKn3Btj4lCDAjP5X" target="_blank" rel="noopener noreferrer" class="project-link">
+          <div class="project-thumb">
+            <img src="https://img.youtube.com/vi/mp67UZzi0_k/maxresdefault.jpg" alt="Thumbnail Lagu POP Berlin" loading="lazy" />
+            <span class="project-badge badge-video">Video</span>
+          </div>
+          <div class="project-info">
+            <div class="project-title-wrapper">
+              <h3>Lagu POP Berlin</h3>
+              <i class="fa-solid fa-arrow-up-right-from-square external-icon"></i>
+            </div>
+            <p>Music Video Content</p>
+          </div>
+        </a>
+      </article>
+
+      <!-- Project Item 6 -->
+      <article class="project-card" data-category="app">
+        <a href="https://studitman-berlin.free.nf/" target="_blank" rel="noopener noreferrer" class="project-link">
+          <div class="project-thumb">
+            <img src="studitman.jpeg" alt="Preview Aplikasi Studitman" loading="lazy" />
+            <span class="project-badge badge-app">Aplikasi</span>
+          </div>
+          <div class="project-info">
+            <div class="project-title-wrapper">
+              <h3>STUDITMAN</h3>
+              <i class="fa-solid fa-arrow-up-right-from-square external-icon"></i>
+            </div>
+            <p>Solusi Keuangan & Studi Terbaik</p>
+          </div>
+        </a>
+      </article>
+    </div>
+  </div>
+</section>
 
     <section id="skills" style="padding: 80px 0; background: #ffffff">
       <div
@@ -3762,6 +4360,50 @@
           navMenu.classList.remove("active");
         }),
       );
+
+
+    // pendidikan keren
+    document.addEventListener('DOMContentLoaded', () => {
+    const eduCards = document.querySelectorAll('.edu-card');
+    const detailPanels = document.querySelectorAll('.edu-detail-panel');
+    const closeBtns = document.querySelectorAll('.close-detail-btn');
+
+    eduCards.forEach(card => {
+      card.addEventListener('click', () => {
+        const targetId = card.getAttribute('data-target');
+
+        eduCards.forEach(c => {
+          if (c !== card) {
+            c.classList.add('is-hidden');
+            c.classList.remove('is-selected');
+          } else {
+            c.classList.remove('is-hidden');
+            c.classList.add('is-selected');
+          }
+        });
+
+        detailPanels.forEach(panel => {
+          if (panel.id === targetId) {
+            panel.classList.add('is-active');
+          } else {
+            panel.classList.remove('is-active');
+          }
+        });
+      });
+    });
+
+    closeBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        eduCards.forEach(card => {
+          card.classList.remove('is-hidden', 'is-selected');
+        });
+
+        detailPanels.forEach(panel => {
+          panel.classList.remove('is-active');
+        });
+      });
+    });
+  });
 
       // adminq
       function toggleAdminPanel() {
