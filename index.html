@@ -4161,10 +4161,23 @@
       }
     </script>
 
-    <!-- kata-kata setiap 15 menit -->
+    <!-- kata-kata setiap 20 menit -->
+    <!-- overlay utama -->
     <div id="berlin-greet-overlay" class="berlin-greet-layer">
       <div class="berlin-greet-container">
-        <div id="berlin-step-1">
+        
+        <!-- STEP 0: Tombol Masuk Awal -->
+        <div id="berlin-step-0">
+          <h2 style="font-size: 2rem; font-weight: 800; color: #ffffff; margin-bottom: 20px;">
+            Halo, Ada Pesan Untukmu
+          </h2>
+          <button onclick="berlinEnterApp()" class="berlin-greet-btn-submit">
+            Masuk
+          </button>
+        </div>
+
+        <!-- STEP 1: Halaman Kata-Kata -->
+        <div id="berlin-step-1" style="display: none">
           <div class="berlin-stk-wrapper">
             <img
               src="stiker berlin.png"
@@ -4182,11 +4195,12 @@
           </button>
         </div>
 
+        <!-- STEP 2: Verifikasi Kuis -->
         <div id="berlin-step-2" style="display: none">
-          <h2 style="font-weight: 800; color: #1e293b">Verifikasi Dulu Ya</h2>
+          <h2 style="font-weight: 800; color: #ffffff">Verifikasi Dulu Ya</h2>
           <p
             id="berlin-question-text"
-            style="font-weight: 600; color: #64748b"
+            style="font-weight: 600; color: #cbd5e1"
           ></p>
           <input
             type="text"
@@ -4200,8 +4214,12 @@
           </button>
           <p id="berlin-error-msg">Jawaban salah! Coba ingat lagi?</p>
         </div>
+
       </div>
     </div>
+
+    <!-- Elemen Audio -->
+    <audio id="berlin-bgm" loop></audio>
 
     <style>
       @import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;500;800&display=swap");
@@ -4212,15 +4230,20 @@
         left: 0;
         width: 100vw;
         height: 100vh;
-        background: radial-gradient(circle, #f3f4f6 0%, #d1d5db 100%);
+        /* Efek Gelap Transparan di Atas Gambar Latar */
+        background: linear-gradient(rgba(15, 23, 42, 0.75), rgba(15, 23, 42, 0.75)),
+                    radial-gradient(circle, #f3f4f6 0%, #d1d5db 100%);
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
         z-index: 999999;
         display: none;
         justify-content: center;
         align-items: center;
         font-family: "Plus Jakarta Sans", sans-serif;
         text-align: center;
-        color: #334155;
-        transition: opacity 0.6s ease;
+        color: #f8fafc;
+        transition: background-image 0.8s ease-in-out, opacity 0.6s ease;
       }
 
       .berlin-greet-container {
@@ -4235,7 +4258,7 @@
         position: relative;
         display: inline-block;
         width: clamp(180px, 30vw, 280px);
-        margin-bottom: 40px;
+        margin-bottom: 30px;
         animation: berlinFloatModern 6s ease-in-out infinite;
         perspective: 1000px;
       }
@@ -4243,14 +4266,14 @@
       .berlin-greet-stk-img {
         width: 100%;
         height: auto;
-        filter: grayscale(60%) drop-shadow(0 0 15px rgba(27, 167, 226, 0.3));
-        opacity: 0.9;
+        filter: grayscale(40%) drop-shadow(0 0 15px rgba(27, 167, 226, 0.4));
+        opacity: 0.95;
         transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
         border-radius: 20px;
       }
 
       .berlin-stk-wrapper:hover .berlin-greet-stk-img {
-        filter: grayscale(0%) drop-shadow(0 0 25px rgba(27, 167, 226, 0.6));
+        filter: grayscale(0%) drop-shadow(0 0 25px rgba(27, 167, 226, 0.7));
         transform: scale(1.05) rotate(2deg);
         opacity: 1;
       }
@@ -4269,27 +4292,29 @@
       }
 
       #berlin-greet-msg-title {
-        font-size: clamp(2.2rem, 8vw, 4.5rem);
+        font-size: clamp(2.2rem, 8vw, 4rem);
         font-weight: 800;
         margin: 0;
         line-height: 1.1;
-        letter-spacing: -2px;
-        color: #1e293b;
+        letter-spacing: -1px;
+        color: #ffffff;
+        text-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
         text-transform: capitalize !important;
       }
 
       #berlin-greet-msg-desc {
-        font-size: 1.05rem;
+        font-size: 1.1rem;
         font-weight: 500;
-        color: #64748b;
+        color: #e2e8f0;
         margin: 15px auto 35px;
-        max-width: 550px;
+        max-width: 580px;
         line-height: 1.6;
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
       }
 
       .berlin-greet-btn {
         background: transparent;
-        color: #e11d48;
+        color: #fb7185;
         border: none;
         padding: 10px 20px;
         font-weight: 700;
@@ -4300,21 +4325,32 @@
         transition: 0.3s;
       }
 
+      .berlin-greet-btn:hover {
+        color: #f43f5e;
+      }
+
+      #berlin-step-0,
+      #berlin-step-1,
       #berlin-step-2 {
-        border: 1px solid rgba(203, 213, 225, 0.5);
-        padding: 50px 30px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        padding: 40px 30px;
         border-radius: 30px;
-        background: rgba(255, 255, 255, 0.3);
-        backdrop-filter: blur(8px);
-        max-width: 450px;
+        background: rgba(15, 23, 42, 0.45);
+        backdrop-filter: blur(12px);
+        max-width: 500px;
         margin: 0 auto;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      }
+
+      #berlin-step-1 {
+        max-width: 650px;
       }
 
       #berlin-answer-input {
         background: transparent !important;
         border: none !important;
-        border-bottom: 1.5px solid #94a3b8 !important;
-        color: #1e293b !important;
+        border-bottom: 2px solid #cbd5e1 !important;
+        color: #ffffff !important;
         font-size: 1.2rem !important;
         width: 80%;
         text-align: center;
@@ -4325,8 +4361,8 @@
 
       .berlin-greet-btn-submit {
         background: transparent;
-        color: #1e293b;
-        border: 2px solid #1e293b;
+        color: #ffffff;
+        border: 2px solid #ffffff;
         padding: 12px 35px;
         border-radius: 50px;
         font-weight: 800;
@@ -4335,15 +4371,16 @@
       }
 
       .berlin-greet-btn-submit:hover {
-        background: #1e293b;
-        color: white;
+        background: #ffffff;
+        color: #0f172a;
       }
 
       #berlin-error-msg {
         display: none;
-        color: #e11d48;
-        font-size: 0.85rem;
+        color: #fb7185;
+        font-size: 0.9rem;
         margin-top: 15px;
+        font-weight: 600;
       }
 
       @keyframes berlinEnter {
@@ -4396,6 +4433,37 @@
     </style>
 
     <script>
+      const berlinPlaylist = [
+        "music1.mp3",
+        "music2.mp3",
+        "music3.mp3",
+        "music4.mp3",
+        "music5.mp3"
+      ];
+
+      let berlinActiveQ = null;
+      let isAnswering = false;
+
+      function playRandomBerlinMusic() {
+        const bgm = document.getElementById("berlin-bgm");
+        if (bgm && berlinPlaylist.length > 0) {
+          if (!bgm.src || bgm.paused) {
+            const randomTrack = berlinPlaylist[Math.floor(Math.random() * berlinPlaylist.length)];
+            bgm.src = randomTrack;
+          }
+          bgm.play().catch((err) => console.log("Gagal memutar audio:", err));
+        }
+      }
+
+      function stopBerlinMusic() {
+        const bgm = document.getElementById("berlin-bgm");
+        if (bgm) {
+          bgm.pause();
+          bgm.currentTime = 0;
+          bgm.removeAttribute("src");
+        }
+      }
+
       const berlinQuestions = [
         {
           q: "Siapa nama pemilik web ini?",
@@ -4409,42 +4477,45 @@
         },
       ];
 
+      // Daftar pesan lengkap dengan URL gambar latar belakang tema galau/sedih
       const berlinMessages = [
         {
-          t: "Huffft...",
-          d: "Masih kusiapkan ruang paling nyaman di database-ku, takutnya kamu lupa jalan pulang.",
+          t: "Semoga Waktunya Tiba",
+          d: "Aku harap asingnya kita hanya sebatas memperbaiki diri, jika waktu tiba semoga kita bersama lagi.",
+          bg: "https://i.pinimg.com/736x/7d/9a/c0/7d9ac0075c8aab2b4f98a6fdaeb6356e.jpg" // orang sendirian ditaman
         },
         {
-          t: "Rindu Itu Berat!",
-          d: "Tanpamu, portal ini cuma tumpukan script mati. Kamu adalah nyawa yang membuatnya hidup kembali.",
+          t: "Masih Ada Rasa",
+          d: "Seperti sudah rela tapi masih ada rasa, seperti sudah ikhlas namun mengharapkanmu kembali. Aku kangen kamu kembali.",
+          bg: "https://i.pinimg.com/1200x/30/fe/30/30fe302461ad6eabff5218a58e6b883f.jpg" // orang menunggu waktu
         },
         {
-          t: "Akhirnya...",
-          d: "Meninggalkan tab ini terbuka tanpa aktivitas itu sakit. Rasanya seperti digantung tanpa kepastian.",
+          t: "Ingin Memperbaiki Semua",
+          d: "Aku pengen dia kembali, tapi aku sadar aku yang membuat dia pergi, andai saja masih bisa kembali, aku akan mencintainya dengan versi terbaik ku.",
+          bg: "https://images.unsplash.com/photo-1509114397022-ed747cca3f65?auto=format&fit=crop&w=1600&q=80" // Malam Berkabut
         },
         {
-          t: "Kemana Saja?",
-          d: "Lama banget perginya, sampai debu di layar monitor Mner sudah setebal kenangan kita.",
+          t: "Menanti Keajaiban",
+          d: "Aku berharap ada keajaiban yang bisa mempersatukan kita kembali.",
+          bg: "https://images.unsplash.com/photo-1499209974431-9dddcece7f88?auto=format&fit=crop&w=1600&q=80" // Seseorang Menyendiri di Pantai
         },
         {
-          t: "Cuma Mampir?",
-          d: "Jangan cuma lewat seperti mantan ya. Masuk dulu, temani aku lagi seperti dulu.",
+          t: "Terlalu Mengharapkanmu",
+          d: "Aku terlalu mengharapkan dia untuk kembali, bahkan aku berhayal kalo dia berada di sampingku.",
+          bg: "https://i.pinimg.com/736x/05/fb/65/05fb659a94ebd3db3c34c88d5b4e921d.jpg" // orang sedang hancur
         },
         {
-          t: "Sangat Sepi...",
-          d: "Di sini sunyi sekali, sampai aku bisa mendengar detak jantungku sendiri yang menunggumu.",
+          t: "Maaf Masih Mengharapkan",
+          d: "Sepertinya sudah tidak ada lagi harapan untuk kita bisa kembali kyk dulu lagi, maaf jika aku masih mengharapkan mu, berharap kita bisa kembali lagi.",
+          bg: "https://i.pinimg.com/1200x/c0/05/50/c00550bc8e11e2b2485ebd0e0f2d2567.jpg" // orang lagi galau
         },
       ];
-
-      let berlinActiveQ = null;
-      let isAnswering = false;
 
       function handleBerlinReunionLogic() {
         const now = new Date().getTime();
         const lastSeen = localStorage.getItem("berlin_v3_last_seen");
         const overlay = document.getElementById("berlin-greet-overlay");
-        const wasPending =
-          localStorage.getItem("berlin_pending_quiz") === "true";
+        const wasPending = localStorage.getItem("berlin_pending_quiz") === "true";
 
         if (lastSeen || wasPending) {
           const timeGap = now - parseInt(lastSeen || 0);
@@ -4455,17 +4526,31 @@
             isAnswering = true;
             localStorage.setItem("berlin_pending_quiz", "true");
 
-            const pick =
-              berlinMessages[Math.floor(Math.random() * berlinMessages.length)];
-            document.getElementById("berlin-greet-msg-title").innerText =
-              pick.t;
+            // Pilih pesan acak beserta latar belakangnya
+            const pick = berlinMessages[Math.floor(Math.random() * berlinMessages.length)];
+            document.getElementById("berlin-greet-msg-title").innerText = pick.t;
             document.getElementById("berlin-greet-msg-desc").innerText = pick.d;
+            
+            // Ubah gambar latar belakang dinamis sesuai pesan yang terpilih
+            overlay.style.backgroundImage = `linear-gradient(rgba(15, 23, 42, 0.75), rgba(15, 23, 42, 0.75)), url('${pick.bg}')`;
+
+            // Tampilkan overlay dan reset ke Step 0
+            document.getElementById("berlin-step-0").style.display = "block";
+            document.getElementById("berlin-step-1").style.display = "none";
+            document.getElementById("berlin-step-2").style.display = "none";
             overlay.style.display = "flex";
 
             lockNavigation();
           }
         }
         localStorage.setItem("berlin_v3_last_seen", now);
+      }
+
+      function berlinEnterApp() {
+        document.getElementById("berlin-step-0").style.display = "none";
+        document.getElementById("berlin-step-1").style.display = "block";
+
+        playRandomBerlinMusic();
       }
 
       function lockNavigation() {
@@ -4477,14 +4562,9 @@
       function berlinShowChallenge() {
         document.getElementById("berlin-step-1").style.display = "none";
         document.getElementById("berlin-step-2").style.display = "block";
-        berlinActiveQ =
-          berlinQuestions[Math.floor(Math.random() * berlinQuestions.length)];
-        document.getElementById("berlin-question-text").innerText =
-          berlinActiveQ.q;
-        setTimeout(
-          () => document.getElementById("berlin-answer-input").focus(),
-          100,
-        );
+        berlinActiveQ = berlinQuestions[Math.floor(Math.random() * berlinQuestions.length)];
+        document.getElementById("berlin-question-text").innerText = berlinActiveQ.q;
+        setTimeout(() => document.getElementById("berlin-answer-input").focus(), 100);
       }
 
       function berlinCheckAnswer() {
@@ -4501,11 +4581,14 @@
           localStorage.setItem("berlin_pending_quiz", "false");
           window.onbeforeunload = null;
 
+          stopBerlinMusic();
+
           overlay.style.opacity = "0";
           setTimeout(() => {
             overlay.style.display = "none";
             overlay.style.opacity = "1";
-            document.getElementById("berlin-step-1").style.display = "block";
+            document.getElementById("berlin-step-0").style.display = "block";
+            document.getElementById("berlin-step-1").style.display = "none";
             document.getElementById("berlin-step-2").style.display = "none";
             inputEl.value = "";
             document.getElementById("berlin-error-msg").style.display = "none";
@@ -4513,7 +4596,7 @@
           localStorage.setItem("berlin_v3_last_seen", new Date().getTime());
         } else {
           document.getElementById("berlin-error-msg").style.display = "block";
-          inputEl.style.borderColor = "#e11d48";
+          inputEl.style.borderColor = "#fb7185";
           inputEl.style.animation = "shake 0.5s";
           setTimeout(() => {
             inputEl.style.borderColor = "#cbd5e1";
@@ -4524,9 +4607,9 @@
 
       document.addEventListener("keydown", function (e) {
         if (e.key === "Enter" && isAnswering) {
-          if (
-            document.getElementById("berlin-step-2").style.display === "block"
-          ) {
+          if (document.getElementById("berlin-step-0").style.display === "block") {
+            berlinEnterApp();
+          } else if (document.getElementById("berlin-step-2").style.display === "block") {
             berlinCheckAnswer();
           } else {
             berlinShowChallenge();
