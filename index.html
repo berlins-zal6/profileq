@@ -4745,8 +4745,8 @@
 
         if (lastSeen || wasPending) {
           const timeGap = now - parseInt(lastSeen || 0);
-          // const limit = 20 * 60 * 1000; // 20 menit
-          const limit = 5000; // 5 detik untuk testing
+          const limit = 20 * 60 * 1000; // 20 menit
+          // const limit = 5000; // 5 detik untuk testing
 
           if (timeGap > limit || wasPending) {
             isAnswering = true;
