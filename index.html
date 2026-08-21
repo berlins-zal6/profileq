@@ -2266,6 +2266,7 @@
         right: 20px;
         z-index: 9999;
         font-family: 'Segoe UI', Roboto, -apple-system, BlinkMacSystemFont, sans-serif;
+        touch-action: none; /* Mencegah scroll layar saat widget ditarik pada layar sentuh */
       }
 
       .avatar-trigger-wrapper {
@@ -2276,20 +2277,24 @@
         background: transparent !important;
         padding: 0 !important;
         box-shadow: none !important;
-        cursor: pointer;
+        cursor: grab;
         user-select: none;
+        -webkit-user-drag: none;
       }
 
-      /* Container Avatar dengan z-index lebih tinggi */
+      .avatar-trigger-wrapper:active {
+        cursor: grabbing;
+      }
+
+      /* Container Avatar */
       .avatar-image-container {
         position: relative;
         width: 200px;
         height: 200px;
-        z-index: 2; /* Menempatkan avatar di depan gelembung */
+        z-index: 2;
         transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
       }
 
-      /* Avatar transparan adaptif */
       .trigger-avatar-img {
         width: 100%;
         height: 100%;
@@ -2299,12 +2304,7 @@
         box-shadow: none !important;
         background: transparent !important;
         filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.25));
-      }
-
-      /* Menghilangkan Online Status Dot & Draft Badge */
-      .avatar-image-container .online-status-dot,
-      .draft-badge-dot {
-        display: none !important;
+        pointer-events: none;
       }
 
       .chat-bubble-promo {
@@ -2318,17 +2318,17 @@
         border-bottom-right-radius: 4px;
         border: 1px solid rgba(255, 255, 255, 0.3);
         box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-        margin-bottom: -25px; /* Menelusup lebih dalam ke belakang avatar */
+        margin-bottom: -25px;
         margin-right: 30px;
-        z-index: 1; /* Di bawah z-index avatar */
+        z-index: 1;
         display: flex;
         align-items: center;
         gap: 6px;
         animation: floatBounce 3.5s ease-in-out infinite, popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-        transition: all 0.3s ease;
+        transition: background 0.3s ease, transform 0.3s ease;
+        pointer-events: none;
       }
 
-      /* Ekor gelembung mengarah ke avatar */
       .chat-bubble-promo::after {
         content: '';
         position: absolute;
@@ -2340,6 +2340,16 @@
         border-right: 7px solid transparent;
         border-top: 7px solid rgba(59, 158, 219, 0.88);
         transition: border-top-color 0.3s ease;
+      }
+
+      /* Indikator Draft Pesan Tersimpan */
+      .draft-badge-dot {
+        display: none;
+        width: 8px;
+        height: 8px;
+        background-color: #ff9f43;
+        border-radius: 50%;
+        box-shadow: 0 0 6px #ff9f43;
       }
 
       .bubble-text {
@@ -2354,6 +2364,7 @@
         display: block;
       }
 
+      /* Popup Form Chat */
       .chat-popup {
         position: absolute;
         bottom: 210px;
@@ -2366,9 +2377,30 @@
         display: flex;
         flex-direction: column;
         z-index: 10;
-        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        opacity: 0;
+        visibility: hidden;
+        transform: scale(0.8) translateY(15px);
+        transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
       }
 
+      .chat-popup.active {
+        opacity: 1;
+        visibility: visible;
+        transform: scale(1) translateY(0);
+      }
+
+      /* Penyesuaian Otomatis Posisi Popup */
+      .floating-chat-container.pop-top .chat-popup {
+        bottom: auto;
+        top: 210px;
+      }
+
+      .floating-chat-container.pop-left .chat-popup {
+        right: auto;
+        left: 0;
+      }
+
+      /* Form Header */
       .chat-header {
         background: #3b9edb !important;
         color: #ffffff;
@@ -2384,27 +2416,40 @@
         gap: 12px;
       }
 
-      .chat-profile img {
-        width: 42px;
-        height: 42px;
+      .chat-profile-avatar {
+        position: relative;
+        display: flex;
+        align-items: center;
+      }
+
+      .chat-profile-avatar img {
+        width: 38px;
+        height: 38px;
         border-radius: 50%;
-        border: 2px solid #ff9f43;
+        border: 2px solid rgba(255, 255, 255, 0.4);
         object-fit: cover;
       }
 
       .chat-status strong {
-        font-size: 1.05rem;
+        font-size: 0.98rem;
         font-weight: 700;
         color: #ffffff;
+        display: block;
+        letter-spacing: 0.3px;
       }
 
       .chat-status small {
-        font-size: 0.8rem;
+        font-size: 0.78rem;
         color: #e0f2fe;
         display: flex;
         align-items: center;
         gap: 6px;
         margin-top: 2px;
+      }
+
+      .pulsing-icon {
+        color: #2ecc71;
+        font-size: 0.6rem;
       }
 
       .close-chat {
@@ -2416,6 +2461,7 @@
         opacity: 0.9;
         padding: 0;
         line-height: 1;
+        transition: transform 0.2s ease, opacity 0.2s ease;
       }
 
       .close-chat:hover {
@@ -2423,12 +2469,13 @@
         transform: scale(1.1);
       }
 
+      /* Form Body */
       .chat-body-form {
         padding: 20px !important;
         background: #f8fafc !important;
         display: flex;
         flex-direction: column;
-        gap: 14px !important;
+        gap: 12px !important;
       }
 
       .chat-body-form input,
@@ -2442,7 +2489,7 @@
         color: #334155;
         background: #ffffff !important;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
-        transition: all 0.2s ease;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
         box-sizing: border-box;
       }
 
@@ -2458,15 +2505,35 @@
         font-family: inherit;
       }
 
+      .phone-group {
+        margin-bottom: 2px;
+      }
+
+      #phone-container {
+        position: relative;
+        display: flex;
+        align-items: center;
+      }
+
       #phone-container span {
-        left: 14px !important;
-        color: #475569 !important;
-        font-weight: 700 !important;
+        position: absolute;
+        left: 14px;
+        color: #475569;
+        font-weight: 700;
         font-size: 0.92rem;
+        pointer-events: none;
       }
 
       #phone-input {
         padding-left: 52px !important;
+      }
+
+      #phone-warn {
+        color: #ef4444;
+        font-size: 0.75rem;
+        margin-top: 5px;
+        display: none;
+        padding-left: 4px;
       }
 
       #submitBtn {
@@ -2483,7 +2550,7 @@
         justify-content: center;
         gap: 8px;
         box-shadow: 0 4px 12px rgba(59, 158, 219, 0.3);
-        transition: all 0.2s ease;
+        transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
         margin-top: 4px;
       }
 
@@ -2497,7 +2564,26 @@
         transform: translateY(0);
       }
 
-      /* Hover State Trigger Avatar */
+      /* Pesan Sukses */
+      .chat-success-msg {
+        padding: 40px 20px;
+        text-align: center;
+        color: #27ae60;
+        background: #f8fafc;
+      }
+
+      .chat-success-msg i {
+        font-size: 2.5rem;
+        margin-bottom: 15px;
+      }
+
+      .chat-success-msg p {
+        font-weight: 600;
+        margin: 0;
+        line-height: 1.4;
+      }
+
+      /* Hover Trigger */
       .avatar-trigger-wrapper:hover .avatar-image-container {
         transform: scale(1.04) rotate(-2deg);
       }
@@ -2510,7 +2596,8 @@
       .avatar-trigger-wrapper:hover .chat-bubble-promo::after {
         border-top-color: rgba(43, 130, 186, 0.95);
       }
-      
+
+      /* Keyframes */
       @keyframes popIn {
         0% {
           opacity: 0;
@@ -2531,6 +2618,7 @@
         }
       }
 
+      /* Media Query Mobile */
       @media (max-width: 480px) {
         .floating-chat-container {
           bottom: 10px;
@@ -2551,6 +2639,10 @@
           width: calc(100vw - 30px);
           bottom: 150px;
           right: 0;
+        }
+
+        .floating-chat-container.pop-top .chat-popup {
+          top: 150px;
         }
       }
       /* chat akhir*/
@@ -3668,78 +3760,106 @@
       </div>
     </section>
 
-    <div class="floating-chat-container">
-  <!-- Trigger Widget Mengambang -->
-  <div class="avatar-trigger-wrapper" onclick="toggleChat()">
-    <!-- Gelembung Teks -->
-    <div class="chat-bubble-promo">
-      <span class="bubble-text">Chat<strong class="highlight-name">Berlin ?</strong></span>
-      <span id="draftBadge" class="draft-badge-dot"></span>
+    <div class="floating-chat-container" id="floatingChatContainer">
+    <!-- Trigger Widget Mengambang -->
+    <div class="avatar-trigger-wrapper" onclick="toggleChat(event)">
+      <!-- Gelembung Teks -->
+      <div class="chat-bubble-promo">
+        <span class="bubble-text">Chat<strong class="highlight-name">Berlin ?</strong></span>
+        <span id="draftBadge" class="draft-badge-dot"></span>
+      </div>
+
+      <!-- Foto Avatar -->
+      <div class="avatar-image-container">
+        <img src="avatar chat.png" alt="Berlin Avatar" class="trigger-avatar-img" draggable="false" />
+        <span class="online-status-dot"></span>
+      </div>
     </div>
 
-    <!-- Foto Avatar -->
-    <div class="avatar-image-container">
-      <img src="avatar chat.png" alt="avatar" class="trigger-avatar-img" />
-      <span class="online-status-dot"></span>
+    <!-- Popup Form Chat -->
+    <div class="chat-popup animate-popup" id="chatPopup">
+      <div class="chat-header">
+        <div class="chat-profile">
+          <div class="chat-profile-avatar">
+            <img src="icon berlin1.png" alt="Berlin Septenus Zalukhu" />
+            <span class="online-status-dot"></span>
+          </div>
+
+          <div class="chat-status">
+            <strong>Berlin S. Z.</strong>
+            <small>
+              <i class="fa-solid fa-circle pulsing-icon"></i>
+              <span class="status-text">Online | Developer</span>
+            </small>
+          </div>
+        </div>
+        <button type="button" class="close-chat" onclick="toggleChat(event)" aria-label="Close Chat">&times;</button>
+      </div>
+
+      <form id="chatForm" class="chat-body-form">
+        <input 
+          type="text" 
+          name="Nama" 
+          placeholder="Nama Anda" 
+          required 
+          oninvalid="this.setCustomValidity('Mohon isi nama Anda.')" 
+          oninput="this.setCustomValidity('')" 
+        />
+
+        <div class="phone-group">
+          <div id="phone-container">
+            <span>+62</span>
+            <input 
+              type="tel" 
+              id="phone-input" 
+              placeholder="812xxxx" 
+              required 
+              inputmode="numeric" 
+              oninput="validatePhone(this)" 
+            />
+            <input type="hidden" name="Telepon" id="real-phone" />
+          </div>
+          <p id="phone-warn">
+            <i class="fa-solid fa-circle-info"></i> Harus diawali angka 8 (Contoh: 812 xxx xxxx)
+          </p>
+        </div>
+
+        <input 
+          type="email" 
+          name="Email" 
+          placeholder="Email Anda" 
+          required 
+          oninvalid="this.setCustomValidity('Alamat email tidak valid')" 
+          oninput="this.setCustomValidity('')" 
+        />
+
+        <textarea 
+          name="Pesan" 
+          placeholder="Tulis pesan..." 
+          required 
+          oninvalid="this.setCustomValidity('Pesan tidak boleh kosong')" 
+          oninput="this.setCustomValidity('')"
+        ></textarea>
+
+        <button type="submit" id="submitBtn">
+          <span id="submitBtnText">Kirim Pesan <i class="fa-regular fa-paper-plane"></i></span>
+          <span id="btnTimerContainer" style="display: none;">
+            Kirim kembali dalam: <span id="countdownTimer">00j 00m 00d</span>
+          </span>
+        </button>
+      </form>
+
+      <div id="successMsg" class="chat-success-msg" style="display: none;">
+        <i class="fa-solid fa-check-circle"></i>
+        <p>Pesan Anda terkirim ke kami!<br />Segera kami proses.</p>
+      </div>
     </div>
   </div>
 
-  <!-- Popup Form Chat (Satu Elemen Saja) -->
-  <div class="chat-popup animate-popup" id="chatPopup" style="display: none;">
-    <div class="chat-header" style="background: #3498db; color: white; padding: 15px; display: flex; align-items: center; justify-content: space-between;">
-      <div class="chat-profile" style="display: flex; align-items: center; gap: 10px;">
-        <div style="position: relative; display: flex; align-items: center;">
-          <img src="icon berlin1.png" alt="Berlin Septenus Zalukhu" style="width: 35px; height: 35px; border-radius: 50%; border: 2px solid rgba(255, 255, 255, 0.3);" />
-          <span class="online-status-dot"></span>
-        </div>
-
-        <div class="chat-status">
-          <strong style="display: block; font-size: 0.95rem; letter-spacing: 0.3px;">Berlin S. Z.</strong>
-          <small style="font-size: 0.75rem; display: flex; align-items: center; gap: 5px; opacity: 0.9;">
-            <i class="fa-solid fa-circle pulsing-icon" style="color: #2ecc71; font-size: 0.6rem;"></i>
-            <span class="status-text">Online | Developer</span>
-          </small>
-        </div>
-      </div>
-      <button class="close-chat" onclick="toggleChat()" style="background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer;">&times;</button>
-    </div>
-
-    <form id="chatForm" class="chat-body-form" style="padding: 20px; display: flex; flex-direction: column; gap: 12px; background: #f9f9f9;">
-      <input type="text" name="Nama" placeholder="Nama Anda" required oninvalid="this.setCustomValidity('Mohon isi nama Anda.')" oninput="this.setCustomValidity('')" />
-
-      <div style="margin-bottom: 5px;">
-        <div id="phone-container" style="position: relative; display: flex; align-items: center;">
-          <span style="position: absolute; left: 15px; color: #64748b; font-weight: bold; pointer-events: none;">+62</span>
-          <input type="tel" id="phone-input" placeholder="812xxxx" required inputmode="numeric" oninput="validatePhone(this)" style="width: 100%; padding-left: 48px;" />
-          <input type="hidden" name="Telepon" id="real-phone" />
-        </div>
-        <p id="phone-warn" style="color: #ef4444; font-size: 0.75rem; margin-top: 5px; display: none; padding-left: 5px;">
-          <i class="fa-solid fa-circle-info"></i> Harus diawali angka 8 (Contoh: 812 xxx xxxx)
-        </p>
-      </div>
-
-      <input type="email" name="Email" placeholder="Email Anda" required oninvalid="this.setCustomValidity('Alamat email tidak valid')" oninput="this.setCustomValidity('')" />
-
-      <textarea name="Pesan" placeholder="Tulis pesan..." required oninvalid="this.setCustomValidity('Pesan tidak boleh kosong')" oninput="this.setCustomValidity('')"></textarea>
-
-      <button type="submit" id="submitBtn">
-        <span id="submitBtnText">Kirim Pesan <i class="fa-regular fa-paper-plane"></i></span>
-        <span id="btnTimerContainer" style="display: none; font-size: 0.75rem; opacity: 0.9; font-weight: 400;">
-          Kirim kembali dalam: <span id="countdownTimer">00j 00m 00d</span>
-        </span>
-      </button>
-    </form>
-
-    <div id="successMsg" style="display: none; padding: 40px 20px; text-align: center; color: #27ae60; background: #f9f9f9;">
-      <i class="fa-solid fa-check-circle" style="font-size: 2.5rem; margin-bottom: 15px;"></i>
-      <p style="font-weight: 600;">Pesan terkirim ke kami!<br />Segera kami proses.</p>
-    </div>
-  </div>
-</div>
-
-<script>
+  <script>
   // --- KONFIGURASI & VARIABEL ---
   const scriptURL = "https://script.google.com/macros/s/AKfycbyKndT1ZqWdUXHQQjwUIacp947KRxzmdZUw_ikQ7pUs7E-vS6h6I9vR2GeaXRH_8PkeSA/exec";
+  const widgetContainer = document.getElementById("floatingChatContainer");
   const form = document.getElementById("chatForm");
   const draftBadge = document.getElementById("draftBadge");
   const submitBtn = document.getElementById("submitBtn");
@@ -3747,13 +3867,111 @@
   const chatPopup = document.getElementById("chatPopup");
   const COOLDOWN_TIME = 6 * 60 * 60 * 1000; // 6 Jam
 
-  // --- 1. FUNGSI TOGGLE ---
-  function toggleChat() {
-    if (chatPopup.style.display === "flex") {
-      chatPopup.style.display = "none";
+  let isDragging = false;
+  let startX, startY, initialLeft, initialTop;
+  let dragThresholdPassed = false;
+
+  // --- 1. LOGIKA DRAGGABLE (DESKTOP & TOUCH) ---
+  const dragTrigger = widgetContainer.querySelector(".avatar-trigger-wrapper");
+
+  function startDrag(e) {
+    // Hanya abaikan jika klik berasal dari tombol close
+    if (e.target.closest(".close-chat")) return;
+
+    isDragging = true;
+    dragThresholdPassed = false;
+
+    const clientX = e.type === "touchstart" ? e.touches[0].clientX : e.clientX;
+    const clientY = e.type === "touchstart" ? e.touches[0].clientY : e.clientY;
+
+    startX = clientX;
+    startY = clientY;
+
+    const rect = widgetContainer.getBoundingClientRect();
+    initialLeft = rect.left;
+    initialTop = rect.top;
+
+    // Ubah posisi CSS ke top/left saat mulai drag
+    widgetContainer.style.bottom = "auto";
+    widgetContainer.style.right = "auto";
+    widgetContainer.style.left = `${initialLeft}px`;
+    widgetContainer.style.top = `${initialTop}px`;
+
+    document.addEventListener("mousemove", onDrag);
+    document.addEventListener("touchmove", onDrag, { passive: false });
+    document.addEventListener("mouseup", stopDrag);
+    document.addEventListener("touchend", stopDrag);
+  }
+
+  function onDrag(e) {
+    if (!isDragging) return;
+
+    const clientX = e.type === "touchmove" ? e.touches[0].clientX : e.clientX;
+    const clientY = e.type === "touchmove" ? e.touches[0].clientY : e.clientY;
+
+    const deltaX = clientX - startX;
+    const deltaY = clientY - startY;
+
+    if (Math.abs(deltaX) > 5 || Math.abs(deltaY) > 5) {
+      dragThresholdPassed = true;
+    }
+
+    if (e.cancelable) e.preventDefault();
+
+    let newLeft = initialLeft + deltaX;
+    let newTop = initialTop + deltaY;
+
+    // Batasi agar tidak tergeser keluar layar (Bounding limits)
+    const maxLeft = window.innerWidth - widgetContainer.offsetWidth;
+    const maxTop = window.innerHeight - widgetContainer.offsetHeight;
+
+    newLeft = Math.max(10, Math.min(newLeft, maxLeft - 10));
+    newTop = Math.max(10, Math.min(newTop, maxTop - 10));
+
+    widgetContainer.style.left = `${newLeft}px`;
+    widgetContainer.style.top = `${newTop}px`;
+
+    // Dynamic Auto-Flip Popup Position
+    if (newTop < 300) {
+      widgetContainer.classList.add("pop-top");
     } else {
-      chatPopup.style.display = "flex";
-      // Pastikan form terlihat jika tidak dalam mode sukses
+      widgetContainer.classList.remove("pop-top");
+    }
+
+    if (newLeft < 340) {
+      widgetContainer.classList.add("pop-left");
+    } else {
+      widgetContainer.classList.remove("pop-left");
+    }
+  }
+
+  function stopDrag() {
+    isDragging = false;
+    document.removeEventListener("mousemove", onDrag);
+    document.removeEventListener("touchmove", onDrag);
+    document.removeEventListener("mouseup", stopDrag);
+    document.removeEventListener("touchend", stopDrag);
+  }
+
+  dragTrigger.addEventListener("mousedown", startDrag);
+  dragTrigger.addEventListener("touchstart", startDrag, { passive: false });
+
+  // --- 2. FUNGSI TOGGLE POPUP ---
+  function toggleChat(e) {
+    if (e) e.stopPropagation();
+
+    // Jika habis melakukan drag, batalkan perintah buka popup
+    if (dragThresholdPassed) {
+      dragThresholdPassed = false;
+      return;
+    }
+
+    const isActive = chatPopup.classList.contains("active");
+
+    if (isActive) {
+      chatPopup.classList.remove("active");
+    } else {
+      chatPopup.classList.add("active");
       if (successMsg.style.display !== "block") {
         form.style.display = "flex";
       }
@@ -3761,20 +3979,20 @@
     }
   }
 
-  // --- 2. LOGIKA COOLDOWN ---
+  // --- 3. LOGIKA COOLDOWN ---
   function checkCooldownStatus() {
     const lastSend = localStorage.getItem("last_message_sent");
     const btnText = document.getElementById("submitBtnText");
     const timerContainer = document.getElementById("btnTimerContainer");
 
     if (lastSend) {
-      const timePassed = Date.now() - parseInt(lastSend);
+      const timePassed = Date.now() - parseInt(lastSend, 10);
       if (timePassed < COOLDOWN_TIME) {
         submitBtn.disabled = true;
         submitBtn.style.background = "#94a3b8";
         submitBtn.style.cursor = "not-allowed";
         btnText.innerHTML = 'LOCKED <i class="fa-solid fa-lock"></i>';
-        timerContainer.style.display = "block";
+        timerContainer.style.display = "inline-block";
 
         startCountdown(COOLDOWN_TIME - timePassed);
         return true;
@@ -3782,42 +4000,44 @@
     }
 
     submitBtn.disabled = false;
-    submitBtn.style.background = "#3498db";
+    submitBtn.style.background = "#3b9edb";
     submitBtn.style.cursor = "pointer";
     btnText.innerHTML = 'Kirim Pesan <i class="fa-regular fa-paper-plane"></i>';
     timerContainer.style.display = "none";
     return false;
   }
 
+  let countdownInterval = null;
+
   function startCountdown(duration) {
     const timerDisplay = document.getElementById("countdownTimer");
     if (!timerDisplay) return;
 
-    const interval = setInterval(() => {
+    if (countdownInterval) clearInterval(countdownInterval);
+
+    countdownInterval = setInterval(() => {
       duration -= 1000;
       if (duration <= 0) {
-        clearInterval(interval);
+        clearInterval(countdownInterval);
         checkCooldownStatus();
         return;
       }
       const h = Math.floor(duration / 3600000);
       const m = Math.floor((duration % 3600000) / 60000);
       const s = Math.floor((duration % 60000) / 1000);
-      timerDisplay.innerHTML = `${h}j ${m}m ${s}d`;
+      timerDisplay.innerHTML = `${String(h).padStart(2, "0")}j ${String(m).padStart(2, "0")}m ${String(s).padStart(2, "0")}d`;
     }, 1000);
   }
 
-  // --- 3. BADGE & AUTO-SAVE ---
+  // --- 4. BADGE & AUTO-SAVE DRAFT ---
   function updateDraftBadge() {
-    const formData = new FormData(form);
-    let hasContent = false;
-    for (let [key, value] of formData.entries()) {
-      if (value.trim() !== "" && key !== "Telepon") {
-        hasContent = true;
-        break;
-      }
-    }
-    draftBadge.style.display = hasContent ? "block" : "none";
+    const phoneVal = document.getElementById("phone-input")?.value.trim() || "";
+    const nameVal = form.Nama?.value.trim() || "";
+    const emailVal = form.Email?.value.trim() || "";
+    const msgVal = form.Pesan?.value.trim() || "";
+
+    const hasContent = nameVal !== "" || phoneVal !== "" || emailVal !== "" || msgVal !== "";
+    draftBadge.style.display = hasContent ? "inline-block" : "none";
   }
 
   form.addEventListener("input", () => {
@@ -3834,20 +4054,25 @@
   window.addEventListener("load", () => {
     const savedDraft = localStorage.getItem("chat_draft");
     if (savedDraft) {
-      const data = JSON.parse(savedDraft);
-      if (form.Nama) form.Nama.value = data.Nama || "";
-      if (document.getElementById("phone-input")) {
-        document.getElementById("phone-input").value = data.Telepon || "";
-        validatePhone(document.getElementById("phone-input"));
+      try {
+        const data = JSON.parse(savedDraft);
+        if (form.Nama) form.Nama.value = data.Nama || "";
+        if (document.getElementById("phone-input")) {
+          const phoneInput = document.getElementById("phone-input");
+          phoneInput.value = data.Telepon || "";
+          validatePhone(phoneInput);
+        }
+        if (form.Email) form.Email.value = data.Email || "";
+        if (form.Pesan) form.Pesan.value = data.Pesan || "";
+        updateDraftBadge();
+      } catch (err) {
+        console.error("Gagal membaca draft dari localStorage", err);
       }
-      if (form.Email) form.Email.value = data.Email || "";
-      if (form.Pesan) form.Pesan.value = data.Pesan || "";
-      updateDraftBadge();
     }
     checkCooldownStatus();
   });
 
-  // --- 4. VALIDASI PHONE ---
+  // --- 5. VALIDASI TELEPON ---
   function validatePhone(input) {
     const warn = document.getElementById("phone-warn");
     const hiddenInput = document.getElementById("real-phone");
@@ -3860,22 +4085,23 @@
         input.style.borderColor = "#ef4444";
       } else {
         warn.style.display = "none";
-        input.style.borderColor = "rgba(0, 0, 0, 0.1)";
+        input.style.borderColor = "#e2e8f0";
       }
     } else {
       warn.style.display = "none";
+      input.style.borderColor = "#e2e8f0";
     }
     input.value = val;
     hiddenInput.value = val ? "+62" + val : "";
   }
 
-  // --- 5. SUBMIT DATA ---
+  // --- 6. SUBMIT DATA FORM ---
   form.addEventListener("submit", (e) => {
     e.preventDefault();
     if (!form.checkValidity()) return;
 
     submitBtn.disabled = true;
-    submitBtn.innerHTML = 'Mengirim... <i class="fa-solid fa-spinner fa-spin"></i>';
+    document.getElementById("submitBtnText").innerHTML = 'Mengirim... <i class="fa-solid fa-spinner fa-spin"></i>';
 
     fetch(scriptURL, { method: "POST", body: new FormData(form) })
       .then((response) => {
@@ -3888,12 +4114,12 @@
         successMsg.style.display = "block";
 
         setTimeout(() => {
-          toggleChat();
+          chatPopup.classList.remove("active");
           setTimeout(() => {
             successMsg.style.display = "none";
             form.style.display = "flex";
             checkCooldownStatus();
-          }, 500);
+          }, 300);
         }, 3000);
       })
       .catch((error) => {
@@ -3902,7 +4128,7 @@
         checkCooldownStatus();
       });
   });
-</script>
+  </script>
 
     <footer class="main-footer">
       <div class="footer-container">
@@ -4519,8 +4745,8 @@
 
         if (lastSeen || wasPending) {
           const timeGap = now - parseInt(lastSeen || 0);
-          const limit = 20 * 60 * 1000; // 20 menit
-          // const limit = 5000; // 5 detik untuk testing
+          // const limit = 20 * 60 * 1000; // 20 menit
+          const limit = 5000; // 5 detik untuk testing
 
           if (timeGap > limit || wasPending) {
             isAnswering = true;
