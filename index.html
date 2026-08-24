@@ -3620,7 +3620,7 @@
             class="yt-title-static"
             style="text-align: center; border-left: none; padding-left: 0"
           >
-            Skills
+            Keahlian
           </h2>
           <p
             class="about-text"
@@ -3694,71 +3694,166 @@
     </section>
 
     <section id="contact" style="padding: 80px 0; background: #eff8ff">
-      <div
-        class="contact-wrapper"
-        style="max-width: 1100px; margin: auto; padding: 0 20px"
+  <div
+    class="contact-wrapper"
+    style="max-width: 1100px; margin: auto; padding: 0 20px"
+  >
+    <div
+      class="contact-header"
+      style="text-align: center; margin-bottom: 50px"
+    >
+      <h2
+        class="yt-title-static"
+        style="text-align: center; border-left: none; padding-left: 0"
       >
-        <div
-          class="contact-header"
-          style="text-align: center; margin-bottom: 50px"
+        Kontak Saya
+      </h2>
+      <p
+        class="about-text"
+        style="
+          max-width: 600px;
+          margin: 10px auto 0 auto;
+          text-align: center;
+          color: #5d6d7e;
+        "
+      >
+        Punya ide proyek atau sekadar ingin menyapa? Jangan ragu untuk
+        menghubungi saya melalui saluran di bawah ini.
+      </p>
+    </div>
+
+    <!-- Contact Grid Card -->
+    <div class="contact-grid">
+      <!-- YOUTUBE -->
+      <a
+        href="https://www.youtube.com/@Berlin_witworks"
+        target="_blank"
+        class="contact-card"
+      >
+        <div class="contact-icon" style="background: #FF0000; color: #ffffff;">
+          <i class="fa-brands fa-youtube"></i>
+        </div>
+        <div class="contact-info">
+          <h3>YouTube</h3>
+          <p>Berlin WitWorks</p>
+        </div>
+        <div class="contact-action">
+          Lihat Karya Editan Saya <i class="fa-solid fa-magnifying-glass-arrow-right"></i>
+        </div>
+      </a>
+
+      <!-- INSTAGRAM -->
+      <a 
+        href="https://www.instagram.com/berlin_zalukhu" 
+        target="_blank" 
+        class="contact-card"
+      >
+        <div 
+          class="contact-icon" 
+          style="background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%,#d6249f 60%,#285AEB 90%); color: #ffffff;"
         >
-          <h2
-            class="yt-title-static"
-            style="text-align: center; border-left: none; padding-left: 0"
-          >
-            Contact Me
-          </h2>
-          <p
-            class="about-text"
-            style="
-              max-width: 600px;
-              margin: 10px auto 0 auto;
-              text-align: center;
-              color: #5d6d7e;
-            "
-          >
-            Punya ide proyek atau sekadar ingin menyapa? Jangan ragu untuk
-            menghubungi saya melalui saluran di bawah ini.
-          </p>
+          <i class="fa-brands fa-instagram"></i>
         </div>
-
-        <div class="contact-grid">
-          <a
-            href="https://wa.me/nomor-wa-anda"
-            target="_blank"
-            class="contact-card"
-          >
-            <div class="contact-icon" style="background: #25d366">
-              <i class="fa-brands fa-whatsapp"></i>
-            </div>
-            <div class="contact-info">
-              <h3>WhatsApp</h3>
-              <p>Chat Sekarang</p>
-            </div>
-          </a>
-
-          <a href="mailto:berlinsepzal6@gmail.com" class="contact-card">
-            <div class="contact-icon" style="background: #e74c3c">
-              <i class="fa-solid fa-envelope"></i>
-            </div>
-            <div class="contact-info">
-              <h3>Email</h3>
-              <p>Kirim Pesan</p>
-            </div>
-          </a>
-
-          <div class="contact-card no-click">
-            <div class="contact-icon" style="background: #3498db">
-              <i class="fa-solid fa-location-dot"></i>
-            </div>
-            <div class="contact-info">
-              <h3>Lokasi</h3>
-              <p>Tondano, Sulawesi Utara</p>
-            </div>
-          </div>
+        <div class="contact-info">
+          <h3>Instagram</h3>
+          <p>@berlin_zalukhu</p>
         </div>
-      </div>
-    </section>
+        <div class="contact-action">
+          Kenali Saya Lewat Ini <i class="fa-solid fa-magnifying-glass-arrow-right"></i>
+        </div>
+      </a>
+
+      <!-- FACEBOOK -->
+      <a 
+        href="https://www.facebook.com/berlin.zalukhu.351939" data-username="Berlin Zalukhu" 
+        target="_blank" 
+        class="contact-card"
+      >
+        <div class="contact-icon" style="background: #1877F2; color: #ffffff;">
+          <i class="fa-brands fa-facebook-f"></i>
+        </div>
+        <div class="contact-info">
+          <h3>Facebook</h3>
+          <p>Berlin Zalukhu</p>
+        </div>
+        <div class="contact-action">
+          Kunjungi Profil Facebook <i class="fa-solid fa-magnifying-glass-arrow-right"></i>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- CSS PENDUKUNG UNTUK SESUAIKAN BENTUK SEPERTI GAMBAR -->
+<style>
+  .contact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+  }
+
+  /* Style Kartu Bentuk Vertikal */
+  .contact-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 30px 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-decoration: none;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .contact-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Icon Lingkaran */
+  .contact-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    margin-bottom: 24px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  }
+
+  /* Teks Info */
+  .contact-info h3 {
+    margin: 0 0 6px 0;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #2c3e50;
+  }
+
+  .contact-info p {
+    margin: 0 0 20px 0;
+    font-size: 0.95rem;
+    color: #5d6d7e;
+  }
+
+  /* Tautan Aksi di Bawah */
+  .contact-action {
+    margin-top: auto;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #3498db;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: gap 0.2s ease;
+  }
+
+  .contact-card:hover .contact-action {
+    gap: 12px;
+  }
+</style>
 
     <div class="floating-chat-container" id="floatingChatContainer">
     <!-- Trigger Widget Mengambang -->
