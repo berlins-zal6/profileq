@@ -2852,20 +2852,111 @@
       .social-icons {
         display: flex;
         justify-content: center;
+        align-items: center;
         gap: 20px;
         font-size: 1.5rem;
       }
 
-      .social-icons a {
-        color: #ffffff;
-        transition:
-          transform 0.3s ease,
-          color 0.3s ease;
+      /* Container Pembungkus Ikon (untuk posisi Tooltip) */
+      .social-item {
+        position: relative;
+        display: inline-flex;
+        flex-direction: column;
+        align-items: center;
       }
 
+      /* Base Style Ikon: Pudar / Monokrom secara default */
+      .social-icons a {
+        color: #bdc3c7; /* Warna abu-abu pudar */
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.05);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-decoration: none;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      /* Tooltip (Nama Akun di Atas Ikon) */
+      .social-tooltip {
+        position: absolute;
+        bottom: 125%; /* Posisikan tepat di atas ikon */
+        left: 50%;
+        transform: translateX(-50%) translateY(10px);
+        background-color: #ffffff;
+        color: #000000;
+        padding: 6px 12px;
+        border-radius: 6px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        white-space: nowrap;
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      /* Segitiga Panah Kecil Tooltip */
+      .social-tooltip::after {
+        content: "";
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        border-width: 5px;
+        border-style: solid;
+        border-color: #ffffff transparent transparent transparent;
+      }
+
+      /* Munculkan Tooltip saat Hover */
+      .social-item:hover .social-tooltip {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(-50%) translateY(0);
+      }
+
+      /* Hover Effect Umum */
       .social-icons a:hover {
-        color: #3498db;
         transform: translateY(-5px);
+        color: #ffffff; /* Mengubah warna icon jadi putih jika background berwarna */
+        border-color: transparent;
+      }
+
+      /* --- WARNA ORI MASING-MASING PLATFORM SAAT HOVER --- */
+
+      /* YouTube */
+      .social-item:hover .youtube {
+        background-color: #FF0000;
+        box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+      }
+
+      /* Instagram (Gradient Resmi) */
+      .social-item:hover .instagram {
+        background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
+        box-shadow: 0 0 15px rgba(221, 42, 123, 0.5);
+      }
+
+      /* TikTok */
+      .social-item:hover .tiktok {
+        background-color: #000000;
+        border-color: #00f2fe;
+        box-shadow: -2px 2px 10px #ff0050, 2px -2px 10px #00f2fe;
+      }
+
+      /* GitHub */
+      .social-item:hover .github {
+        background-color: #24292e;
+        box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+      }
+
+      /* Email (Gmail) */
+      .social-item:hover .email {
+        background-color: #EA4335;
+        box-shadow: 0 0 15px rgba(234, 67, 53, 0.5);
       }
 
       /* Bagian Bawah */
@@ -4251,25 +4342,51 @@
         </div>
 
         <div class="footer-column social">
-          <h3>Sosial Media</h3>
-          <div class="social-icons">
-            <a href="https://www.youtube.com/@Berlin_witworks"
-              ><i class="fa-brands fa-youtube"></i
-            ></a>
-            <a href="https://www.instagram.com/berlin_zalukhu/"
-              ><i class="fa-brands fa-instagram"></i
-            ></a>
-            <a href="http://tiktok.com/@berlin_szalukhu697"
-              ><i class="fa-brands fa-tiktok"></i
-            ></a>
-            <a href="https://github.com/berlins-zal6"
-              ><i class="fa-brands fa-github"></i
-            ></a>
-            <a href="mailto:berlinsepzal6@gmail.com"
-              ><i class="fa-solid fa-envelope"></i
-            ></a>
+        <h3>Sosial Media</h3>
+        <div class="social-icons">
+          
+          <!-- YouTube -->
+          <div class="social-item">
+            <span class="social-tooltip">Berlin WitWorks</span>
+            <a href="https://www.youtube.com/@Berlin_witworks" target="_blank" class="youtube">
+              <i class="fa-brands fa-youtube"></i>
+            </a>
           </div>
+
+          <!-- Instagram -->
+          <div class="social-item">
+            <span class="social-tooltip">@berlin_zalukhu</span>
+            <a href="https://www.instagram.com/berlin_zalukhu/" target="_blank" class="instagram">
+              <i class="fa-brands fa-instagram"></i>
+            </a>
+          </div>
+
+          <!-- TikTok -->
+          <div class="social-item">
+            <span class="social-tooltip">@berlin_szalukhu697</span>
+            <a href="http://tiktok.com/@berlin_szalukhu697" target="_blank" class="tiktok">
+              <i class="fa-brands fa-tiktok"></i>
+            </a>
+          </div>
+
+          <!-- GitHub -->
+          <div class="social-item">
+            <span class="social-tooltip">@berlins-zal6</span>
+            <a href="https://github.com/berlins-zal6" target="_blank" class="github">
+              <i class="fa-brands fa-github"></i>
+            </a>
+          </div>
+
+          <!-- Email -->
+          <div class="social-item">
+            <span class="social-tooltip">berlinsepzal6@gmail.com</span>
+            <a href="mailto:berlinsepzal6@gmail.com" class="email">
+              <i class="fa-solid fa-envelope"></i>
+            </a>
+          </div>
+
         </div>
+      </div>
       </div>
 
       <div class="footer-bottom">
